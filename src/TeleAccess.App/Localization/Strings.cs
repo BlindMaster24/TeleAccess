@@ -486,4 +486,18 @@ public static class Strings
 
     public static string Status_MemberBanned => Get(nameof(Status_MemberBanned));
 
+    public static string Cmd_CreateFolder => Get(nameof(Cmd_CreateFolder));
+
+    public static string Cmd_DeleteFolder => Get(nameof(Cmd_DeleteFolder));
+
+    public static string Prompt_FolderName => Get(nameof(Prompt_FolderName));
+
+    public static string Status_FolderCreated => Get(nameof(Status_FolderCreated));
+
+    public static string Status_FolderDeleted => Get(nameof(Status_FolderDeleted));
+
+    public static string Status_NoFolderSelected => Get(nameof(Status_NoFolderSelected));
+
+    public static string Error_BadFolderName => Get(nameof(Error_BadFolderName));
+
 }

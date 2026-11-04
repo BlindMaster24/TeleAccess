@@ -729,4 +729,25 @@
   <data name="Status_MemberBanned" xml:space="preserve">
     <value>Участник забанен</value>
   </data>
+  <data name="Cmd_CreateFolder" xml:space="preserve">
+    <value>Создать папку чатов</value>
+  </data>
+  <data name="Cmd_DeleteFolder" xml:space="preserve">
+    <value>Удалить текущую папку</value>
+  </data>
+  <data name="Prompt_FolderName" xml:space="preserve">
+    <value>Название папки</value>
+  </data>
+  <data name="Status_FolderCreated" xml:space="preserve">
+    <value>Папка {0} создана, id {1}</value>
+  </data>
+  <data name="Status_FolderDeleted" xml:space="preserve">
+    <value>Папка удалена</value>
+  </data>
+  <data name="Status_NoFolderSelected" xml:space="preserve">
+    <value>Текущий список не является папкой</value>
+  </data>
+  <data name="Error_BadFolderName" xml:space="preserve">
+    <value>Это название папки использовать нельзя</value>
+  </data>
 </root>

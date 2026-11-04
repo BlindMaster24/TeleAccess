@@ -26,6 +26,8 @@ chatList.markUnread | ChatList | Ctrl+Shift+U
 chatList.mute | ChatList | Ctrl+Shift+M
 chatList.pin | ChatList | Ctrl+Shift+P
 chatList.archive | ChatList | Ctrl+Shift+A
+chatList.createFolder | ChatList | Ctrl+Alt+F
+chatList.deleteFolder | ChatList | Ctrl+Alt+D
 chatList.banMember | ChatList | Ctrl+Alt+B
 chatList.inviteLink | ChatList | Ctrl+Shift+I
 chatList.rename | ChatList | F2

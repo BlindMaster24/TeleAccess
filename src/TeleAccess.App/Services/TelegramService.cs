@@ -1063,6 +1063,50 @@ public sealed class TelegramService : IDisposable
         });
     }
 
+    public async Task<int> CreateFolderAsync(string name)
+    {
+        RequireClient();
+
+        var folder = await _client!.ExecuteAsync(new TdApi.CreateChatFolder
+        {
+            Folder = new TdApi.ChatFolder
+            {
+                Name = new TdApi.ChatFolderName
+                {
+                    Text = new TdApi.FormattedText { Text = name, Entities = [] },
+                    AnimateCustomEmoji = false
+                },
+                Icon = new TdApi.ChatFolderIcon { Name = "Custom" },
+                ColorId = 0,
+                IsShareable = false,
+                PinnedChatIds = [],
+                IncludedChatIds = [],
+                ExcludedChatIds = [],
+                ExcludeMuted = false,
+                ExcludeRead = false,
+                ExcludeArchived = false,
+                IncludeContacts = false,
+                IncludeNonContacts = false,
+                IncludeBots = false,
+                IncludeGroups = false,
+                IncludeChannels = false
+            }
+        });
+
+        return folder.Id;
+    }
+
+    public async Task DeleteFolderAsync(int folderId)
+    {
+        RequireClient();
+
+        await _client!.ExecuteAsync(new TdApi.DeleteChatFolder
+        {
+            ChatFolderId = folderId,
+            LeaveChatIds = []
+        });
+    }
+
     public async Task<IReadOnlyList<MessageRow>> LoadScheduledAsync(long chatId)
     {
         RequireClient();

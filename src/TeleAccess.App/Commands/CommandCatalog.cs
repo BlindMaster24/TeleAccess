@@ -54,6 +54,8 @@ public static class CommandCatalog
         Add(registry, "chatList.mute", Strings.Cmd_Mute, CommandScope.ChatList, "Ctrl+Shift+M", actions.Chat.Mute, actions.HasChat);
         Add(registry, "chatList.pin", Strings.Cmd_PinChat, CommandScope.ChatList, "Ctrl+Shift+P", actions.Chat.Pin, actions.HasChat);
         Add(registry, "chatList.archive", Strings.Cmd_ArchiveChat, CommandScope.ChatList, "Ctrl+Shift+A", actions.Chat.Archive, actions.HasChat);
+        Add(registry, "chatList.createFolder", Strings.Cmd_CreateFolder, CommandScope.ChatList, "Ctrl+Alt+F", actions.Chat.CreateFolder);
+        Add(registry, "chatList.deleteFolder", Strings.Cmd_DeleteFolder, CommandScope.ChatList, "Ctrl+Alt+D", actions.Chat.DeleteFolder, actions.HasChat);
         Add(registry, "chatList.banMember", Strings.Cmd_BanMember, CommandScope.ChatList, "Ctrl+Alt+B", actions.Chat.BanMember, actions.HasChat);
         Add(registry, "chatList.inviteLink", Strings.Cmd_InviteLink, CommandScope.ChatList, "Ctrl+Shift+I", actions.Chat.InviteLink, actions.HasChat);
         Add(registry, "chatList.rename", Strings.Cmd_Rename, CommandScope.ChatList, "F2", actions.Chat.Rename, actions.HasChat);

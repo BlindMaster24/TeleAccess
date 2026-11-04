@@ -124,7 +124,9 @@ public partial class MainWindow : Window
         SwitchList: OnSwitchList,
         Rename: OnRename,
         InviteLink: OnInviteLink,
-        BanMember: OnBanMember);
+        BanMember: OnBanMember,
+        CreateFolder: OnCreateFolder,
+        DeleteFolder: OnDeleteFolder);
 
     private MessageActions CreateMessageActions() => new(
         ReadAloud: OnReadAloud,
@@ -1548,6 +1550,55 @@ public partial class MainWindow : Window
 
             await _telegram.SetMemberBannedAsync(_currentChat.Id, members[index].Id, true);
             Announce(Strings.Status_MemberBanned);
+        }
+        catch (Exception exception)
+        {
+            Announce(Errors.Describe(exception));
+        }
+    }
+
+    private void OnCreateFolder() => _ = CreateFolderAsync();
+
+    private async Task CreateFolderAsync()
+    {
+        var answer = PromptWindow.Ask(this, Strings.Prompt_FolderName);
+
+        if (!FolderNames.TryPrepare(answer, _telegram.Folders.Select(folder => folder.Title), out var name))
+        {
+            Announce(Strings.Error_BadFolderName);
+            return;
+        }
+
+        try
+        {
+            var folderId = await _telegram.CreateFolderAsync(name);
+            Announce(string.Format(Strings.Culture, Strings.Status_FolderCreated, name, folderId));
+            RebuildLists();
+            await RefreshChatsAsync(SearchBox.Text);
+        }
+        catch (Exception exception)
+        {
+            Announce(Errors.Describe(exception));
+        }
+    }
+
+    private void OnDeleteFolder() => _ = DeleteFolderAsync();
+
+    private async Task DeleteFolderAsync()
+    {
+        if (_chatList.Kind != ChatListKind.Folder)
+        {
+            Announce(Strings.Status_NoFolderSelected);
+            return;
+        }
+
+        try
+        {
+            await _telegram.DeleteFolderAsync(_chatList.FolderId);
+            Announce(Strings.Status_FolderDeleted);
+            _chatList = new ChatListEntry("Main", ChatListKind.Main);
+            RebuildLists();
+            await RefreshChatsAsync(SearchBox.Text);
         }
         catch (Exception exception)
         {
