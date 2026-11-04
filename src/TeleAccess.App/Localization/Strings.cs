@@ -552,4 +552,18 @@ public static class Strings
 
     public static string Status_ProxyDisabled => Get(nameof(Status_ProxyDisabled));
 
+    public static string Cmd_TopicRename => Get(nameof(Cmd_TopicRename));
+
+    public static string Cmd_TopicRead => Get(nameof(Cmd_TopicRead));
+
+    public static string Cmd_Vote => Get(nameof(Cmd_Vote));
+
+    public static string Prompt_PollOption => Get(nameof(Prompt_PollOption));
+
+    public static string Status_TopicRenamed => Get(nameof(Status_TopicRenamed));
+
+    public static string Status_TopicRead => Get(nameof(Status_TopicRead));
+
+    public static string Status_Voted => Get(nameof(Status_Voted));
+
 }

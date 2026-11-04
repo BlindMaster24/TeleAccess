@@ -30,6 +30,7 @@ All notable changes are recorded here. Format follows
 - Incoming voice notes and audio play through NAudio (`MediaFoundationReader`), `Enter` plays, `Escape` stops.
 - Attachments download with `Ctrl+S`, history pages back with `Ctrl+Up`, new messages elsewhere announce with an earcon, and `Ctrl+F1` turns on training mode.
 - Global search filters: `type:` and `date:` tokens become a TDLib filter and a date range; the token parser is pure and covered by thirteen tests.
+- Topic history now goes through `getForumTopicHistory`; topics can be renamed (`editForumTopic`) and their mention/reaction badges cleared; polls accept a vote through `setPollAnswer`.
 - Topic lifecycle: close/reopen, delete and pin/unpin, all unassigned by default.
 - Member unban and proxy disable are available next to their counterparts.
 - The anti-pattern example in the style guide no longer contains a marker token.

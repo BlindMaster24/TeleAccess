@@ -11,7 +11,8 @@ reference implementation.
 | `forumTopic` | `info`, `last_message`, `order`, `is_pinned`, `unread_count`, `last_read_inbox_message_id`, `last_read_outbox_message_id`, `unread_mention_count`, `unread_reaction_count`, `unread_poll_vote_count`, `notification_settings` |
 | `forumTopicInfo` | `chat_id`, `forum_topic_id`, `name`, `icon`, `creation_date`, `creator_id`, `is_general`, `is_outgoing`, `is_closed`, `is_hidden`, `is_name_implicit` |
 | `getForumTopic(chat_id, forum_topic_id)` | one topic, used after an update |
-| `getMessageThreadHistory(chat_id, message_id, from_message_id, offset, limit)` | history **inside** a topic; `message_id` is the topic's last message id |
+| `getForumTopicHistory(chat_id, forum_topic_id, from_message_id, offset, limit)` | history **inside** a topic by topic id — what we use now |
+| `getMessageThreadHistory(chat_id, message_id, ...)` | thread history by message id, not needed once topics exist |
 | `getMessageThread(chat_id, message_id)` | `messageThreadInfo` with the draft of the thread |
 | `sendMessage(..., topic_id: MessageTopicForum)` | send into a topic; `reply_to` still applies inside it |
 | `createForumTopic`, `editForumTopic`, `deleteForumTopic`, `toggleForumTopicIsClosed`, `toggleForumTopicIsPinned` | lifecycle |

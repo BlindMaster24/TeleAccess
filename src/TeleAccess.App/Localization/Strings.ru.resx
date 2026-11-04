@@ -828,4 +828,25 @@
   <data name="Status_ProxyDisabled" xml:space="preserve">
     <value>Прокси отключён</value>
   </data>
+  <data name="Cmd_TopicRename" xml:space="preserve">
+    <value>Переименовать тему</value>
+  </data>
+  <data name="Cmd_TopicRead" xml:space="preserve">
+    <value>Отметить упоминания и реакции темы прочитанными</value>
+  </data>
+  <data name="Cmd_Vote" xml:space="preserve">
+    <value>Проголосовать в опросе</value>
+  </data>
+  <data name="Prompt_PollOption" xml:space="preserve">
+    <value>Номер варианта</value>
+  </data>
+  <data name="Status_TopicRenamed" xml:space="preserve">
+    <value>Тема переименована</value>
+  </data>
+  <data name="Status_TopicRead" xml:space="preserve">
+    <value>Тема отмечена прочитанной</value>
+  </data>
+  <data name="Status_Voted" xml:space="preserve">
+    <value>Голос отправлен</value>
+  </data>
 </root>

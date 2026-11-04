@@ -24,4 +24,7 @@ public sealed record MessageActions(
     Action CreateTopic,
     Action CloseTopic,
     Action DeleteTopic,
-    Action PinTopic);
+    Action PinTopic,
+    Action RenameTopic,
+    Action ReadTopic,
+    Action Vote);

@@ -1219,19 +1219,19 @@ public sealed class TelegramService : IDisposable
             .ToArray();
     }
 
-    public async Task<IReadOnlyList<MessageRow>> LoadTopicMessagesAsync(long chatId, long lastMessageId, int limit = 40)
+    public async Task<IReadOnlyList<MessageRow>> LoadTopicMessagesAsync(long chatId, int topicId, int limit = 40)
     {
         RequireClient();
 
-        if (lastMessageId == 0)
+        if (topicId == 0)
         {
             return [];
         }
 
-        var history = await _client!.ExecuteAsync(new TdApi.GetMessageThreadHistory
+        var history = await _client!.ExecuteAsync(new TdApi.GetForumTopicHistory
         {
             ChatId = chatId,
-            MessageId = lastMessageId,
+            ForumTopicId = topicId,
             FromMessageId = 0,
             Offset = 0,
             Limit = limit
@@ -1336,6 +1336,49 @@ public sealed class TelegramService : IDisposable
     {
         RequireClient();
         await _client!.ExecuteAsync(new TdApi.DisableProxy());
+    }
+
+    public async Task RenameTopicAsync(long chatId, int topicId, string name)
+    {
+        RequireClient();
+
+        await _client!.ExecuteAsync(new TdApi.EditForumTopic
+        {
+            ChatId = chatId,
+            ForumTopicId = topicId,
+            Name = name,
+            EditIconCustomEmoji = false,
+            IconCustomEmojiId = 0
+        });
+    }
+
+    public async Task ReadTopicBadgesAsync(long chatId, int topicId)
+    {
+        RequireClient();
+
+        await _client!.ExecuteAsync(new TdApi.ReadAllForumTopicMentions
+        {
+            ChatId = chatId,
+            ForumTopicId = topicId
+        });
+
+        await _client.ExecuteAsync(new TdApi.ReadAllForumTopicReactions
+        {
+            ChatId = chatId,
+            ForumTopicId = topicId
+        });
+    }
+
+    public async Task VoteAsync(long chatId, long messageId, int optionId)
+    {
+        RequireClient();
+
+        await _client!.ExecuteAsync(new TdApi.SetPollAnswer
+        {
+            ChatId = chatId,
+            MessageId = messageId,
+            OptionIds = [optionId]
+        });
     }
 
     public async Task CreateForumTopicAsync(long chatId, string name)

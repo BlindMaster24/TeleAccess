@@ -308,7 +308,10 @@ public partial class MainWindow : Window
         CreateTopic: OnCreateTopic,
         CloseTopic: OnCloseTopic,
         DeleteTopic: OnDeleteTopic,
-        PinTopic: OnPinTopic);
+        PinTopic: OnPinTopic,
+        RenameTopic: OnRenameTopic,
+        ReadTopic: OnReadTopic,
+        Vote: OnVote);
 
     private ComposerActions CreateComposerActions() => new(
         Send: OnSend,
@@ -1459,7 +1462,7 @@ public partial class MainWindow : Window
 
         try
         {
-            var messages = await _telegram.LoadTopicMessagesAsync(_currentChat.Id, topic.LastMessageId);
+            var messages = await _telegram.LoadTopicMessagesAsync(_currentChat.Id, topic.Id);
             MessageList.ItemsSource = messages;
             _currentMessage = null;
             Announce($"{topic.Name}. {messages.Count}");
@@ -1485,6 +1488,91 @@ public partial class MainWindow : Window
 
     private TopicRow? SelectedTopic() =>
         MessageList.SelectedItem as TopicRow ?? _currentTopic;
+
+    private void OnRenameTopic() => _ = RenameTopicAsync();
+
+    private async Task RenameTopicAsync()
+    {
+        var topic = SelectedTopic();
+
+        if (_currentChat is null || topic is null)
+        {
+            Announce(Strings.Status_NoSelection);
+            return;
+        }
+
+        var name = PromptWindow.Ask(this, Strings.Prompt_TopicName, topic.Name);
+
+        if (!ChatTitle.TryNormalize(name, out var title))
+        {
+            Announce(Strings.Error_BadTitle);
+            return;
+        }
+
+        try
+        {
+            await _telegram.RenameTopicAsync(_currentChat.Id, topic.Id, title);
+            Announce(Strings.Status_TopicRenamed);
+            await ShowTopicListAsync(_currentChat);
+        }
+        catch (Exception exception)
+        {
+            Announce(Errors.Describe(exception));
+        }
+    }
+
+    private void OnReadTopic() => _ = ReadTopicAsync();
+
+    private async Task ReadTopicAsync()
+    {
+        var topic = SelectedTopic();
+
+        if (_currentChat is null || topic is null)
+        {
+            Announce(Strings.Status_NoSelection);
+            return;
+        }
+
+        try
+        {
+            await _telegram.ReadTopicBadgesAsync(_currentChat.Id, topic.Id);
+            Announce(Strings.Status_TopicRead);
+        }
+        catch (Exception exception)
+        {
+            Announce(Errors.Describe(exception));
+        }
+    }
+
+    private void OnVote() => _ = VoteAsync();
+
+    private async Task VoteAsync()
+    {
+        if (_currentChat is null || _currentMessage is null)
+        {
+            Announce(Strings.Status_NoSelection);
+            return;
+        }
+
+        var answer = PromptWindow.Ask(this, Strings.Prompt_PollOption);
+
+        if (!int.TryParse(answer, NumberStyles.Integer, CultureInfo.InvariantCulture, out var option) || option < 1)
+        {
+            Announce(Strings.Error_BadNumber);
+            return;
+        }
+
+        try
+        {
+            await _telegram.VoteAsync(_currentChat.Id, _currentMessage.Id, option - 1);
+            Announce(Strings.Status_Voted);
+            await RefreshMessagesAsync(_currentChat);
+        }
+        catch (Exception exception)
+        {
+            Announce(Errors.Describe(exception));
+        }
+    }
 
     private void OnCloseTopic() => _ = ToggleTopicClosedAsync();
 

@@ -828,4 +828,25 @@
   <data name="Status_ProxyDisabled" xml:space="preserve">
     <value>Proxy disabled</value>
   </data>
+  <data name="Cmd_TopicRename" xml:space="preserve">
+    <value>Rename topic</value>
+  </data>
+  <data name="Cmd_TopicRead" xml:space="preserve">
+    <value>Mark topic mentions and reactions as read</value>
+  </data>
+  <data name="Cmd_Vote" xml:space="preserve">
+    <value>Vote in a poll</value>
+  </data>
+  <data name="Prompt_PollOption" xml:space="preserve">
+    <value>Poll option number</value>
+  </data>
+  <data name="Status_TopicRenamed" xml:space="preserve">
+    <value>Topic renamed</value>
+  </data>
+  <data name="Status_TopicRead" xml:space="preserve">
+    <value>Topic marked as read</value>
+  </data>
+  <data name="Status_Voted" xml:space="preserve">
+    <value>Vote sent</value>
+  </data>
 </root>

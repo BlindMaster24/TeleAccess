@@ -40,7 +40,7 @@ public class CommandCatalogTests
             UnbanMember: noop,
             DisableProxy: noop,
             Chat: new ChatActions(noop, noop, noop, noop, noop, noop, noop, noop, noop, noop, noop, noop, noop),
-            Message: new MessageActions(noop, noop, noop, noop, noop, noop, noop, noop, noop, noop, noop, noop, noop, noop, noop, noop, noop, noop, noop, noop, noop, noop, noop, noop),
+            Message: new MessageActions(noop, noop, noop, noop, noop, noop, noop, noop, noop, noop, noop, noop, noop, noop, noop, noop, noop, noop, noop, noop, noop, noop, noop, noop, noop, noop, noop),
             Composer: new ComposerActions(noop, noop, noop, noop, noop, noop, noop, noop, noop));
 
         return CommandCatalog.Create(actions);
