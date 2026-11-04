@@ -420,4 +420,10 @@ public static class Strings
 
     public static string Status_Window => Get(nameof(Status_Window));
 
+    public static string Cmd_JumpToDate => Get(nameof(Cmd_JumpToDate));
+
+    public static string Prompt_JumpToDate => Get(nameof(Prompt_JumpToDate));
+
+    public static string Error_BadDate => Get(nameof(Error_BadDate));
+
 }

@@ -13,6 +13,7 @@ using TeleAccess.Core;
 using TeleAccess.Core.Attachments;
 using TeleAccess.Core.ChatLists;
 using TeleAccess.Core.Data;
+using TeleAccess.Core.Dates;
 
 namespace TeleAccess.App;
 
@@ -123,7 +124,8 @@ public partial class MainWindow : Window
             Save: OnSaveFile,
             Older: OnOlder,
             Select: OnSelect,
-            SelectAll: OnSelectAll),
+            SelectAll: OnSelectAll,
+            JumpToDate: OnJumpToDate),
         Composer: new ComposerActions(
             Send: OnSend,
             SendSilent: OnSendSilent,
@@ -1100,6 +1102,48 @@ public partial class MainWindow : Window
             }
 
             Announce(string.Format(Strings.Culture, Strings.Status_Saved, path));
+        }
+        catch (Exception exception)
+        {
+            Announce(Errors.Describe(exception));
+        }
+    }
+
+    private void OnJumpToDate() => _ = JumpToDateAsync();
+
+    private async Task JumpToDateAsync()
+    {
+        if (_currentChat is null)
+        {
+            Announce(Strings.Status_NoChat);
+            return;
+        }
+
+        var answer = PromptWindow.Ask(this, Strings.Prompt_JumpToDate);
+
+        if (string.IsNullOrWhiteSpace(answer))
+        {
+            return;
+        }
+
+        if (!DateQueryParser.TryParse(answer, DateTimeOffset.Now, out var date))
+        {
+            Announce(Strings.Error_BadDate);
+            return;
+        }
+
+        try
+        {
+            var message = await _telegram.GetByDateAsync(_currentChat.Id, new DateTimeOffset(date.ToDateTime(TimeOnly.MinValue), TimeZoneInfo.Local.GetUtcOffset(date.ToDateTime(TimeOnly.MinValue))));
+
+            if (message is null)
+            {
+                Announce(Strings.Main_NoMessages);
+                return;
+            }
+
+            ShowTransient([message]);
+            Announce(message.Display);
         }
         catch (Exception exception)
         {

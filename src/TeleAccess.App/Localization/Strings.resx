@@ -630,4 +630,13 @@
   <data name="Status_Window" xml:space="preserve">
     <value>TeleAccess window</value>
   </data>
+  <data name="Cmd_JumpToDate" xml:space="preserve">
+    <value>Jump to date</value>
+  </data>
+  <data name="Prompt_JumpToDate" xml:space="preserve">
+    <value>Date: 2026-11-04, 04.11.2026 or -7d</value>
+  </data>
+  <data name="Error_BadDate" xml:space="preserve">
+    <value>Cannot read the date</value>
+  </data>
 </root>

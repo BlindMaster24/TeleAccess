@@ -77,7 +77,7 @@ menu of the focused area.
 | `Up` / `Down` | previous / next message |
 | `PageUp` / `PageDown` | page of messages |
 | `Home` / `End` | first / last message |
-| `Ctrl+G` | jump to date |
+| `Ctrl+G` | jump to a date: `2026-11-04`, `04.11.2026`, `-7d` |
 | `Ctrl+Shift+P` | jump to the pinned message |
 | `Space` | select or unselect the current message |
 | `Ctrl+A` | select all loaded messages |

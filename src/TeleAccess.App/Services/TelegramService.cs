@@ -825,6 +825,19 @@ public sealed class TelegramService : IDisposable
         return rows;
     }
 
+    public async Task<MessageRow?> GetByDateAsync(long chatId, DateTimeOffset date)
+    {
+        RequireClient();
+
+        var message = await _client!.ExecuteAsync(new TdApi.GetChatMessageByDate
+        {
+            ChatId = chatId,
+            Date = (int)date.ToUnixTimeSeconds()
+        });
+
+        return message.Id == 0 ? null : await ToRowAsync(message);
+    }
+
     public async Task<IReadOnlyList<MessageRow>> LoadScheduledAsync(long chatId)
     {
         RequireClient();

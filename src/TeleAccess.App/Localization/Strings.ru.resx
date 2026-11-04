@@ -630,4 +630,13 @@
   <data name="Status_Window" xml:space="preserve">
     <value>Окно TeleAccess</value>
   </data>
+  <data name="Cmd_JumpToDate" xml:space="preserve">
+    <value>Перейти к дате</value>
+  </data>
+  <data name="Prompt_JumpToDate" xml:space="preserve">
+    <value>Дата: 2026-11-04, 04.11.2026 или -7d</value>
+  </data>
+  <data name="Error_BadDate" xml:space="preserve">
+    <value>Не удалось прочитать дату</value>
+  </data>
 </root>

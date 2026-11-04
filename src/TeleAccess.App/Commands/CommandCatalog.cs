@@ -64,6 +64,7 @@ public static class CommandCatalog
         Add(registry, "message.forward", Strings.Cmd_Forward, CommandScope.Message, "Ctrl+Shift+F", actions.Message.Forward, actions.HasMessage);
         Add(registry, "message.pin", Strings.Cmd_Pin, CommandScope.Message, "Ctrl+P", actions.Message.Pin, actions.HasMessage);
         Add(registry, "message.copy", Strings.Cmd_Copy, CommandScope.Message, "Ctrl+C", actions.Message.Copy, actions.HasMessage);
+        Add(registry, "messageList.jumpToDate", Strings.Cmd_JumpToDate, CommandScope.MessageList, "Ctrl+G", actions.Message.JumpToDate, actions.HasChat);
         Add(registry, "message.select", Strings.Cmd_Select, CommandScope.Message, "Space", actions.Message.Select, actions.HasMessage);
         Add(registry, "messageList.selectAll", Strings.Cmd_SelectAll, CommandScope.MessageList, "Ctrl+A", actions.Message.SelectAll, actions.HasChat);
         Add(registry, "message.save", Strings.Cmd_Save, CommandScope.Message, "Ctrl+S", actions.Message.Save, actions.HasMessage);
