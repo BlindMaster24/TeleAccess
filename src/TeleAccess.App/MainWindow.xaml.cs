@@ -286,7 +286,8 @@ public partial class MainWindow : Window
         InviteLink: OnInviteLink,
         BanMember: OnBanMember,
         CreateFolder: OnCreateFolder,
-        DeleteFolder: OnDeleteFolder);
+        DeleteFolder: OnDeleteFolder,
+        RenameFolder: OnRenameFolder);
 
     private MessageActions CreateMessageActions() => new(
         ReadAloud: OnReadAloud,
@@ -2172,6 +2173,38 @@ public partial class MainWindow : Window
         }
     }
 
+    private void OnRenameFolder() => _ = RenameFolderAsync();
+
+    private async Task RenameFolderAsync()
+    {
+        if (_chatList.Kind != ChatListKind.Folder)
+        {
+            Announce(Strings.Status_NoFolderSelected);
+            return;
+        }
+
+        var answer = PromptWindow.Ask(this, Strings.Prompt_FolderName, _chatList.Title);
+        var others = _telegram.Folders.Where(folder => folder.Id != _chatList.FolderId).Select(folder => folder.Title);
+
+        if (!FolderNames.TryPrepare(answer, others, out var name))
+        {
+            Announce(Strings.Error_BadFolderName);
+            return;
+        }
+
+        try
+        {
+            await _telegram.RenameFolderAsync(_chatList.FolderId, name);
+            Announce(Strings.Status_FolderRenamed);
+            RebuildLists();
+            await RefreshChatsAsync(SearchBox.Text);
+        }
+        catch (Exception exception)
+        {
+            Announce(Errors.Describe(exception));
+        }
+    }
+
     private void OnCreateFolder() => _ = CreateFolderAsync();
 
     private async Task CreateFolderAsync()
@@ -2558,8 +2591,21 @@ public partial class MainWindow : Window
         try
         {
             var ids = _selected.Count > 0 ? _selected.ToArray() : new[] { _currentMessage.Id };
+            bool revoke;
+
+            try
+            {
+                var permissions = await _telegram.GetPermissionsAsync(_currentChat.Id, _currentMessage.Id);
+                revoke = permissions.CanBeDeletedForAll;
+            }
+            catch (Exception exception)
+            {
+                Announce(Errors.Describe(exception));
+                return;
+            }
+
             _selected.Clear();
-            await _telegram.DeleteMessagesAsync(_currentChat.Id, ids, _currentMessage.IsOutgoing);
+            await _telegram.DeleteMessagesAsync(_currentChat.Id, ids, revoke);
             Announce(_currentMessage.IsOutgoing ? Strings.Status_DeletedForAll : Strings.Status_DeletedLocal);
             await RefreshMessagesAsync(_currentChat);
         }
@@ -2576,6 +2622,22 @@ public partial class MainWindow : Window
         if (_currentChat is null || _currentMessage is null)
         {
             Announce(Strings.Status_NoSelection);
+            return;
+        }
+
+        try
+        {
+            var permissions = await _telegram.GetPermissionsAsync(_currentChat.Id, _currentMessage.Id);
+
+            if (!permissions.CanBeEdited)
+            {
+                Announce(Strings.Status_CannotEdit);
+                return;
+            }
+        }
+        catch (Exception exception)
+        {
+            Announce(Errors.Describe(exception));
             return;
         }
 

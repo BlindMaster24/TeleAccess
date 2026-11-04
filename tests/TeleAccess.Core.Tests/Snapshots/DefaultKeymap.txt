@@ -35,6 +35,7 @@ chatList.mute | ChatList | Ctrl+Shift+M
 chatList.pin | ChatList | Ctrl+Shift+P
 chatList.archive | ChatList | Ctrl+Shift+A
 chatList.createFolder | ChatList | Ctrl+Alt+F
+chatList.renameFolder | ChatList | none
 chatList.deleteFolder | ChatList | Ctrl+Alt+D
 chatList.unbanMember | ChatList | none
 chatList.banMember | ChatList | Ctrl+Alt+B

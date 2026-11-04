@@ -897,4 +897,13 @@
   <data name="Status_AlbumSent" xml:space="preserve">
     <value>Album of {0} items sent</value>
   </data>
+  <data name="Cmd_RenameFolder" xml:space="preserve">
+    <value>Rename the current folder</value>
+  </data>
+  <data name="Status_FolderRenamed" xml:space="preserve">
+    <value>Folder renamed</value>
+  </data>
+  <data name="Status_CannotEdit" xml:space="preserve">
+    <value>This message cannot be edited</value>
+  </data>
 </root>

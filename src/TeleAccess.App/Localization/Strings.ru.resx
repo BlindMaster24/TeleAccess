@@ -897,4 +897,13 @@
   <data name="Status_AlbumSent" xml:space="preserve">
     <value>Альбом из {0} вложений отправлен</value>
   </data>
+  <data name="Cmd_RenameFolder" xml:space="preserve">
+    <value>Переименовать текущую папку</value>
+  </data>
+  <data name="Status_FolderRenamed" xml:space="preserve">
+    <value>Папка переименована</value>
+  </data>
+  <data name="Status_CannotEdit" xml:space="preserve">
+    <value>Это сообщение нельзя изменить</value>
+  </data>
 </root>

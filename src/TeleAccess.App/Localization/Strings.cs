@@ -598,4 +598,10 @@ public static class Strings
 
     public static string Status_AlbumSent => Get(nameof(Status_AlbumSent));
 
+    public static string Cmd_RenameFolder => Get(nameof(Cmd_RenameFolder));
+
+    public static string Status_FolderRenamed => Get(nameof(Status_FolderRenamed));
+
+    public static string Status_CannotEdit => Get(nameof(Status_CannotEdit));
+
 }

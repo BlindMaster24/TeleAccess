@@ -1445,6 +1445,41 @@ public sealed class TelegramService : IDisposable
         await _client!.ExecuteAsync(new TdApi.DisableProxy());
     }
 
+    public async Task<MessagePermissions> GetPermissionsAsync(long chatId, long messageId)
+    {
+        RequireClient();
+
+        var properties = await _client!.ExecuteAsync(new TdApi.GetMessageProperties
+        {
+            ChatId = chatId,
+            MessageId = messageId
+        });
+
+        return new MessagePermissions(
+            properties.CanBeEdited,
+            properties.CanBeDeletedForAllUsers,
+            properties.CanBeForwarded);
+    }
+
+    public async Task RenameFolderAsync(int folderId, string name)
+    {
+        RequireClient();
+
+        var folder = await _client!.ExecuteAsync(new TdApi.GetChatFolder { ChatFolderId = folderId });
+
+        folder.Name = new TdApi.ChatFolderName
+        {
+            Text = new TdApi.FormattedText { Text = name, Entities = [] },
+            AnimateCustomEmoji = false
+        };
+
+        await _client.ExecuteAsync(new TdApi.EditChatFolder
+        {
+            ChatFolderId = folderId,
+            Folder = folder
+        });
+    }
+
     public async Task RenameTopicAsync(long chatId, int topicId, string name)
     {
         RequireClient();

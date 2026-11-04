@@ -13,4 +13,5 @@ public sealed record ChatActions(
     Action InviteLink,
     Action BanMember,
     Action CreateFolder,
-    Action DeleteFolder);
+    Action DeleteFolder,
+    Action RenameFolder);
