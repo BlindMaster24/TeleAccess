@@ -627,4 +627,7 @@
   <data name="Cmd_SelectAll" xml:space="preserve">
     <value>Select all loaded messages</value>
   </data>
+  <data name="Status_Window" xml:space="preserve">
+    <value>TeleAccess window</value>
+  </data>
 </root>

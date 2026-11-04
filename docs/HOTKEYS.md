@@ -181,6 +181,11 @@ The map is stored in `%APPDATA%\TeleAccess\keymap.json`.
 
 ## Global Windows shortcuts
 
+`Ctrl+Alt+T` is registered with `RegisterHotKey`: it brings TeleAccess to the front and
+focuses the chat list from any application.
+
+
+
 `RegisterHotKey` is used for exactly two commands: reply to the last chat and open the
 new message in it. Everything else stays inside the window so the client never steals
 keys from other applications.

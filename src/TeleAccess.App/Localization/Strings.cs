@@ -418,4 +418,6 @@ public static class Strings
 
     public static string Cmd_SelectAll => Get(nameof(Cmd_SelectAll));
 
+    public static string Status_Window => Get(nameof(Status_Window));
+
 }

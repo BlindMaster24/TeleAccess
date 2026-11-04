@@ -24,6 +24,7 @@ public partial class MainWindow : Window
     private readonly PrismSpeechService _speech = new();
     private readonly VoiceRecorder _recorder = new();
     private readonly AudioPlayer _player = new();
+    private GlobalHotkeyService? _globalHotkeys;
     private readonly TelegramService _telegram = new();
     private readonly CommandRegistry _registry;
     private readonly HotkeyService _hotkeys;
@@ -61,6 +62,7 @@ public partial class MainWindow : Window
         _telegram.MessageArrived += OnMessageArrived;
 
         Composer.TextChanged += OnComposerTextChanged;
+        Loaded += (_, _) => RegisterGlobalHotkey();
         LoadSettingsIntoForm();
         _telegram.Start(_settings);
         Announce(Strings.Login_Starting);
@@ -70,6 +72,7 @@ public partial class MainWindow : Window
     {
         _speech.Dispose();
         _telegram.Dispose();
+        _globalHotkeys?.Dispose();
         _recorder.Dispose();
         _player.Dispose();
         base.OnClosed(e);
@@ -1048,6 +1051,21 @@ public partial class MainWindow : Window
 
     private bool _training;
     private readonly HashSet<long> _selected = [];
+
+    private void RegisterGlobalHotkey()
+    {
+        if (!HotkeyCombination.TryParse("Ctrl+Alt+T", out var combination))
+        {
+            return;
+        }
+
+        _globalHotkeys = new GlobalHotkeyService(this, combination, () => Dispatcher.Invoke(() =>
+        {
+            Activate();
+            ChatList.Focus();
+            Announce(Strings.Status_Window);
+        }));
+    }
 
     private void OnTraining()
     {

@@ -627,4 +627,7 @@
   <data name="Cmd_SelectAll" xml:space="preserve">
     <value>Выбрать все загруженные</value>
   </data>
+  <data name="Status_Window" xml:space="preserve">
+    <value>Окно TeleAccess</value>
+  </data>
 </root>
