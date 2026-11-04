@@ -29,6 +29,7 @@ All notable changes are recorded here. Format follows
 - Chat information (type, member count, description), member lists, forum topic lists, contact lists, secret chat creation, joining chats.
 - Incoming voice notes and audio play through NAudio (`MediaFoundationReader`), `Enter` plays, `Escape` stops.
 - Attachments download with `Ctrl+S`, history pages back with `Ctrl+Up`, new messages elsewhere announce with an earcon, and `Ctrl+F1` turns on training mode.
+- Drafts: the composer text is saved with `setChatDraftMessage` after a pause, restored from `chat.draftMessage` on open and cleared on send; DraftPolicy is covered by six tests.
 - Chat folders: create with `Ctrl+Alt+F` and delete the current one with `Ctrl+Alt+D`; name preparation and case-insensitive uniqueness are covered by seven tests.
 - Member moderation: `Ctrl+Alt+B` lists members with numbers and bans the chosen one through `setChatMemberStatus`; index parsing is covered by eleven tests.
 - Notification scopes: mute private chats, groups and channels for N hours through get/setScopeNotificationSettings, with hour conversion tested.

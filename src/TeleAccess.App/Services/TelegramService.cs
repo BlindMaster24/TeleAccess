@@ -4,6 +4,7 @@ using System.IO;
 using TdLib;
 using TdLib.Bindings;
 using TeleAccess.Core.ChatLists;
+using TeleAccess.Core.Drafts;
 using TeleAccess.Core.Invites;
 using TeleAccess.Core.Notifications;
 
@@ -1104,6 +1105,44 @@ public sealed class TelegramService : IDisposable
         {
             ChatFolderId = folderId,
             LeaveChatIds = []
+        });
+    }
+
+    public async Task<string?> GetDraftAsync(long chatId)
+    {
+        RequireClient();
+
+        var chat = await _client!.ExecuteAsync(new TdApi.GetChat { ChatId = chatId });
+
+        return chat.DraftMessage?.Content is TdApi.DraftMessageContent.DraftMessageContentText text
+            ? text.Text.Text
+            : null;
+    }
+
+    public async Task SetDraftAsync(long chatId, string? text)
+    {
+        RequireClient();
+
+        var normalized = DraftPolicy.Normalize(text);
+
+        await _client!.ExecuteAsync(new TdApi.SetChatDraftMessage
+        {
+            ChatId = chatId,
+            TopicId = null,
+            DraftMessage = normalized is null
+                ? null
+                : new TdApi.DraftMessage
+                {
+                    ReplyTo = null,
+                    Date = (int)DateTimeOffset.UtcNow.ToUnixTimeSeconds(),
+                    Content = new TdApi.DraftMessageContent.DraftMessageContentText
+                    {
+                        Text = new TdApi.FormattedText { Text = normalized, Entities = [] },
+                        LinkPreviewOptions = null
+                    },
+                    EffectId = 0,
+                    SuggestedPostInfo = null
+                }
         });
     }
 

@@ -15,6 +15,7 @@ using TeleAccess.Core.ChatLists;
 using TeleAccess.Core.Chats;
 using TeleAccess.Core.Data;
 using TeleAccess.Core.Dates;
+using TeleAccess.Core.Drafts;
 using TeleAccess.Core.Network;
 using TeleAccess.Core.Notifications;
 using TeleAccess.Core.Profiles;
@@ -35,11 +36,13 @@ public partial class MainWindow : Window
     private readonly CommandRegistry _registry;
     private readonly HotkeyService _hotkeys;
     private readonly DispatcherTimer _openChatTimer;
+    private readonly DispatcherTimer _draftTimer;
     private readonly AppSettings _settings;
     private ChatRow? _currentChat;
     private MessageRow? _currentMessage;
     private long _replyToMessageId;
     private bool _showingTransient;
+    private string? _savedDraft;
     private ChatListEntry _chatList = new("Main", ChatListKind.Main);
     private IReadOnlyList<ChatListEntry> _listEntries = [new("Main", ChatListKind.Main), new("Archive", ChatListKind.Archive)];
 
@@ -59,7 +62,9 @@ public partial class MainWindow : Window
         _hotkeys.CommandInvoked += OnCommandInvoked;
 
         _openChatTimer = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(350) };
+        _draftTimer = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(1500) };
         _openChatTimer.Tick += OnOpenChatTimerTick;
+        _draftTimer.Tick += OnDraftTimerTick;
 
         _telegram.AuthStageChanged += OnAuthStageChanged;
         _telegram.ChatsChanged += OnChatsChanged;
@@ -403,6 +408,38 @@ public partial class MainWindow : Window
         _showingTransient = false;
         _openChatTimer.Stop();
         _openChatTimer.Start();
+        _draftTimer.Stop();
+    }
+
+    private void OnDraftTimerTick(object? sender, EventArgs e)
+    {
+        _draftTimer.Stop();
+
+        if (_currentChat is null)
+        {
+            return;
+        }
+
+        _ = SaveDraftAsync(_currentChat.Id, Composer.Text);
+    }
+
+    private async Task SaveDraftAsync(long chatId, string text)
+    {
+        if (!DraftPolicy.ShouldSave(text, _savedDraft))
+        {
+            return;
+        }
+
+        _savedDraft = text;
+
+        try
+        {
+            await _telegram.SetDraftAsync(chatId, text);
+        }
+        catch (Exception exception)
+        {
+            Announce(Errors.Describe(exception));
+        }
     }
 
     private void OnOpenChatTimerTick(object? sender, EventArgs e)
@@ -434,6 +471,10 @@ public partial class MainWindow : Window
             }
 
             await _telegram.MarkChatReadAsync(chat.Id);
+
+            var draft = await _telegram.GetDraftAsync(chat.Id);
+            _savedDraft = draft;
+            Composer.Text = draft ?? string.Empty;
 
             Announce(messages.Count == 0
                 ? $"{chat.Title}. {Strings.Main_NoMessages}"
@@ -512,6 +553,8 @@ public partial class MainWindow : Window
 
         var replyTo = _replyToMessageId;
         _replyToMessageId = 0;
+        _savedDraft = null;
+        _draftTimer.Stop();
 
         try
         {
@@ -716,6 +759,9 @@ public partial class MainWindow : Window
 
         _lastTyping = DateTimeOffset.UtcNow;
         _ = _telegram.SendChatActionAsync(_currentChat.Id, typing: true);
+
+        _draftTimer.Stop();
+        _draftTimer.Start();
     }
 
     private void OnSearchGlobal() => _ = SearchGlobalAsync();
