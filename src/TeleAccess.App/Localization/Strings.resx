@@ -285,4 +285,76 @@
   <data name="Main_SignedInAs" xml:space="preserve">
     <value>Signed in as {0}</value>
   </data>
+  <data name="Cmd_Mute" xml:space="preserve">
+    <value>Mute or unmute chat</value>
+  </data>
+  <data name="Cmd_PinChat" xml:space="preserve">
+    <value>Pin or unpin chat</value>
+  </data>
+  <data name="Cmd_ArchiveChat" xml:space="preserve">
+    <value>Archive or unarchive chat</value>
+  </data>
+  <data name="Cmd_Scheduled" xml:space="preserve">
+    <value>Scheduled messages</value>
+  </data>
+  <data name="Cmd_React" xml:space="preserve">
+    <value>Add reaction</value>
+  </data>
+  <data name="Cmd_SearchInChat" xml:space="preserve">
+    <value>Search in this chat</value>
+  </data>
+  <data name="Cmd_SendSilent" xml:space="preserve">
+    <value>Send without notification</value>
+  </data>
+  <data name="Cmd_SendScheduled" xml:space="preserve">
+    <value>Schedule message</value>
+  </data>
+  <data name="Status_Muted" xml:space="preserve">
+    <value>Chat muted</value>
+  </data>
+  <data name="Status_Unmuted" xml:space="preserve">
+    <value>Chat unmuted</value>
+  </data>
+  <data name="Status_ChatPinned" xml:space="preserve">
+    <value>Chat pinned</value>
+  </data>
+  <data name="Status_ChatUnpinned" xml:space="preserve">
+    <value>Chat unpinned</value>
+  </data>
+  <data name="Status_Archived" xml:space="preserve">
+    <value>Chat archived</value>
+  </data>
+  <data name="Status_Unarchived" xml:space="preserve">
+    <value>Chat returned from archive</value>
+  </data>
+  <data name="Status_ReactionSent" xml:space="preserve">
+    <value>Reaction sent</value>
+  </data>
+  <data name="Status_ScheduledFor" xml:space="preserve">
+    <value>Scheduled for {0}</value>
+  </data>
+  <data name="Status_FoundMessages" xml:space="preserve">
+    <value>{0:plural:{} message found|{} messages found}</value>
+  </data>
+  <data name="Status_ScheduledMessages" xml:space="preserve">
+    <value>{0:plural:{} scheduled message|{} scheduled messages}</value>
+  </data>
+  <data name="Prompt_Reaction" xml:space="preserve">
+    <value>Emoji to send</value>
+  </data>
+  <data name="Prompt_ScheduleWhen" xml:space="preserve">
+    <value>When to send: +10m, 18:30, 2026-12-31 09:00</value>
+  </data>
+  <data name="Prompt_SearchInChat" xml:space="preserve">
+    <value>Search in this chat</value>
+  </data>
+  <data name="Error_BadTime" xml:space="preserve">
+    <value>Cannot understand the time</value>
+  </data>
+  <data name="Status_NotScheduled" xml:space="preserve">
+    <value>Nothing scheduled</value>
+  </data>
+  <data name="Status_MutedChatSend" xml:space="preserve">
+    <value>Message sent silently</value>
+  </data>
 </root>

@@ -10,6 +10,7 @@ using TeleAccess.App.Services;
 using TeleAccess.App.Windows;
 using TeleAccess.Core;
 using TeleAccess.Core.Data;
+using TeleAccess.Core.Scheduling;
 
 namespace TeleAccess.App;
 
@@ -27,6 +28,7 @@ public partial class MainWindow : Window
     private ChatRow? _currentChat;
     private MessageRow? _currentMessage;
     private long _replyToMessageId;
+    private bool _showingTransient;
 
     public MainWindow()
     {
@@ -71,21 +73,32 @@ public partial class MainWindow : Window
         FocusSearch: () => SearchBox.Focus(),
         Search: OnSearch,
         Refresh: () => _ = RefreshChatsAsync(SearchBox.Text),
-        OpenChat: OnOpenChat,
-        DeleteChat: OnDeleteChat,
-        MarkUnread: OnMarkUnread,
-        Send: OnSend,
-        NewLine: OnNewLine,
-        ReadAloud: OnReadAloud,
-        Reply: OnReply,
-        Edit: OnEdit,
-        DeleteMessage: OnDeleteMessage,
-        Forward: OnForward,
-        Pin: OnPin,
-        Copy: OnCopy,
-        Voice: () => Announce(Strings.Status_NotImplemented),
         Hotkeys: OnHotkeys,
-        Quit: Close);
+        Quit: Close,
+        Chat: new ChatActions(
+            Open: OnOpenChat,
+            Delete: OnDeleteChat,
+            MarkUnread: OnMarkUnread,
+            Mute: OnMute,
+            Pin: OnPinChat,
+            Archive: OnArchive,
+            ShowScheduled: OnScheduled),
+        Message: new MessageActions(
+            ReadAloud: OnReadAloud,
+            Reply: OnReply,
+            Edit: OnEdit,
+            Delete: OnDeleteMessage,
+            Forward: OnForward,
+            Pin: OnPin,
+            Copy: OnCopy,
+            React: OnReact,
+            SearchInChat: OnSearchInChat),
+        Composer: new ComposerActions(
+            Send: OnSend,
+            SendSilent: OnSendSilent,
+            SendScheduled: OnSendScheduled,
+            NewLine: OnNewLine,
+            Voice: () => Announce(Strings.Status_NotImplemented)));
 
     private CommandScope CurrentScope()
     {
@@ -131,7 +144,7 @@ public partial class MainWindow : Window
 
     private void OnChatMessagesChanged(object? sender, ChatMessagesChangedEventArgs e)
     {
-        if (_currentChat is not null && _currentChat.Id == e.ChatId)
+        if (_currentChat is not null && _currentChat.Id == e.ChatId && !_showingTransient)
         {
             Dispatcher.Invoke(() => _ = RefreshMessagesAsync(_currentChat));
         }
@@ -279,6 +292,7 @@ public partial class MainWindow : Window
         _currentChat = chat;
         _currentMessage = null;
         _replyToMessageId = 0;
+        _showingTransient = false;
         _openChatTimer.Stop();
         _openChatTimer.Start();
     }
@@ -297,6 +311,8 @@ public partial class MainWindow : Window
 
     private async Task RefreshMessagesAsync(ChatRow chat)
     {
+        _showingTransient = false;
+
         try
         {
             await _telegram.OpenChatAsync(chat.Id);
@@ -344,9 +360,31 @@ public partial class MainWindow : Window
         }
     }
 
-    private void OnSend()
+    private void OnSend() => SendPending(SendOptions.Normal);
+
+    private void OnSendSilent() => SendPending(new SendOptions(Silent: true));
+
+    private void OnSendScheduled()
+    {
+        var answer = PromptWindow.Ask(this, Strings.Prompt_ScheduleWhen);
+        if (string.IsNullOrWhiteSpace(answer))
+        {
+            return;
+        }
+
+        if (!ScheduleParser.TryParse(answer, DateTimeOffset.Now, out var at))
+        {
+            Announce(Strings.Error_BadTime);
+            return;
+        }
+
+        SendPending(new SendOptions(SendAt: at), at);
+    }
+
+    private void SendPending(SendOptions options, DateTimeOffset? announceAt = null)
     {
         var text = Composer.Text.Trim();
+
         if (_currentChat is null)
         {
             Announce(Strings.Status_NoChat);
@@ -360,10 +398,10 @@ public partial class MainWindow : Window
         }
 
         Composer.Clear();
-        _ = SendAsync(text);
+        _ = SendAsync(text, options, announceAt);
     }
 
-    private async Task SendAsync(string text)
+    private async Task SendAsync(string text, SendOptions options, DateTimeOffset? announceAt)
     {
         if (_currentChat is null)
         {
@@ -375,8 +413,17 @@ public partial class MainWindow : Window
 
         try
         {
-            await _telegram.SendTextAsync(_currentChat.Id, text, replyTo);
-            Announce(Strings.Status_Sent);
+            await _telegram.SendTextAsync(_currentChat.Id, text, replyTo, options);
+
+            if (announceAt is { } at)
+            {
+                Announce(string.Format(Strings.Culture, Strings.Status_ScheduledFor, at.ToString("g", Strings.Culture)));
+            }
+            else
+            {
+                Announce(options.Silent ? Strings.Status_MutedChatSend : Strings.Status_Sent);
+            }
+
             await RefreshMessagesAsync(_currentChat);
         }
         catch (Exception exception)
@@ -384,6 +431,176 @@ public partial class MainWindow : Window
             Announce(Errors.Describe(exception));
             Composer.Text = text;
         }
+    }
+
+    private void OnMute() => _ = ToggleMuteAsync();
+
+    private async Task ToggleMuteAsync()
+    {
+        if (_currentChat is null)
+        {
+            Announce(Strings.Status_NoChat);
+            return;
+        }
+
+        var muted = !_currentChat.IsMuted;
+
+        try
+        {
+            await _telegram.SetMutedAsync(_currentChat.Id, muted);
+            Announce(muted ? Strings.Status_Muted : Strings.Status_Unmuted);
+            await RefreshChatsAsync(SearchBox.Text);
+        }
+        catch (Exception exception)
+        {
+            Announce(Errors.Describe(exception));
+        }
+    }
+
+    private void OnPinChat() => _ = TogglePinAsync();
+
+    private async Task TogglePinAsync()
+    {
+        if (_currentChat is null)
+        {
+            Announce(Strings.Status_NoChat);
+            return;
+        }
+
+        var pinned = !_currentChat.IsPinned;
+
+        try
+        {
+            await _telegram.SetPinnedAsync(_currentChat.Id, pinned);
+            Announce(pinned ? Strings.Status_ChatPinned : Strings.Status_ChatUnpinned);
+            await RefreshChatsAsync(SearchBox.Text);
+        }
+        catch (Exception exception)
+        {
+            Announce(Errors.Describe(exception));
+        }
+    }
+
+    private void OnArchive() => _ = ToggleArchiveAsync();
+
+    private async Task ToggleArchiveAsync()
+    {
+        if (_currentChat is null)
+        {
+            Announce(Strings.Status_NoChat);
+            return;
+        }
+
+        var archived = !_currentChat.IsArchived;
+
+        try
+        {
+            await _telegram.SetArchivedAsync(_currentChat.Id, archived);
+            Announce(archived ? Strings.Status_Archived : Strings.Status_Unarchived);
+            await RefreshChatsAsync(SearchBox.Text);
+        }
+        catch (Exception exception)
+        {
+            Announce(Errors.Describe(exception));
+        }
+    }
+
+    private void OnScheduled() => _ = ShowScheduledAsync();
+
+    private async Task ShowScheduledAsync()
+    {
+        if (_currentChat is null)
+        {
+            Announce(Strings.Status_NoChat);
+            return;
+        }
+
+        try
+        {
+            var rows = await _telegram.LoadScheduledAsync(_currentChat.Id);
+
+            if (rows.Count == 0)
+            {
+                Announce(Strings.Status_NotScheduled);
+                return;
+            }
+
+            ShowTransient(rows);
+            Announce(PluralFormatter.Format(Strings.Status_ScheduledMessages, rows.Count, Strings.Culture));
+        }
+        catch (Exception exception)
+        {
+            Announce(Errors.Describe(exception));
+        }
+    }
+
+    private void OnReact() => _ = ReactAsync();
+
+    private async Task ReactAsync()
+    {
+        if (_currentChat is null || _currentMessage is null)
+        {
+            Announce(Strings.Status_NoSelection);
+            return;
+        }
+
+        var emoji = PromptWindow.Ask(this, Strings.Prompt_Reaction, "\U0001F44D");
+        if (string.IsNullOrWhiteSpace(emoji))
+        {
+            return;
+        }
+
+        try
+        {
+            await _telegram.AddReactionAsync(_currentChat.Id, _currentMessage.Id, emoji.Trim());
+            Announce(Strings.Status_ReactionSent);
+        }
+        catch (Exception exception)
+        {
+            Announce(Errors.Describe(exception));
+        }
+    }
+
+    private void OnSearchInChat() => _ = SearchInChatAsync();
+
+    private async Task SearchInChatAsync()
+    {
+        if (_currentChat is null)
+        {
+            Announce(Strings.Status_NoChat);
+            return;
+        }
+
+        var query = PromptWindow.Ask(this, Strings.Prompt_SearchInChat);
+        if (string.IsNullOrWhiteSpace(query))
+        {
+            return;
+        }
+
+        try
+        {
+            var rows = await _telegram.SearchInChatAsync(_currentChat.Id, query);
+
+            if (rows.Count == 0)
+            {
+                Announce(Strings.Status_SearchEmpty);
+                return;
+            }
+
+            ShowTransient(rows);
+            Announce(PluralFormatter.Format(Strings.Status_FoundMessages, rows.Count, Strings.Culture));
+        }
+        catch (Exception exception)
+        {
+            Announce(Errors.Describe(exception));
+        }
+    }
+
+    private void ShowTransient(IReadOnlyList<MessageRow> rows)
+    {
+        _showingTransient = true;
+        MessageList.ItemsSource = rows;
+        MessageList.Focus();
     }
 
     private void OnNewLine()

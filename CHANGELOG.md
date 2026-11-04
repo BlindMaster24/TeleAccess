@@ -14,6 +14,9 @@ All notable changes are recorded here. Format follows
   `%APPDATA%\TeleAccess\teleaccess.db` (SQLite).
 - TDLib integration: sign-in with api_id/api_hash, chat list, message history, sending,
   reply, edit, delete, forward, pin, chat deletion.
+- Message send options: silent delivery (`Ctrl+Enter`) and scheduled delivery
+  (`Ctrl+Shift+Enter`) with a parser for relative, time-only and absolute input.
+- Scheduled queue, search inside a chat, reactions, chat mute, pin and archive.
 - Speech announcements through Prism (`Prismatoid`) behind `ISpeechService`.
 - Localization with English as the neutral resource and Russian as a satellite; error
   messages and plurals are resource-driven.

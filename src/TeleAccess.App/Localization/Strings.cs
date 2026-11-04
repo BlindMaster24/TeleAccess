@@ -190,4 +190,52 @@ public static class Strings
     public static string Error_NotConfigured => Get(nameof(Error_NotConfigured));
 
     public static string Main_SignedInAs => Get(nameof(Main_SignedInAs));
+    public static string Cmd_Mute => Get(nameof(Cmd_Mute));
+
+    public static string Cmd_PinChat => Get(nameof(Cmd_PinChat));
+
+    public static string Cmd_ArchiveChat => Get(nameof(Cmd_ArchiveChat));
+
+    public static string Cmd_Scheduled => Get(nameof(Cmd_Scheduled));
+
+    public static string Cmd_React => Get(nameof(Cmd_React));
+
+    public static string Cmd_SearchInChat => Get(nameof(Cmd_SearchInChat));
+
+    public static string Cmd_SendSilent => Get(nameof(Cmd_SendSilent));
+
+    public static string Cmd_SendScheduled => Get(nameof(Cmd_SendScheduled));
+
+    public static string Status_Muted => Get(nameof(Status_Muted));
+
+    public static string Status_Unmuted => Get(nameof(Status_Unmuted));
+
+    public static string Status_ChatPinned => Get(nameof(Status_ChatPinned));
+
+    public static string Status_ChatUnpinned => Get(nameof(Status_ChatUnpinned));
+
+    public static string Status_Archived => Get(nameof(Status_Archived));
+
+    public static string Status_Unarchived => Get(nameof(Status_Unarchived));
+
+    public static string Status_ReactionSent => Get(nameof(Status_ReactionSent));
+
+    public static string Status_ScheduledFor => Get(nameof(Status_ScheduledFor));
+
+    public static string Status_FoundMessages => Get(nameof(Status_FoundMessages));
+
+    public static string Status_ScheduledMessages => Get(nameof(Status_ScheduledMessages));
+
+    public static string Prompt_Reaction => Get(nameof(Prompt_Reaction));
+
+    public static string Prompt_ScheduleWhen => Get(nameof(Prompt_ScheduleWhen));
+
+    public static string Prompt_SearchInChat => Get(nameof(Prompt_SearchInChat));
+
+    public static string Error_BadTime => Get(nameof(Error_BadTime));
+
+    public static string Status_NotScheduled => Get(nameof(Status_NotScheduled));
+
+    public static string Status_MutedChatSend => Get(nameof(Status_MutedChatSend));
+
 }

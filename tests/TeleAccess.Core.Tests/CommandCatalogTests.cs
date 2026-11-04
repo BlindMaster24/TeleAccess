@@ -18,21 +18,11 @@ public class CommandCatalogTests
             FocusSearch: noop,
             Search: noop,
             Refresh: noop,
-            OpenChat: noop,
-            DeleteChat: noop,
-            MarkUnread: noop,
-            Send: noop,
-            NewLine: noop,
-            ReadAloud: noop,
-            Reply: noop,
-            Edit: noop,
-            DeleteMessage: noop,
-            Forward: noop,
-            Pin: noop,
-            Copy: noop,
-            Voice: noop,
             Hotkeys: noop,
-            Quit: noop);
+            Quit: noop,
+            Chat: new ChatActions(noop, noop, noop, noop, noop, noop, noop),
+            Message: new MessageActions(noop, noop, noop, noop, noop, noop, noop, noop, noop),
+            Composer: new ComposerActions(noop, noop, noop, noop, noop));
 
         return CommandCatalog.Create(actions);
     }

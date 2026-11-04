@@ -9,6 +9,10 @@ global.quit | Global | none
 chatList.open | ChatList | Enter
 chatList.delete | ChatList | Ctrl+D
 chatList.markUnread | ChatList | Ctrl+Shift+U
+chatList.mute | ChatList | Ctrl+Shift+M
+chatList.pin | ChatList | Ctrl+Shift+P
+chatList.archive | ChatList | Ctrl+Shift+A
+chatList.scheduled | ChatList | Ctrl+Shift+S
 message.read | Message | Enter
 message.reply | Message | Ctrl+R
 message.edit | Message | Ctrl+E
@@ -16,6 +20,10 @@ message.delete | Message | Ctrl+D
 message.forward | Message | Ctrl+Shift+F
 message.pin | Message | Ctrl+P
 message.copy | Message | Ctrl+C
+message.react | Message | Ctrl+Shift+E
+message.searchInChat | Message | Ctrl+F
 composer.send | Composer | Enter
+composer.sendSilent | Composer | Ctrl+Enter
+composer.sendScheduled | Composer | Ctrl+Shift+Enter
 composer.newline | Composer | Shift+Enter
 composer.voice | Composer | Ctrl+Shift+V

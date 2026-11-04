@@ -30,8 +30,10 @@ interface here is built around speech and keystrokes, not around pixels.
 ## Status
 
 Early development. Implemented: sign-in with api_id/api_hash, chat list, message list,
-sending, reply, edit, delete, forward, pin, copy, chat deletion, and the full command and
-shortcut system. Not implemented yet: voice messages, files, calls, folders.
+sending (normal, silent and scheduled), reply, edit, delete, forward, pin, copy, reactions,
+search inside a chat, scheduled messages, chat deletion, mute, pin, archive, and the full
+command and shortcut system. Not implemented yet: voice messages, file attachments,
+folders, calls.
 
 ## Build
 

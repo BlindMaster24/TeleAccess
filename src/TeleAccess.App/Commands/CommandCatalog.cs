@@ -21,21 +21,29 @@ public static class CommandCatalog
         Add(registry, "global.hotkeys", Strings.Cmd_Hotkeys, CommandScope.Global, "Ctrl+Shift+K", actions.Hotkeys);
         Add(registry, "global.quit", Strings.Cmd_Quit, CommandScope.Global, null, actions.Quit);
 
-        Add(registry, "chatList.open", Strings.Cmd_OpenChat, CommandScope.ChatList, "Enter", actions.OpenChat, actions.HasChat);
-        Add(registry, "chatList.delete", Strings.Cmd_DeleteChat, CommandScope.ChatList, "Ctrl+D", actions.DeleteChat, actions.HasChat);
-        Add(registry, "chatList.markUnread", Strings.Cmd_MarkUnread, CommandScope.ChatList, "Ctrl+Shift+U", actions.MarkUnread, actions.HasChat);
+        Add(registry, "chatList.open", Strings.Cmd_OpenChat, CommandScope.ChatList, "Enter", actions.Chat.Open, actions.HasChat);
+        Add(registry, "chatList.delete", Strings.Cmd_DeleteChat, CommandScope.ChatList, "Ctrl+D", actions.Chat.Delete, actions.HasChat);
+        Add(registry, "chatList.markUnread", Strings.Cmd_MarkUnread, CommandScope.ChatList, "Ctrl+Shift+U", actions.Chat.MarkUnread, actions.HasChat);
+        Add(registry, "chatList.mute", Strings.Cmd_Mute, CommandScope.ChatList, "Ctrl+Shift+M", actions.Chat.Mute, actions.HasChat);
+        Add(registry, "chatList.pin", Strings.Cmd_PinChat, CommandScope.ChatList, "Ctrl+Shift+P", actions.Chat.Pin, actions.HasChat);
+        Add(registry, "chatList.archive", Strings.Cmd_ArchiveChat, CommandScope.ChatList, "Ctrl+Shift+A", actions.Chat.Archive, actions.HasChat);
+        Add(registry, "chatList.scheduled", Strings.Cmd_Scheduled, CommandScope.ChatList, "Ctrl+Shift+S", actions.Chat.ShowScheduled, actions.HasChat);
 
-        Add(registry, "message.read", Strings.Cmd_Listen, CommandScope.Message, "Enter", actions.ReadAloud, actions.HasMessage);
-        Add(registry, "message.reply", Strings.Cmd_Reply, CommandScope.Message, "Ctrl+R", actions.Reply, actions.HasMessage);
-        Add(registry, "message.edit", Strings.Cmd_Edit, CommandScope.Message, "Ctrl+E", actions.Edit, actions.HasMessage);
-        Add(registry, "message.delete", Strings.Cmd_Delete, CommandScope.Message, "Ctrl+D", actions.DeleteMessage, actions.HasMessage);
-        Add(registry, "message.forward", Strings.Cmd_Forward, CommandScope.Message, "Ctrl+Shift+F", actions.Forward, actions.HasMessage);
-        Add(registry, "message.pin", Strings.Cmd_Pin, CommandScope.Message, "Ctrl+P", actions.Pin, actions.HasMessage);
-        Add(registry, "message.copy", Strings.Cmd_Copy, CommandScope.Message, "Ctrl+C", actions.Copy, actions.HasMessage);
+        Add(registry, "message.read", Strings.Cmd_Listen, CommandScope.Message, "Enter", actions.Message.ReadAloud, actions.HasMessage);
+        Add(registry, "message.reply", Strings.Cmd_Reply, CommandScope.Message, "Ctrl+R", actions.Message.Reply, actions.HasMessage);
+        Add(registry, "message.edit", Strings.Cmd_Edit, CommandScope.Message, "Ctrl+E", actions.Message.Edit, actions.HasMessage);
+        Add(registry, "message.delete", Strings.Cmd_Delete, CommandScope.Message, "Ctrl+D", actions.Message.Delete, actions.HasMessage);
+        Add(registry, "message.forward", Strings.Cmd_Forward, CommandScope.Message, "Ctrl+Shift+F", actions.Message.Forward, actions.HasMessage);
+        Add(registry, "message.pin", Strings.Cmd_Pin, CommandScope.Message, "Ctrl+P", actions.Message.Pin, actions.HasMessage);
+        Add(registry, "message.copy", Strings.Cmd_Copy, CommandScope.Message, "Ctrl+C", actions.Message.Copy, actions.HasMessage);
+        Add(registry, "message.react", Strings.Cmd_React, CommandScope.Message, "Ctrl+Shift+E", actions.Message.React, actions.HasMessage);
+        Add(registry, "message.searchInChat", Strings.Cmd_SearchInChat, CommandScope.Message, "Ctrl+F", actions.Message.SearchInChat, actions.HasChat);
 
-        Add(registry, "composer.send", Strings.Cmd_Send, CommandScope.Composer, "Enter", actions.Send, actions.HasChat);
-        Add(registry, "composer.newline", Strings.Cmd_Newline, CommandScope.Composer, "Shift+Enter", actions.NewLine, actions.HasChat);
-        Add(registry, "composer.voice", Strings.Cmd_Voice, CommandScope.Composer, "Ctrl+Shift+V", actions.Voice, actions.HasChat);
+        Add(registry, "composer.send", Strings.Cmd_Send, CommandScope.Composer, "Enter", actions.Composer.Send, actions.HasChat);
+        Add(registry, "composer.sendSilent", Strings.Cmd_SendSilent, CommandScope.Composer, "Ctrl+Enter", actions.Composer.SendSilent, actions.HasChat);
+        Add(registry, "composer.sendScheduled", Strings.Cmd_SendScheduled, CommandScope.Composer, "Ctrl+Shift+Enter", actions.Composer.SendScheduled, actions.HasChat);
+        Add(registry, "composer.newline", Strings.Cmd_Newline, CommandScope.Composer, "Shift+Enter", actions.Composer.NewLine, actions.HasChat);
+        Add(registry, "composer.voice", Strings.Cmd_Voice, CommandScope.Composer, "Ctrl+Shift+V", actions.Composer.Voice, actions.HasChat);
 
         return registry;
     }

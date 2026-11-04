@@ -98,7 +98,15 @@ public sealed class TelegramService : IDisposable
         {
             var chat = await _client.ExecuteAsync(new TdApi.GetChat { ChatId = id });
             var (kind, text) = PreviewOf(chat);
-            rows.Add(new ChatRow(id, chat.Title, kind, text, chat.UnreadCount));
+            rows.Add(new ChatRow(
+                id,
+                chat.Title,
+                kind,
+                text,
+                chat.UnreadCount,
+                chat.NotificationSettings.MuteFor > 0 || chat.DefaultDisableNotification,
+                chat.Positions.Any(position => position.IsPinned),
+                chat.ChatLists.Any(list => list is TdApi.ChatList.ChatListArchive)));
         }
 
         return rows;
@@ -127,9 +135,26 @@ public sealed class TelegramService : IDisposable
         return rows;
     }
 
-    public async Task SendTextAsync(long chatId, string text, long replyToMessageId = 0)
+    public async Task SendTextAsync(long chatId, string text, long replyToMessageId = 0, SendOptions? options = null)
     {
         RequireClient();
+
+        options ??= SendOptions.Normal;
+
+        TdApi.MessageSchedulingState? scheduling = null;
+
+        if (options.SendAt is { } at)
+        {
+            scheduling = new TdApi.MessageSchedulingState.MessageSchedulingStateSendAtDate
+            {
+                SendDate = (int)at.ToUnixTimeSeconds(),
+                RepeatPeriod = 0
+            };
+        }
+        else if (options.WhenOnline)
+        {
+            scheduling = new TdApi.MessageSchedulingState.MessageSchedulingStateSendWhenOnline();
+        }
 
         await _client!.ExecuteAsync(new TdApi.SendMessage
         {
@@ -144,7 +169,11 @@ public sealed class TelegramService : IDisposable
                     ChecklistTaskId = 0,
                     PollOptionId = string.Empty
                 },
-            Options = null,
+            Options = new TdApi.MessageSendOptions
+            {
+                DisableNotification = options.Silent,
+                SchedulingState = scheduling
+            },
             ReplyMarkup = null,
             InputMessageContent = new TdApi.InputMessageContent.InputMessageText
             {
@@ -268,6 +297,129 @@ public sealed class TelegramService : IDisposable
         var me = await _client!.ExecuteAsync(new TdApi.GetMe());
         var name = $"{me.FirstName} {me.LastName}".Trim();
         return string.IsNullOrEmpty(name) ? me.Usernames?.ActiveUsernames.FirstOrDefault() ?? string.Empty : name;
+    }
+
+    public async Task<IReadOnlyList<MessageRow>> LoadScheduledAsync(long chatId)
+    {
+        RequireClient();
+
+        var scheduled = await _client!.ExecuteAsync(new TdApi.GetChatScheduledMessages { ChatId = chatId });
+        var rows = new List<MessageRow>(scheduled.Messages_.Length);
+
+        foreach (var message in scheduled.Messages_)
+        {
+            rows.Add(await ToRowAsync(message));
+        }
+
+        return rows;
+    }
+
+    public async Task<IReadOnlyList<MessageRow>> SearchInChatAsync(long chatId, string query, int limit = 40)
+    {
+        RequireClient();
+
+        var found = await _client!.ExecuteAsync(new TdApi.SearchChatMessages
+        {
+            ChatId = chatId,
+            TopicId = null,
+            Query = query,
+            SenderId = null,
+            FromMessageId = 0,
+            Offset = 0,
+            Limit = limit,
+            Filter = null
+        });
+
+        var rows = new List<MessageRow>(found.Messages.Length);
+
+        foreach (var message in found.Messages)
+        {
+            rows.Add(await ToRowAsync(message));
+        }
+
+        return rows;
+    }
+
+    public async Task<MessageRow?> GetPinnedAsync(long chatId)
+    {
+        RequireClient();
+
+        try
+        {
+            var pinned = await _client!.ExecuteAsync(new TdApi.GetChatPinnedMessage { ChatId = chatId });
+            return await ToRowAsync(pinned);
+        }
+        catch (TdException)
+        {
+            return null;
+        }
+    }
+
+    public async Task SetMutedAsync(long chatId, bool muted)
+    {
+        RequireClient();
+
+        var chat = await _client!.ExecuteAsync(new TdApi.GetChat { ChatId = chatId });
+        var current = chat.NotificationSettings;
+
+        await _client.ExecuteAsync(new TdApi.SetChatNotificationSettings
+        {
+            ChatId = chatId,
+            NotificationSettings = new TdApi.ChatNotificationSettings
+            {
+                UseDefaultMuteFor = false,
+                MuteFor = muted ? int.MaxValue : 0,
+                UseDefaultSound = current.UseDefaultSound,
+                SoundId = current.SoundId,
+                UseDefaultShowPreview = current.UseDefaultShowPreview,
+                ShowPreview = current.ShowPreview,
+                UseDefaultMuteStories = current.UseDefaultMuteStories,
+                MuteStories = current.MuteStories,
+                UseDefaultStorySound = current.UseDefaultStorySound,
+                StorySoundId = current.StorySoundId,
+                UseDefaultShowStoryPoster = current.UseDefaultShowStoryPoster,
+                ShowStoryPoster = current.ShowStoryPoster
+            }
+        });
+    }
+
+    public async Task SetPinnedAsync(long chatId, bool pinned)
+    {
+        RequireClient();
+
+        await _client!.ExecuteAsync(new TdApi.ToggleChatIsPinned
+        {
+            ChatList = new TdApi.ChatList.ChatListMain(),
+            ChatId = chatId,
+            IsPinned = pinned
+        });
+    }
+
+    public async Task SetArchivedAsync(long chatId, bool archived)
+    {
+        RequireClient();
+
+        await _client!.ExecuteAsync(new TdApi.AddChatToList
+        {
+            ChatId = chatId,
+            ChatList = archived
+                ? new TdApi.ChatList.ChatListArchive()
+                : new TdApi.ChatList.ChatListMain()
+        });
+    }
+
+    public async Task AddReactionAsync(long chatId, long messageId, string emoji)
+    {
+        RequireClient();
+
+        await _client!.ExecuteAsync(new TdApi.AddMessageReaction
+        {
+            ChatId = chatId,
+            MessageId = messageId,
+            ReactionType = new TdApi.ReactionType.ReactionTypeEmoji { Emoji = emoji },
+            IsBig = false,
+            UpdateRecentReactions = true
+        });
     }
 
     public void Dispose()

@@ -51,10 +51,11 @@ menu of the focused area.
 | `Up` / `Down` | move between chats |
 | `Enter` | open chat |
 | `Ctrl+D` | delete chat (asks for confirmation, spoken) |
-| `Ctrl+P` | pin / unpin chat |
+| `Ctrl+Shift+P` | pin / unpin chat |
 | `Ctrl+Shift+M` | mute / unmute |
 | `Ctrl+Shift+A` | archive / unarchive |
 | `Ctrl+Shift+U` | mark as read / unread |
+| `Ctrl+Shift+S` | show scheduled messages |
 | `Ctrl+Shift+L` | leave group or channel |
 | `Ctrl+Shift+F` | switch folder |
 | `Ctrl+Shift+N` | create folder from selection |
@@ -84,6 +85,8 @@ menu of the focused area.
 | `Ctrl+Shift+F` | forward |
 | `Ctrl+P` | pin |
 | `Ctrl+Shift+P` | unpin |
+| `Ctrl+Shift+E` | add reaction |
+| `Ctrl+F` | search in this chat |
 | `Ctrl+C` | copy text |
 | `Ctrl+S` | save attached file |
 | `Shift+F10` | message actions menu |
@@ -95,6 +98,7 @@ menu of the focused area.
 | `Enter` | send |
 | `Shift+Enter` | new line |
 | `Ctrl+Enter` | send without notification |
+| `Ctrl+Shift+Enter` | schedule the message |
 | `Ctrl+Shift+V` | record voice message (push to talk, release sends) |
 | `Ctrl+Shift+Space` | start / stop voice recording |
 | `Escape` | cancel recording, clear reply |
@@ -109,6 +113,19 @@ menu of the focused area.
 | `+` / `-` | faster / slower |
 | `Ctrl+Right` / `Ctrl+Left` | seek forward / back |
 | `Escape` | stop |
+
+## Scheduling
+
+`Ctrl+Shift+Enter` asks for a time and accepts three forms:
+
+| Input | Meaning |
+| --- | --- |
+| `+10m`, `+2h`, `+1d` | relative to now |
+| `18:30` | today at that time, or tomorrow if it has already passed |
+| `2026-12-31 09:00`, `31.12.2026 09:00` | exact local date and time |
+
+Anything the parser cannot read, or a moment in the past, is refused with
+`Error_BadTime` and the message stays in the composer.
 
 ## Voice messages
 

@@ -285,4 +285,76 @@
   <data name="Main_SignedInAs" xml:space="preserve">
     <value>Вы вошли как {0}</value>
   </data>
+  <data name="Cmd_Mute" xml:space="preserve">
+    <value>Звук чата: включить или выключить</value>
+  </data>
+  <data name="Cmd_PinChat" xml:space="preserve">
+    <value>Закрепить или открепить чат</value>
+  </data>
+  <data name="Cmd_ArchiveChat" xml:space="preserve">
+    <value>В архив или из архива</value>
+  </data>
+  <data name="Cmd_Scheduled" xml:space="preserve">
+    <value>Отложенные сообщения</value>
+  </data>
+  <data name="Cmd_React" xml:space="preserve">
+    <value>Поставить реакцию</value>
+  </data>
+  <data name="Cmd_SearchInChat" xml:space="preserve">
+    <value>Поиск в этом чате</value>
+  </data>
+  <data name="Cmd_SendSilent" xml:space="preserve">
+    <value>Отправить без уведомления</value>
+  </data>
+  <data name="Cmd_SendScheduled" xml:space="preserve">
+    <value>Отложенная отправка</value>
+  </data>
+  <data name="Status_Muted" xml:space="preserve">
+    <value>Чат без звука</value>
+  </data>
+  <data name="Status_Unmuted" xml:space="preserve">
+    <value>Звук чата включён</value>
+  </data>
+  <data name="Status_ChatPinned" xml:space="preserve">
+    <value>Чат закреплён</value>
+  </data>
+  <data name="Status_ChatUnpinned" xml:space="preserve">
+    <value>Чат откреплён</value>
+  </data>
+  <data name="Status_Archived" xml:space="preserve">
+    <value>Чат в архиве</value>
+  </data>
+  <data name="Status_Unarchived" xml:space="preserve">
+    <value>Чат возвращён из архива</value>
+  </data>
+  <data name="Status_ReactionSent" xml:space="preserve">
+    <value>Реакция отправлена</value>
+  </data>
+  <data name="Status_ScheduledFor" xml:space="preserve">
+    <value>Отправлю {0}</value>
+  </data>
+  <data name="Status_FoundMessages" xml:space="preserve">
+    <value>{0:plural:{} сообщение найдено|{} сообщения найдено|{} сообщений найдено}</value>
+  </data>
+  <data name="Status_ScheduledMessages" xml:space="preserve">
+    <value>{0:plural:{} отложенное сообщение|{} отложенных сообщения|{} отложенных сообщений}</value>
+  </data>
+  <data name="Prompt_Reaction" xml:space="preserve">
+    <value>Какой эмодзи отправить</value>
+  </data>
+  <data name="Prompt_ScheduleWhen" xml:space="preserve">
+    <value>Когда отправить: +10m, 18:30, 2026-12-31 09:00</value>
+  </data>
+  <data name="Prompt_SearchInChat" xml:space="preserve">
+    <value>Что искать в этом чате</value>
+  </data>
+  <data name="Error_BadTime" xml:space="preserve">
+    <value>Не понял время</value>
+  </data>
+  <data name="Status_NotScheduled" xml:space="preserve">
+    <value>Отложенных сообщений нет</value>
+  </data>
+  <data name="Status_MutedChatSend" xml:space="preserve">
+    <value>Сообщение отправлено без звука</value>
+  </data>
 </root>
