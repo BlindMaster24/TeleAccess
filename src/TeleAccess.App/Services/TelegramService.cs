@@ -1480,6 +1480,42 @@ public sealed class TelegramService : IDisposable
         });
     }
 
+    public async Task<IReadOnlyList<MemberRow>> SearchMembersAsync(long chatId, string query, int limit = 20)
+    {
+        RequireClient();
+        ArgumentException.ThrowIfNullOrWhiteSpace(query);
+
+        var members = await _client!.ExecuteAsync(new TdApi.SearchChatMembers
+        {
+            ChatId = chatId,
+            Query = query,
+            Limit = limit,
+            Filter = null
+        });
+
+        return await Task.WhenAll(members.Members.Select(ToMemberRowAsync));
+    }
+
+    public async Task<MessageRow?> GetRepliedAsync(long chatId, long messageId)
+    {
+        RequireClient();
+
+        try
+        {
+            var replied = await _client!.ExecuteAsync(new TdApi.GetRepliedMessage
+            {
+                ChatId = chatId,
+                MessageId = messageId
+            });
+
+            return replied.Id == 0 ? null : await ToRowAsync(replied);
+        }
+        catch (TdException)
+        {
+            return null;
+        }
+    }
+
     public async Task RenameTopicAsync(long chatId, int topicId, string name)
     {
         RequireClient();

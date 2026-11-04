@@ -27,4 +27,5 @@ public sealed record MessageActions(
     Action PinTopic,
     Action RenameTopic,
     Action ReadTopic,
-    Action Vote);
+    Action Vote,
+    Action ShowReplied);

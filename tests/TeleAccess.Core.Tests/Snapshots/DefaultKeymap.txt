@@ -37,6 +37,7 @@ chatList.archive | ChatList | Ctrl+Shift+A
 chatList.createFolder | ChatList | Ctrl+Alt+F
 chatList.renameFolder | ChatList | none
 chatList.deleteFolder | ChatList | Ctrl+Alt+D
+chatList.findMember | ChatList | none
 chatList.unbanMember | ChatList | none
 chatList.banMember | ChatList | Ctrl+Alt+B
 chatList.inviteLink | ChatList | Ctrl+Shift+I
@@ -57,6 +58,7 @@ messageList.jumpToDate | MessageList | Ctrl+G
 message.select | Message | Space
 messageList.selectAll | MessageList | Ctrl+A
 message.save | Message | Ctrl+S
+message.replied | Message | none
 message.translate | Message | Ctrl+Shift+T
 message.react | Message | Ctrl+Shift+E
 message.searchInChat | Message | Ctrl+F

@@ -906,4 +906,16 @@
   <data name="Status_CannotEdit" xml:space="preserve">
     <value>Это сообщение нельзя изменить</value>
   </data>
+  <data name="Cmd_FindMember" xml:space="preserve">
+    <value>Поиск участников чата</value>
+  </data>
+  <data name="Cmd_ShowReplied" xml:space="preserve">
+    <value>Показать сообщение, на которое отвечают</value>
+  </data>
+  <data name="Prompt_FindMember" xml:space="preserve">
+    <value>Имя участника для поиска</value>
+  </data>
+  <data name="Status_NoReplied" xml:space="preserve">
+    <value>Это сообщение не является ответом</value>
+  </data>
 </root>

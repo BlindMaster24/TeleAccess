@@ -906,4 +906,16 @@
   <data name="Status_CannotEdit" xml:space="preserve">
     <value>This message cannot be edited</value>
   </data>
+  <data name="Cmd_FindMember" xml:space="preserve">
+    <value>Search chat members</value>
+  </data>
+  <data name="Cmd_ShowReplied" xml:space="preserve">
+    <value>Show the replied message</value>
+  </data>
+  <data name="Prompt_FindMember" xml:space="preserve">
+    <value>Member name to search</value>
+  </data>
+  <data name="Status_NoReplied" xml:space="preserve">
+    <value>This message replies to nothing</value>
+  </data>
 </root>

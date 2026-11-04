@@ -287,7 +287,8 @@ public partial class MainWindow : Window
         BanMember: OnBanMember,
         CreateFolder: OnCreateFolder,
         DeleteFolder: OnDeleteFolder,
-        RenameFolder: OnRenameFolder);
+        RenameFolder: OnRenameFolder,
+        FindMember: OnFindMember);
 
     private MessageActions CreateMessageActions() => new(
         ReadAloud: OnReadAloud,
@@ -316,7 +317,8 @@ public partial class MainWindow : Window
         PinTopic: OnPinTopic,
         RenameTopic: OnRenameTopic,
         ReadTopic: OnReadTopic,
-        Vote: OnVote);
+        Vote: OnVote,
+        ShowReplied: OnShowReplied);
 
     private ComposerActions CreateComposerActions() => new(
         Send: OnSend,
@@ -2166,6 +2168,71 @@ public partial class MainWindow : Window
 
             await _telegram.SetMemberBannedAsync(_currentChat.Id, members[index].Id, true);
             Announce(Strings.Status_MemberBanned);
+        }
+        catch (Exception exception)
+        {
+            Announce(Errors.Describe(exception));
+        }
+    }
+
+    private void OnFindMember() => _ = FindMemberAsync();
+
+    private async Task FindMemberAsync()
+    {
+        if (_currentChat is null)
+        {
+            Announce(Strings.Status_NoChat);
+            return;
+        }
+
+        var query = PromptWindow.Ask(this, Strings.Prompt_FindMember);
+
+        if (string.IsNullOrWhiteSpace(query))
+        {
+            return;
+        }
+
+        try
+        {
+            var members = await _telegram.SearchMembersAsync(_currentChat.Id, query.Trim());
+
+            if (members.Count == 0)
+            {
+                Announce(Strings.Status_NoMembers);
+                return;
+            }
+
+            Composer.Text = string.Join(Environment.NewLine, members.Select((member, index) => (index + 1) + ". " + member.Name));
+            Announce(string.Join(". ", members.Select(member => member.Name)));
+        }
+        catch (Exception exception)
+        {
+            Announce(Errors.Describe(exception));
+        }
+    }
+
+    private void OnShowReplied() => _ = ShowRepliedAsync();
+
+    private async Task ShowRepliedAsync()
+    {
+        if (_currentChat is null || _currentMessage is null)
+        {
+            Announce(Strings.Status_NoSelection);
+            return;
+        }
+
+        try
+        {
+            var replied = await _telegram.GetRepliedAsync(_currentChat.Id, _currentMessage.Id);
+
+            if (replied is null)
+            {
+                Announce(Strings.Status_NoReplied);
+                return;
+            }
+
+            ShowTransient([replied]);
+            Announce(replied.Display);
         }
         catch (Exception exception)
         {

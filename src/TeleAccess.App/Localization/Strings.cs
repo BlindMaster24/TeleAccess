@@ -604,4 +604,12 @@ public static class Strings
 
     public static string Status_CannotEdit => Get(nameof(Status_CannotEdit));
 
+    public static string Cmd_FindMember => Get(nameof(Cmd_FindMember));
+
+    public static string Cmd_ShowReplied => Get(nameof(Cmd_ShowReplied));
+
+    public static string Prompt_FindMember => Get(nameof(Prompt_FindMember));
+
+    public static string Status_NoReplied => Get(nameof(Status_NoReplied));
+
 }

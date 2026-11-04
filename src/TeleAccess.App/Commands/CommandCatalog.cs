@@ -65,6 +65,7 @@ public static class CommandCatalog
         Add(registry, "chatList.createFolder", Strings.Cmd_CreateFolder, CommandScope.ChatList, "Ctrl+Alt+F", actions.Chat.CreateFolder);
         Add(registry, "chatList.renameFolder", Strings.Cmd_RenameFolder, CommandScope.ChatList, null, actions.Chat.RenameFolder, actions.HasChat);
         Add(registry, "chatList.deleteFolder", Strings.Cmd_DeleteFolder, CommandScope.ChatList, "Ctrl+Alt+D", actions.Chat.DeleteFolder, actions.HasChat);
+        Add(registry, "chatList.findMember", Strings.Cmd_FindMember, CommandScope.ChatList, null, actions.Chat.FindMember, actions.HasChat);
         Add(registry, "chatList.unbanMember", Strings.Cmd_UnbanMember, CommandScope.ChatList, null, actions.UnbanMember, actions.HasChat);
         Add(registry, "chatList.banMember", Strings.Cmd_BanMember, CommandScope.ChatList, "Ctrl+Alt+B", actions.Chat.BanMember, actions.HasChat);
         Add(registry, "chatList.inviteLink", Strings.Cmd_InviteLink, CommandScope.ChatList, "Ctrl+Shift+I", actions.Chat.InviteLink, actions.HasChat);
@@ -89,6 +90,7 @@ public static class CommandCatalog
         Add(registry, "message.select", Strings.Cmd_Select, CommandScope.Message, "Space", actions.Message.Select, actions.HasMessage);
         Add(registry, "messageList.selectAll", Strings.Cmd_SelectAll, CommandScope.MessageList, "Ctrl+A", actions.Message.SelectAll, actions.HasChat);
         Add(registry, "message.save", Strings.Cmd_Save, CommandScope.Message, "Ctrl+S", actions.Message.Save, actions.HasMessage);
+        Add(registry, "message.replied", Strings.Cmd_ShowReplied, CommandScope.Message, null, actions.Message.ShowReplied, actions.HasMessage);
         Add(registry, "message.translate", Strings.Cmd_Translate, CommandScope.Message, "Ctrl+Shift+T", actions.Message.Translate, actions.HasMessage);
         Add(registry, "message.react", Strings.Cmd_React, CommandScope.Message, "Ctrl+Shift+E", actions.Message.React, actions.HasMessage);
         Add(registry, "message.searchInChat", Strings.Cmd_SearchInChat, CommandScope.Message, "Ctrl+F", actions.Message.SearchInChat, actions.HasChat);
