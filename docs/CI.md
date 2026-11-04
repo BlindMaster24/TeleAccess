@@ -32,6 +32,11 @@ graph and refuses to run. `RestorePackagesWithLockFile` keeps them current, and 
 `RestoreLockedMode`, so a version bump that forgets the lock file fails the build instead
 of drifting silently.
 
+Publish is the one place that restores outside locked mode. Publishing a single file adds
+`Microsoft.NET.ILLink.Tasks` to the graph, and that implicit reference cannot exist in a
+lock file produced by a normal restore. The build and test gate stays locked, so versions
+are pinned where it matters; publish only adds the linker the SDK injects itself.
+
 ## What is deliberately not here
 
 - **Documentation linting.** A broken link does not break the client; markdown is not
