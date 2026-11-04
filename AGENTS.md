@@ -3,8 +3,8 @@
 TeleAccess is a **Telegram client for blind users** on Windows. This is not a general
 messenger with an accessibility option: the interface is designed for people who work
 with a screen reader. Every action must be reachable without a mouse, announced aloud,
-and identical in the menu, the context menu and the keyboard shortcut. Low-vision users
-benefit, sighted users are not the audience.
+and identical in the menu, the context menu and the keyboard shortcut. TeleAccess is only
+for blind users; sighted users are not the audience and features are not designed for them.
 
 ## Stack
 
@@ -120,3 +120,5 @@ tests/TeleAccess.Core.Tests/
 - [docs/HOTKEYS.md](docs/HOTKEYS.md) — command scopes and the default keymap
 - [docs/CODE-STYLE.md](docs/CODE-STYLE.md) — comment policy and style rules
 - [docs/PACKAGING.md](docs/PACKAGING.md) — portable build and installer plan
+- [docs/CI.md](docs/CI.md) — what every workflow proves and how to add one
+- [docs/TESTING.md](docs/TESTING.md) — test stack, what is covered, mutation blocker

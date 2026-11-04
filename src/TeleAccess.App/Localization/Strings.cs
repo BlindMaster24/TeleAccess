@@ -5,12 +5,12 @@ namespace TeleAccess.App.Localization;
 
 public static class Strings
 {
-    private static readonly ResourceManager Manager =
+    private static readonly ResourceManager _manager =
         new("TeleAccess.App.Localization.Strings", typeof(Strings).Assembly);
 
     public static CultureInfo Culture { get; set; } = CultureInfo.CurrentUICulture;
 
-    private static string Get(string key) => Manager.GetString(key, Culture) ?? key;
+    private static string Get(string key) => _manager.GetString(key, Culture) ?? key;
 
     public static string AppTitle => Get(nameof(AppTitle));
 
@@ -167,4 +167,27 @@ public static class Strings
 
     public static string Plural_SelectedMessages => Get(nameof(Plural_SelectedMessages));
     public static string Error_TdlibMissing => Get(nameof(Error_TdlibMissing));
+    public static string Cmd_OpenChat => Get(nameof(Cmd_OpenChat));
+
+    public static string Cmd_Newline => Get(nameof(Cmd_Newline));
+
+    public static string Cmd_MarkUnread => Get(nameof(Cmd_MarkUnread));
+
+    public static string Cmd_DeleteChat => Get(nameof(Cmd_DeleteChat));
+
+    public static string Status_ChatDeleted => Get(nameof(Status_ChatDeleted));
+
+    public static string Status_MarkedUnread => Get(nameof(Status_MarkedUnread));
+
+    public static string Status_MarkedRead => Get(nameof(Status_MarkedRead));
+
+    public static string Prompt_ConfirmDeleteChat => Get(nameof(Prompt_ConfirmDeleteChat));
+
+    public static string Prompt_Yes => Get(nameof(Prompt_Yes));
+
+    public static string Hotkeys_ResetAll => Get(nameof(Hotkeys_ResetAll));
+
+    public static string Error_NotConfigured => Get(nameof(Error_NotConfigured));
+
+    public static string Main_SignedInAs => Get(nameof(Main_SignedInAs));
 }

@@ -11,11 +11,10 @@ icon that has no name.
 ## Who this is for
 
 - Blind users who drive Windows with NVDA, JAWS or Narrator.
-- Low-vision users who prefer keyboard and speech over pixel hunting.
-- Anyone who wants every Telegram action to have a name and a shortcut.
 
-If you see well and want a regular Telegram client, this is not the best choice for you.
-Telegram Desktop or Unigram will serve you better.
+That is the whole audience. TeleAccess is only for blind users. If you see well and want
+a regular Telegram client, Telegram Desktop or Unigram will serve you better; the
+interface here is built around speech and keystrokes, not around pixels.
 
 ## What makes it different
 
@@ -57,6 +56,8 @@ dotnet test
 | [docs/HOTKEYS.md](docs/HOTKEYS.md) | command scopes and the default keymap |
 | [docs/CODE-STYLE.md](docs/CODE-STYLE.md) | comment policy |
 | [docs/PACKAGING.md](docs/PACKAGING.md) | portable build and installer plan |
+| [docs/CI.md](docs/CI.md) | workflows, gates and artifacts |
+| [docs/TESTING.md](docs/TESTING.md) | test stack, coverage and mutation status |
 
 ## License
 

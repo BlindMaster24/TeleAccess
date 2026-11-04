@@ -7,7 +7,7 @@ namespace TeleAccess.App.Services;
 
 public static class Errors
 {
-    private static readonly Regex RetryAfter = new(
+    private static readonly Regex _retryAfter = new(
         @"retry\safter\s(?<seconds>\d+)",
         RegexOptions.IgnoreCase | RegexOptions.ExplicitCapture,
         TimeSpan.FromMilliseconds(200));
@@ -29,7 +29,7 @@ public static class Errors
     {
         var message = exception.Message ?? string.Empty;
 
-        var retry = RetryAfter.Match(message);
+        var retry = _retryAfter.Match(message);
         if (retry.Success)
         {
             return string.Format(Strings.Culture, Strings.Error_FloodWait, retry.Groups["seconds"].Value);

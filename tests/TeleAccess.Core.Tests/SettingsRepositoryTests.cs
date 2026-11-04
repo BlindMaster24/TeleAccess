@@ -1,3 +1,4 @@
+using System.IO;
 using Shouldly;
 using TeleAccess.Core.Data;
 
