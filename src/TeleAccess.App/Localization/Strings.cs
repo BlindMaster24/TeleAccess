@@ -440,4 +440,12 @@ public static class Strings
 
     public static string Error_BadName => Get(nameof(Error_BadName));
 
+    public static string Cmd_Proxy => Get(nameof(Cmd_Proxy));
+
+    public static string Prompt_Proxy => Get(nameof(Prompt_Proxy));
+
+    public static string Status_ProxySet => Get(nameof(Status_ProxySet));
+
+    public static string Error_BadProxy => Get(nameof(Error_BadProxy));
+
 }

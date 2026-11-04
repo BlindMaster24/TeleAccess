@@ -660,4 +660,16 @@
   <data name="Error_BadName" xml:space="preserve">
     <value>Не удалось прочитать имя</value>
   </data>
+  <data name="Cmd_Proxy" xml:space="preserve">
+    <value>Задать SOCKS5 прокси</value>
+  </data>
+  <data name="Prompt_Proxy" xml:space="preserve">
+    <value>Прокси: socks5://user:password@host:port</value>
+  </data>
+  <data name="Status_ProxySet" xml:space="preserve">
+    <value>Прокси включён: {0}:{1}</value>
+  </data>
+  <data name="Error_BadProxy" xml:space="preserve">
+    <value>Не удалось прочитать адрес прокси</value>
+  </data>
 </root>

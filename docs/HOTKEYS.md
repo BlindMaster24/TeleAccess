@@ -47,6 +47,7 @@ menu of the focused area.
 | `Ctrl+Comma` | settings: language, api_id, api_hash, phone, sign out |
 | `Ctrl+Shift+N` | change my name |
 | `Ctrl+Shift+B` | change my bio |
+| `Ctrl+Shift+Y` | set a SOCKS5 proxy |
 | `Ctrl+F1` | training mode: every command announces itself |
 | `Ctrl+N` | new chat |
 | `Ctrl+Shift+K` | open keyboard shortcut editor |

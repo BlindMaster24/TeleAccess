@@ -14,6 +14,7 @@ using TeleAccess.Core.Attachments;
 using TeleAccess.Core.ChatLists;
 using TeleAccess.Core.Data;
 using TeleAccess.Core.Dates;
+using TeleAccess.Core.Network;
 using TeleAccess.Core.Profiles;
 
 namespace TeleAccess.App;
@@ -101,6 +102,7 @@ public partial class MainWindow : Window
         Training: OnTraining,
         SetName: OnSetName,
         SetBio: OnSetBio,
+        Proxy: OnProxy,
         Quit: Close,
         Chat: new ChatActions(
             Open: OnOpenChat,
@@ -1115,6 +1117,34 @@ public partial class MainWindow : Window
         {
             await _telegram.SetBioAsync(answer.Trim());
             Announce(Strings.Status_BioSaved);
+        }
+        catch (Exception exception)
+        {
+            Announce(Errors.Describe(exception));
+        }
+    }
+
+    private void OnProxy() => _ = SetProxyAsync();
+
+    private async Task SetProxyAsync()
+    {
+        var answer = PromptWindow.Ask(this, Strings.Prompt_Proxy, "socks5://user:pass@host:1080");
+
+        if (string.IsNullOrWhiteSpace(answer))
+        {
+            return;
+        }
+
+        if (!ProxyUri.TryParse(answer, out var proxy))
+        {
+            Announce(Strings.Error_BadProxy);
+            return;
+        }
+
+        try
+        {
+            await _telegram.SetProxyAsync(proxy.Host, proxy.Port, proxy.Username, proxy.Password);
+            Announce(string.Format(Strings.Culture, Strings.Status_ProxySet, proxy.Host, proxy.Port));
         }
         catch (Exception exception)
         {

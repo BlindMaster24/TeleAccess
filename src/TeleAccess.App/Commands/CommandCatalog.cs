@@ -36,6 +36,7 @@ public static class CommandCatalog
         Add(registry, "global.secretChat", Strings.Cmd_SecretChat, CommandScope.Global, "Ctrl+Shift+X", actions.SecretChat);
         Add(registry, "global.setName", Strings.Cmd_SetName, CommandScope.Global, "Ctrl+Shift+N", actions.SetName);
         Add(registry, "global.setBio", Strings.Cmd_SetBio, CommandScope.Global, "Ctrl+Shift+B", actions.SetBio);
+        Add(registry, "global.proxy", Strings.Cmd_Proxy, CommandScope.Global, "Ctrl+Shift+Y", actions.Proxy);
         Add(registry, "global.training", Strings.Cmd_Training, CommandScope.Global, "Ctrl+F1", actions.Training);
         Add(registry, "global.settings", Strings.Cmd_Settings, CommandScope.Global, "Ctrl+Comma", actions.Settings);
         Add(registry, "global.refresh", Strings.Cmd_Refresh, CommandScope.Global, "F5", actions.Refresh);

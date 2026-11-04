@@ -22,6 +22,7 @@ public sealed record UiActions(
     Action Training,
     Action SetName,
     Action SetBio,
+    Action Proxy,
     ChatActions Chat,
     MessageActions Message,
     ComposerActions Composer);

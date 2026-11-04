@@ -850,6 +850,27 @@ public sealed class TelegramService : IDisposable
         await _client!.ExecuteAsync(new TdApi.SetBio { Bio = bio });
     }
 
+    public async Task SetProxyAsync(string host, int port, string username, string password)
+    {
+        RequireClient();
+
+        await _client!.ExecuteAsync(new TdApi.AddProxy
+        {
+            Proxy = new TdApi.Proxy
+            {
+                Server = host,
+                Port = port,
+                Type = new TdApi.ProxyType.ProxyTypeSocks5
+                {
+                    Username = username,
+                    Password = password
+                }
+            },
+            Enable = true,
+            Comment = "TeleAccess"
+        });
+    }
+
     public async Task<IReadOnlyList<MessageRow>> LoadScheduledAsync(long chatId)
     {
         RequireClient();
