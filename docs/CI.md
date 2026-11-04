@@ -54,3 +54,5 @@ tracked by the repository and not by memory.
 Add it to `.github/workflows/`, keep it on `windows-latest` when it touches the solution
 (the target framework is Windows-only), and record it in the table above. A workflow that
 is not in this table does not exist.
+
+Dependency review is verified by CI on every pull request.
