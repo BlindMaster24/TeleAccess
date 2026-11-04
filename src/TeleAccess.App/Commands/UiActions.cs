@@ -11,6 +11,7 @@ public sealed record UiActions(
     Action Refresh,
     Action Hotkeys,
     Action Quit,
+    Action SearchGlobal,
     ChatActions Chat,
     MessageActions Message,
     ComposerActions Composer);

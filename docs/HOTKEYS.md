@@ -36,7 +36,8 @@ menu of the focused area.
 | `Alt+2` | focus message list |
 | `Alt+3` | focus composer |
 | `Alt+4` | focus search |
-| `Ctrl+K` | search chats and messages |
+| `Ctrl+K` | search chats |
+| `Ctrl+Shift+F` | search across all chats |
 | `Ctrl+N` | new chat |
 | `Ctrl+Shift+K` | open keyboard shortcut editor |
 | `F1` | read the shortcuts of the current area aloud |
@@ -87,6 +88,7 @@ menu of the focused area.
 | `Ctrl+P` | pin or unpin |
 | `Ctrl+Shift+P` | unpin |
 | `Ctrl+Shift+E` | add reaction |
+| `Ctrl+Shift+T` | translate the message |
 | `Ctrl+F` | search in this chat |
 | `Ctrl+C` | copy text |
 | `Ctrl+S` | save attached file |
@@ -104,7 +106,9 @@ menu of the focused area.
 | `Ctrl+Shift+Space` | start / stop voice recording |
 | `Escape` | cancel recording, clear reply |
 | `Ctrl+Up` | edit the last own message |
-| `Ctrl+O` | attach a file; audio formats become audio messages |
+| `Ctrl+O` | attach a file: images become photos, audio formats become audio messages, everything else a document |
+| `Ctrl+Alt+C` | send a contact |
+| `Ctrl+Alt+L` | send a location as `latitude, longitude` |
 
 ### Voice playback
 

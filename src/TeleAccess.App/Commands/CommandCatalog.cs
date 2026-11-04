@@ -17,6 +17,7 @@ public static class CommandCatalog
         Add(registry, "global.focusComposer", Strings.Cmd_FocusComposer, CommandScope.Global, "Alt+3", actions.FocusComposer);
         Add(registry, "global.focusSearch", Strings.Main_Search, CommandScope.Global, "Alt+4", actions.FocusSearch);
         Add(registry, "global.search", Strings.Cmd_Search, CommandScope.Global, "Ctrl+K", actions.Search);
+        Add(registry, "global.searchGlobal", Strings.Cmd_GlobalSearch, CommandScope.Global, "Ctrl+Shift+F", actions.SearchGlobal);
         Add(registry, "global.refresh", Strings.Cmd_Refresh, CommandScope.Global, "F5", actions.Refresh);
         Add(registry, "global.hotkeys", Strings.Cmd_Hotkeys, CommandScope.Global, "Ctrl+Shift+K", actions.Hotkeys);
         Add(registry, "global.quit", Strings.Cmd_Quit, CommandScope.Global, null, actions.Quit);
@@ -40,6 +41,7 @@ public static class CommandCatalog
         Add(registry, "message.forward", Strings.Cmd_Forward, CommandScope.Message, "Ctrl+Shift+F", actions.Message.Forward, actions.HasMessage);
         Add(registry, "message.pin", Strings.Cmd_Pin, CommandScope.Message, "Ctrl+P", actions.Message.Pin, actions.HasMessage);
         Add(registry, "message.copy", Strings.Cmd_Copy, CommandScope.Message, "Ctrl+C", actions.Message.Copy, actions.HasMessage);
+        Add(registry, "message.translate", Strings.Cmd_Translate, CommandScope.Message, "Ctrl+Shift+T", actions.Message.Translate, actions.HasMessage);
         Add(registry, "message.react", Strings.Cmd_React, CommandScope.Message, "Ctrl+Shift+E", actions.Message.React, actions.HasMessage);
         Add(registry, "message.searchInChat", Strings.Cmd_SearchInChat, CommandScope.Message, "Ctrl+F", actions.Message.SearchInChat, actions.HasChat);
 
@@ -47,6 +49,8 @@ public static class CommandCatalog
         Add(registry, "composer.sendSilent", Strings.Cmd_SendSilent, CommandScope.Composer, "Ctrl+Enter", actions.Composer.SendSilent, actions.HasChat);
         Add(registry, "composer.sendScheduled", Strings.Cmd_SendScheduled, CommandScope.Composer, "Ctrl+Shift+Enter", actions.Composer.SendScheduled, actions.HasChat);
         Add(registry, "composer.attach", Strings.Cmd_Attach, CommandScope.Composer, "Ctrl+O", actions.Composer.Attach, actions.HasChat);
+        Add(registry, "composer.contact", Strings.Cmd_SendContact, CommandScope.Composer, "Ctrl+Alt+C", actions.Composer.SendContact, actions.HasChat);
+        Add(registry, "composer.location", Strings.Cmd_SendLocation, CommandScope.Composer, "Ctrl+Alt+L", actions.Composer.SendLocation, actions.HasChat);
         Add(registry, "composer.newline", Strings.Cmd_Newline, CommandScope.Composer, "Shift+Enter", actions.Composer.NewLine, actions.HasChat);
         Add(registry, "composer.voice", Strings.Cmd_Voice, CommandScope.Composer, "Ctrl+Shift+V", actions.Composer.Voice, actions.HasChat);
 

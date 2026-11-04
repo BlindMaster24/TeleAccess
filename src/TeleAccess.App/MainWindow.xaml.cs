@@ -57,6 +57,7 @@ public partial class MainWindow : Window
         _telegram.ChatMessagesChanged += OnChatMessagesChanged;
         _telegram.FoldersChanged += OnFoldersChanged;
 
+        Composer.TextChanged += OnComposerTextChanged;
         LoadSettingsIntoForm();
         _telegram.Start(_settings);
         Announce(Strings.Login_Starting);
@@ -80,6 +81,7 @@ public partial class MainWindow : Window
         Search: OnSearch,
         Refresh: () => _ = RefreshChatsAsync(SearchBox.Text),
         Hotkeys: OnHotkeys,
+        SearchGlobal: OnSearchGlobal,
         Quit: Close,
         Chat: new ChatActions(
             Open: OnOpenChat,
@@ -101,14 +103,17 @@ public partial class MainWindow : Window
             React: OnReact,
             SearchInChat: OnSearchInChat,
             DeleteForMe: OnDeleteForMe,
-            JumpToPinned: OnJumpToPinned),
+            JumpToPinned: OnJumpToPinned,
+            Translate: OnTranslate),
         Composer: new ComposerActions(
             Send: OnSend,
             SendSilent: OnSendSilent,
             SendScheduled: OnSendScheduled,
             Attach: OnAttach,
             NewLine: OnNewLine,
-            Voice: OnVoiceToggle));
+            Voice: OnVoiceToggle,
+            SendContact: OnSendContact,
+            SendLocation: OnSendLocation));
 
     private CommandScope CurrentScope()
     {
@@ -630,6 +635,149 @@ public partial class MainWindow : Window
         MessageList.Focus();
     }
 
+    private DateTimeOffset _lastTyping;
+
+    private void OnComposerTextChanged(object sender, TextChangedEventArgs e)
+    {
+        if (_currentChat is null || DateTimeOffset.UtcNow - _lastTyping < TimeSpan.FromSeconds(4))
+        {
+            return;
+        }
+
+        _lastTyping = DateTimeOffset.UtcNow;
+        _ = _telegram.SendChatActionAsync(_currentChat.Id, typing: true);
+    }
+
+    private void OnSearchGlobal() => _ = SearchGlobalAsync();
+
+    private async Task SearchGlobalAsync()
+    {
+        var query = PromptWindow.Ask(this, Strings.Prompt_GlobalSearch);
+        if (string.IsNullOrWhiteSpace(query))
+        {
+            return;
+        }
+
+        try
+        {
+            var rows = await _telegram.SearchGlobalAsync(query);
+
+            if (rows.Count == 0)
+            {
+                Announce(Strings.Status_SearchEmpty);
+                return;
+            }
+
+            ShowTransient(rows);
+            Announce(PluralFormatter.Format(Strings.Status_FoundMessages, rows.Count, Strings.Culture));
+        }
+        catch (Exception exception)
+        {
+            Announce(Errors.Describe(exception));
+        }
+    }
+
+    private void OnTranslate() => _ = TranslateAsync();
+
+    private async Task TranslateAsync()
+    {
+        if (_currentMessage is null || _currentMessage.Text.Length == 0)
+        {
+            Announce(Strings.Status_NoSelection);
+            return;
+        }
+
+        var language = PromptWindow.Ask(this, Strings.Prompt_TranslateTo, _settings.Language);
+        if (string.IsNullOrWhiteSpace(language))
+        {
+            return;
+        }
+
+        try
+        {
+            var translated = await _telegram.TranslateAsync(_currentMessage.Text, language.Trim());
+            Announce(translated);
+        }
+        catch (Exception exception)
+        {
+            Announce(Errors.Describe(exception));
+        }
+    }
+
+    private void OnSendContact() => _ = SendContactAsync();
+
+    private async Task SendContactAsync()
+    {
+        if (_currentChat is null)
+        {
+            Announce(Strings.Status_NoChat);
+            return;
+        }
+
+        var phone = PromptWindow.Ask(this, Strings.Prompt_ContactPhone);
+        if (string.IsNullOrWhiteSpace(phone))
+        {
+            return;
+        }
+
+        var name = PromptWindow.Ask(this, Strings.Prompt_ContactName);
+        if (string.IsNullOrWhiteSpace(name))
+        {
+            return;
+        }
+
+        try
+        {
+            await _telegram.SendContactAsync(_currentChat.Id, phone.Trim(), name.Trim(), string.Empty, _replyToMessageId);
+            _replyToMessageId = 0;
+            Announce(Strings.Status_ContactSent);
+            await RefreshMessagesAsync(_currentChat);
+        }
+        catch (Exception exception)
+        {
+            Announce(Errors.Describe(exception));
+        }
+    }
+
+    private void OnSendLocation() => _ = SendLocationAsync();
+
+    private async Task SendLocationAsync()
+    {
+        if (_currentChat is null)
+        {
+            Announce(Strings.Status_NoChat);
+            return;
+        }
+
+        var answer = PromptWindow.Ask(this, Strings.Prompt_Location);
+        if (string.IsNullOrWhiteSpace(answer))
+        {
+            return;
+        }
+
+        var parts = answer.Split(',', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries);
+
+        if (parts.Length != 2 ||
+            !double.TryParse(parts[0], NumberStyles.Float, CultureInfo.InvariantCulture, out var latitude) ||
+            !double.TryParse(parts[1], NumberStyles.Float, CultureInfo.InvariantCulture, out var longitude))
+        {
+            Announce(Strings.Error_BadLocation);
+            return;
+        }
+
+        try
+        {
+            await _telegram.SendLocationAsync(_currentChat.Id, latitude, longitude, _replyToMessageId);
+            _replyToMessageId = 0;
+            Announce(Strings.Status_LocationSent);
+            await RefreshMessagesAsync(_currentChat);
+        }
+        catch (Exception exception)
+        {
+            Announce(Errors.Describe(exception));
+        }
+    }
+
     private void OnDeleteForMe() => _ = DeleteForMeAsync();
 
     private async Task DeleteForMeAsync()
@@ -757,34 +905,14 @@ public partial class MainWindow : Window
             Multiselect = false
         };
 
-        if (dialog.ShowDialog(this) != true)
+        if (dialog.ShowDialog(this) != true || !System.IO.File.Exists(dialog.FileName))
         {
-            return;
-        }
-
-        if (!System.IO.File.Exists(dialog.FileName))
-        {
-            Announce(Strings.Error_FileNotFound);
             return;
         }
 
         try
         {
-            var extension = System.IO.Path.GetExtension(dialog.FileName).ToUpperInvariant();
-
-            if (extension is ".MP3" or ".M4A" or ".FLAC" or ".AAC" or ".WAV" or ".OGG" or ".OPUS")
-            {
-                var title = System.IO.Path.GetFileNameWithoutExtension(dialog.FileName);
-                await _telegram.SendAudioAsync(_currentChat.Id, dialog.FileName, 0, title, string.Empty, _replyToMessageId);
-                Announce(Strings.Status_AudioSent);
-            }
-            else
-            {
-                await _telegram.SendDocumentAsync(_currentChat.Id, dialog.FileName, Composer.Text.Trim(), _replyToMessageId);
-                Announce(Strings.Status_Attached);
-            }
-
-            _replyToMessageId = 0;
+            await SendAttachmentAsync(dialog.FileName);
             Composer.Clear();
             await RefreshMessagesAsync(_currentChat);
         }
@@ -792,6 +920,39 @@ public partial class MainWindow : Window
         {
             Announce(Errors.Describe(exception));
         }
+    }
+
+    private async Task SendAttachmentAsync(string path)
+    {
+        var chatId = _currentChat!.Id;
+        var caption = Composer.Text.Trim();
+        var replyTo = _replyToMessageId;
+        var extension = System.IO.Path.GetExtension(path).ToUpperInvariant();
+
+        _replyToMessageId = 0;
+
+        if (extension is ".JPG" or ".JPEG" or ".PNG" or ".BMP" or ".TIF" or ".TIFF")
+        {
+            var frame = System.Windows.Media.Imaging.BitmapDecoder.Create(
+                new Uri(path),
+                System.Windows.Media.Imaging.BitmapCreateOptions.DelayCreation,
+                System.Windows.Media.Imaging.BitmapCacheOption.None).Frames[0];
+
+            await _telegram.SendPhotoAsync(chatId, path, caption, frame.PixelWidth, frame.PixelHeight, replyTo);
+            Announce(Strings.Status_Attached);
+            return;
+        }
+
+        if (extension is ".MP3" or ".M4A" or ".FLAC" or ".AAC" or ".WAV" or ".OGG" or ".OPUS")
+        {
+            var title = System.IO.Path.GetFileNameWithoutExtension(path);
+            await _telegram.SendAudioAsync(chatId, path, 0, title, string.Empty, replyTo);
+            Announce(Strings.Status_AudioSent);
+            return;
+        }
+
+        await _telegram.SendDocumentAsync(chatId, path, caption, replyTo);
+        Announce(Strings.Status_Attached);
     }
 
     private void OnNewLine()

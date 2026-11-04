@@ -462,4 +462,40 @@
   <data name="Status_ListSwitched" xml:space="preserve">
     <value>Список чатов: {0}</value>
   </data>
+  <data name="Cmd_GlobalSearch" xml:space="preserve">
+    <value>Поиск по всем чатам</value>
+  </data>
+  <data name="Prompt_GlobalSearch" xml:space="preserve">
+    <value>Что найти во всех чатах</value>
+  </data>
+  <data name="Cmd_Translate" xml:space="preserve">
+    <value>Перевести сообщение</value>
+  </data>
+  <data name="Prompt_TranslateTo" xml:space="preserve">
+    <value>Код языка для перевода</value>
+  </data>
+  <data name="Cmd_SendContact" xml:space="preserve">
+    <value>Отправить контакт</value>
+  </data>
+  <data name="Prompt_ContactPhone" xml:space="preserve">
+    <value>Номер телефона контакта</value>
+  </data>
+  <data name="Prompt_ContactName" xml:space="preserve">
+    <value>Имя контакта</value>
+  </data>
+  <data name="Status_ContactSent" xml:space="preserve">
+    <value>Контакт отправлен</value>
+  </data>
+  <data name="Cmd_SendLocation" xml:space="preserve">
+    <value>Отправить геопозицию</value>
+  </data>
+  <data name="Prompt_Location" xml:space="preserve">
+    <value>Координаты: широта, долгота</value>
+  </data>
+  <data name="Status_LocationSent" xml:space="preserve">
+    <value>Геопозиция отправлена</value>
+  </data>
+  <data name="Error_BadLocation" xml:space="preserve">
+    <value>Не удалось прочитать координаты</value>
+  </data>
 </root>

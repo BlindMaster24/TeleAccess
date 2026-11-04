@@ -6,4 +6,6 @@ public sealed record ComposerActions(
     Action SendScheduled,
     Action Attach,
     Action NewLine,
-    Action Voice);
+    Action Voice,
+    Action SendContact,
+    Action SendLocation);

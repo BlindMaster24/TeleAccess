@@ -3,6 +3,7 @@ global.focusMessages | Global | Alt+2
 global.focusComposer | Global | Alt+3
 global.focusSearch | Global | Alt+4
 global.search | Global | Ctrl+K
+global.searchGlobal | Global | Ctrl+Shift+F
 global.refresh | Global | F5
 global.hotkeys | Global | Ctrl+Shift+K
 global.quit | Global | none
@@ -23,11 +24,14 @@ message.deleteForMe | Message | Ctrl+Shift+D
 message.forward | Message | Ctrl+Shift+F
 message.pin | Message | Ctrl+P
 message.copy | Message | Ctrl+C
+message.translate | Message | Ctrl+Shift+T
 message.react | Message | Ctrl+Shift+E
 message.searchInChat | Message | Ctrl+F
 composer.send | Composer | Enter
 composer.sendSilent | Composer | Ctrl+Enter
 composer.sendScheduled | Composer | Ctrl+Shift+Enter
 composer.attach | Composer | Ctrl+O
+composer.contact | Composer | Ctrl+Alt+C
+composer.location | Composer | Ctrl+Alt+L
 composer.newline | Composer | Shift+Enter
 composer.voice | Composer | Ctrl+Shift+V

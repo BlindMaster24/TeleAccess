@@ -20,9 +20,10 @@ public class CommandCatalogTests
             Refresh: noop,
             Hotkeys: noop,
             Quit: noop,
+            SearchGlobal: noop,
             Chat: new ChatActions(noop, noop, noop, noop, noop, noop, noop, noop),
-            Message: new MessageActions(noop, noop, noop, noop, noop, noop, noop, noop, noop, noop, noop),
-            Composer: new ComposerActions(noop, noop, noop, noop, noop, noop));
+            Message: new MessageActions(noop, noop, noop, noop, noop, noop, noop, noop, noop, noop, noop, noop),
+            Composer: new ComposerActions(noop, noop, noop, noop, noop, noop, noop, noop));
 
         return CommandCatalog.Create(actions);
     }

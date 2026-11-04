@@ -385,6 +385,125 @@ public sealed class TelegramService : IDisposable
         }, replyToMessageId, options);
     }
 
+    public async Task SendPhotoAsync(
+        long chatId,
+        string path,
+        string caption,
+        int width,
+        int height,
+        long replyToMessageId = 0)
+    {
+        RequireClient();
+
+        await SendAsync(chatId, new TdApi.InputMessageContent.InputMessagePhoto
+        {
+            Photo = new TdApi.InputPhoto
+            {
+                Photo = new TdApi.InputFile.InputFileLocal { Path = path },
+                Thumbnail = null,
+                Width = width,
+                Height = height
+            },
+            Caption = new TdApi.FormattedText { Text = caption, Entities = [] },
+            ShowCaptionAboveMedia = false,
+            SelfDestructType = null,
+            HasSpoiler = false
+        }, replyToMessageId, null);
+    }
+
+    public async Task SendContactAsync(
+        long chatId,
+        string phoneNumber,
+        string firstName,
+        string lastName,
+        long replyToMessageId = 0)
+    {
+        RequireClient();
+
+        await SendAsync(chatId, new TdApi.InputMessageContent.InputMessageContact
+        {
+            Contact = new TdApi.Contact
+            {
+                PhoneNumber = phoneNumber,
+                FirstName = firstName,
+                LastName = lastName,
+                Vcard = string.Empty,
+                UserId = 0
+            }
+        }, replyToMessageId, null);
+    }
+
+    public async Task SendLocationAsync(long chatId, double latitude, double longitude, long replyToMessageId = 0)
+    {
+        RequireClient();
+
+        await SendAsync(chatId, new TdApi.InputMessageContent.InputMessageLocation
+        {
+            Location = new TdApi.Location
+            {
+                Latitude = latitude,
+                Longitude = longitude,
+                HorizontalAccuracy = 0
+            }
+        }, replyToMessageId, null);
+    }
+
+    public async Task SendChatActionAsync(long chatId, bool typing)
+    {
+        RequireClient();
+
+        await _client!.ExecuteAsync(new TdApi.SendChatAction
+        {
+            ChatId = chatId,
+            TopicId = null,
+            BusinessConnectionId = string.Empty,
+            Action = typing
+                ? new TdApi.ChatAction.ChatActionTyping()
+                : new TdApi.ChatAction.ChatActionCancel()
+        });
+    }
+
+    public async Task<string> TranslateAsync(string text, string languageCode)
+    {
+        RequireClient();
+        ArgumentException.ThrowIfNullOrWhiteSpace(languageCode);
+
+        var translated = await _client!.ExecuteAsync(new TdApi.TranslateText
+        {
+            Text = new TdApi.FormattedText { Text = text, Entities = [] },
+            ToLanguageCode = languageCode,
+            Tone = null
+        });
+
+        return translated.Text;
+    }
+
+    public async Task<IReadOnlyList<MessageRow>> SearchGlobalAsync(string query, int limit = 40)
+    {
+        RequireClient();
+
+        var found = await _client!.ExecuteAsync(new TdApi.SearchMessages
+        {
+            ChatList = null,
+            Query = query,
+            Offset = string.Empty,
+            Limit = limit,
+            Filter = null,
+            ChatTypeFilter = null,
+            MinDate = 0,
+            MaxDate = 0
+        });
+
+        var rows = new List<MessageRow>(found.Messages.Length);
+
+        foreach (var message in found.Messages)
+        {
+            rows.Add(await ToRowAsync(message));
+        }
+
+        return rows;
+    }
+
     public async Task<IReadOnlyList<MessageRow>> LoadScheduledAsync(long chatId)
     {
         RequireClient();

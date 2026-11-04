@@ -308,4 +308,28 @@ public static class Strings
 
     public static string Status_ListSwitched => Get(nameof(Status_ListSwitched));
 
+    public static string Cmd_GlobalSearch => Get(nameof(Cmd_GlobalSearch));
+
+    public static string Prompt_GlobalSearch => Get(nameof(Prompt_GlobalSearch));
+
+    public static string Cmd_Translate => Get(nameof(Cmd_Translate));
+
+    public static string Prompt_TranslateTo => Get(nameof(Prompt_TranslateTo));
+
+    public static string Cmd_SendContact => Get(nameof(Cmd_SendContact));
+
+    public static string Prompt_ContactPhone => Get(nameof(Prompt_ContactPhone));
+
+    public static string Prompt_ContactName => Get(nameof(Prompt_ContactName));
+
+    public static string Status_ContactSent => Get(nameof(Status_ContactSent));
+
+    public static string Cmd_SendLocation => Get(nameof(Cmd_SendLocation));
+
+    public static string Prompt_Location => Get(nameof(Prompt_Location));
+
+    public static string Status_LocationSent => Get(nameof(Status_LocationSent));
+
+    public static string Error_BadLocation => Get(nameof(Error_BadLocation));
+
 }

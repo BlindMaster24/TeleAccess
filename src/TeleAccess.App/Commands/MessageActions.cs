@@ -11,4 +11,5 @@ public sealed record MessageActions(
     Action Copy,
     Action React,
     Action SearchInChat,
-    Action JumpToPinned);
+    Action JumpToPinned,
+    Action Translate);

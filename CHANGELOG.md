@@ -23,6 +23,8 @@ All notable changes are recorded here. Format follows
 - OGG/Opus container writer with the OpusHead/OpusTags headers and per-page CRC.
 - Audio files (mp3, m4a, flac, aac, wav, ogg, opus) are sent as audio messages, everything else as documents.
 - Chat lists cycle with `Ctrl+Shift+L`: main, every Telegram folder, archive.
+- Photos (with real dimensions), contacts and locations can be sent; the typing action is reported to the other side.
+- Message translation (`Ctrl+Shift+T`) and search across all chats (`Ctrl+Shift+F`).
 - Pinned message jump (`Ctrl+Shift+P`), delete for me only (`Ctrl+Shift+D`) and pin/unpin toggle.
 - Speech announcements through Prism (`Prismatoid`) behind `ISpeechService`.
 - Localization with English as the neutral resource and Russian as a satellite; error
@@ -33,7 +35,7 @@ All notable changes are recorded here. Format follows
 
 ### Not implemented yet
 
-- Calls.
+- Calls, video, animation, stickers, polls, forums, secret chat UI.
 
 ## [0.1.0] - 2026-11-04
 
