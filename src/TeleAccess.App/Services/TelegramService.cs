@@ -4,6 +4,7 @@ using System.IO;
 using TdLib;
 using TdLib.Bindings;
 using TeleAccess.Core.ChatLists;
+using TeleAccess.Core.Invites;
 
 namespace TeleAccess.App.Services;
 
@@ -920,6 +921,41 @@ public sealed class TelegramService : IDisposable
     {
         RequireClient();
         await _client!.ExecuteAsync(new TdApi.SetChatTitle { ChatId = chatId, Title = title });
+    }
+
+    public async Task<string> CreateInviteLinkAsync(long chatId, int expirationDays)
+    {
+        RequireClient();
+
+        _ = InviteLinkExpiration.TryBuild(expirationDays, DateTimeOffset.Now, out var expiration);
+
+        var link = await _client!.ExecuteAsync(new TdApi.CreateChatInviteLink
+        {
+            ChatId = chatId,
+            Name = string.Empty,
+            ExpirationDate = expiration,
+            MemberLimit = 0,
+            CreatesJoinRequest = false
+        });
+
+        return link.InviteLink;
+    }
+
+    public async Task<IReadOnlyList<string>> GetInviteLinksAsync(long chatId, int limit = 20)
+    {
+        RequireClient();
+
+        var links = await _client!.ExecuteAsync(new TdApi.GetChatInviteLinks
+        {
+            ChatId = chatId,
+            CreatorUserId = 0,
+            IsRevoked = false,
+            OffsetDate = 0,
+            OffsetInviteLink = string.Empty,
+            Limit = limit
+        });
+
+        return links.InviteLinks.Select(link => link.InviteLink).ToArray();
     }
 
     public async Task<IReadOnlyList<MessageRow>> LoadScheduledAsync(long chatId)

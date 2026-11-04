@@ -9,4 +9,5 @@ public sealed record ChatActions(
     Action Archive,
     Action ShowScheduled,
     Action SwitchList,
-    Action Rename);
+    Action Rename,
+    Action InviteLink);

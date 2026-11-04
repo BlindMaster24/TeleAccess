@@ -464,4 +464,10 @@ public static class Strings
 
     public static string Error_BadTitle => Get(nameof(Error_BadTitle));
 
+    public static string Cmd_InviteLink => Get(nameof(Cmd_InviteLink));
+
+    public static string Prompt_InviteDays => Get(nameof(Prompt_InviteDays));
+
+    public static string Error_BadNumber => Get(nameof(Error_BadNumber));
+
 }

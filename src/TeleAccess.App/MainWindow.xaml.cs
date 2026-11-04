@@ -118,7 +118,8 @@ public partial class MainWindow : Window
         Archive: OnArchive,
         ShowScheduled: OnScheduled,
         SwitchList: OnSwitchList,
-        Rename: OnRename);
+        Rename: OnRename,
+        InviteLink: OnInviteLink);
 
     private MessageActions CreateMessageActions() => new(
         ReadAloud: OnReadAloud,
@@ -1398,6 +1399,38 @@ public partial class MainWindow : Window
             await _telegram.SetChatTitleAsync(_currentChat.Id, title);
             Announce(Strings.Status_TitleSaved);
             await RefreshChatsAsync(SearchBox.Text);
+        }
+        catch (Exception exception)
+        {
+            Announce(Errors.Describe(exception));
+        }
+    }
+
+    private void OnInviteLink() => _ = CreateInviteLinkAsync();
+
+    private async Task CreateInviteLinkAsync()
+    {
+        if (_currentChat is null)
+        {
+            Announce(Strings.Status_NoChat);
+            return;
+        }
+
+        var answer = PromptWindow.Ask(this, Strings.Prompt_InviteDays, "7");
+
+        if (!int.TryParse(answer, NumberStyles.Integer, CultureInfo.InvariantCulture, out var days))
+        {
+            Announce(Strings.Error_BadNumber);
+            return;
+        }
+
+        try
+        {
+            var link = await _telegram.CreateInviteLinkAsync(_currentChat.Id, days);
+            var existing = await _telegram.GetInviteLinksAsync(_currentChat.Id);
+
+            Composer.Text = string.Join(Environment.NewLine, existing.Prepend(link).Distinct(StringComparer.Ordinal));
+            Announce(link);
         }
         catch (Exception exception)
         {
