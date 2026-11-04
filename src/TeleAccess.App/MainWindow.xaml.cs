@@ -14,6 +14,7 @@ using TeleAccess.Core.Attachments;
 using TeleAccess.Core.ChatLists;
 using TeleAccess.Core.Data;
 using TeleAccess.Core.Dates;
+using TeleAccess.Core.Profiles;
 
 namespace TeleAccess.App;
 
@@ -98,6 +99,8 @@ public partial class MainWindow : Window
         Settings: OnSettings,
         SecretChat: OnSecretChat,
         Training: OnTraining,
+        SetName: OnSetName,
+        SetBio: OnSetBio,
         Quit: Close,
         Chat: new ChatActions(
             Open: OnOpenChat,
@@ -1067,6 +1070,56 @@ public partial class MainWindow : Window
             ChatList.Focus();
             Announce(Strings.Status_Window);
         }));
+    }
+
+    private void OnSetName() => _ = SetNameAsync();
+
+    private async Task SetNameAsync()
+    {
+        var answer = PromptWindow.Ask(this, Strings.Prompt_FullName);
+
+        if (string.IsNullOrWhiteSpace(answer))
+        {
+            return;
+        }
+
+        if (!NameSplitter.TrySplit(answer, out var firstName, out var lastName))
+        {
+            Announce(Strings.Error_BadName);
+            return;
+        }
+
+        try
+        {
+            await _telegram.SetNameAsync(firstName, lastName);
+            Announce(Strings.Status_NameSaved);
+        }
+        catch (Exception exception)
+        {
+            Announce(Errors.Describe(exception));
+        }
+    }
+
+    private void OnSetBio() => _ = SetBioAsync();
+
+    private async Task SetBioAsync()
+    {
+        var answer = PromptWindow.Ask(this, Strings.Prompt_Bio);
+
+        if (answer is null)
+        {
+            return;
+        }
+
+        try
+        {
+            await _telegram.SetBioAsync(answer.Trim());
+            Announce(Strings.Status_BioSaved);
+        }
+        catch (Exception exception)
+        {
+            Announce(Errors.Describe(exception));
+        }
     }
 
     private void OnTraining()

@@ -426,4 +426,18 @@ public static class Strings
 
     public static string Error_BadDate => Get(nameof(Error_BadDate));
 
+    public static string Cmd_SetName => Get(nameof(Cmd_SetName));
+
+    public static string Cmd_SetBio => Get(nameof(Cmd_SetBio));
+
+    public static string Prompt_FullName => Get(nameof(Prompt_FullName));
+
+    public static string Prompt_Bio => Get(nameof(Prompt_Bio));
+
+    public static string Status_NameSaved => Get(nameof(Status_NameSaved));
+
+    public static string Status_BioSaved => Get(nameof(Status_BioSaved));
+
+    public static string Error_BadName => Get(nameof(Error_BadName));
+
 }

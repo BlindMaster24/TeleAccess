@@ -639,4 +639,25 @@
   <data name="Error_BadDate" xml:space="preserve">
     <value>Не удалось прочитать дату</value>
   </data>
+  <data name="Cmd_SetName" xml:space="preserve">
+    <value>Изменить имя</value>
+  </data>
+  <data name="Cmd_SetBio" xml:space="preserve">
+    <value>Изменить описание</value>
+  </data>
+  <data name="Prompt_FullName" xml:space="preserve">
+    <value>Имя и фамилия</value>
+  </data>
+  <data name="Prompt_Bio" xml:space="preserve">
+    <value>Описание профиля</value>
+  </data>
+  <data name="Status_NameSaved" xml:space="preserve">
+    <value>Имя сохранено</value>
+  </data>
+  <data name="Status_BioSaved" xml:space="preserve">
+    <value>Описание сохранено</value>
+  </data>
+  <data name="Error_BadName" xml:space="preserve">
+    <value>Не удалось прочитать имя</value>
+  </data>
 </root>

@@ -10,6 +10,8 @@ global.chatTopics | Global | Ctrl+T
 global.chatJoin | Global | Ctrl+J
 global.contacts | Global | Ctrl+Shift+C
 global.secretChat | Global | Ctrl+Shift+X
+global.setName | Global | Ctrl+Shift+N
+global.setBio | Global | Ctrl+Shift+B
 global.training | Global | Ctrl+F1
 global.settings | Global | Ctrl+Comma
 global.refresh | Global | F5

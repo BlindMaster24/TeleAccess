@@ -20,6 +20,8 @@ public sealed record UiActions(
     Action Settings,
     Action SecretChat,
     Action Training,
+    Action SetName,
+    Action SetBio,
     ChatActions Chat,
     MessageActions Message,
     ComposerActions Composer);

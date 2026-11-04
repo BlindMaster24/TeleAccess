@@ -838,6 +838,18 @@ public sealed class TelegramService : IDisposable
         return message.Id == 0 ? null : await ToRowAsync(message);
     }
 
+    public async Task SetNameAsync(string firstName, string lastName)
+    {
+        RequireClient();
+        await _client!.ExecuteAsync(new TdApi.SetName { FirstName = firstName, LastName = lastName });
+    }
+
+    public async Task SetBioAsync(string bio)
+    {
+        RequireClient();
+        await _client!.ExecuteAsync(new TdApi.SetBio { Bio = bio });
+    }
+
     public async Task<IReadOnlyList<MessageRow>> LoadScheduledAsync(long chatId)
     {
         RequireClient();

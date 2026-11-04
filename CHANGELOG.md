@@ -29,6 +29,7 @@ All notable changes are recorded here. Format follows
 - Chat information (type, member count, description), member lists, forum topic lists, contact lists, secret chat creation, joining chats.
 - Incoming voice notes and audio play through NAudio (`MediaFoundationReader`), `Enter` plays, `Escape` stops.
 - Attachments download with `Ctrl+S`, history pages back with `Ctrl+Up`, new messages elsewhere announce with an earcon, and `Ctrl+F1` turns on training mode.
+- Profile editing: name and bio through `setName` and `setBio`, with the name split covered by six tests.
 - Jump to date with `Ctrl+G` through `getChatMessageByDate`; the query parser is pure and tested.
 - Multi-select: `Space` toggles, `Ctrl+A` selects all loaded, delete and forward act on the selection.
 - Settings window: language, api_id, api_hash, phone, sign out (`Ctrl+Comma`).
