@@ -621,4 +621,10 @@
   <data name="Status_Playing" xml:space="preserve">
     <value>Играю</value>
   </data>
+  <data name="Cmd_Select" xml:space="preserve">
+    <value>Выбрать или снять выбор</value>
+  </data>
+  <data name="Cmd_SelectAll" xml:space="preserve">
+    <value>Выбрать все загруженные</value>
+  </data>
 </root>

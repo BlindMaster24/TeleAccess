@@ -118,7 +118,9 @@ public partial class MainWindow : Window
             JumpToPinned: OnJumpToPinned,
             Translate: OnTranslate,
             Save: OnSaveFile,
-            Older: OnOlder),
+            Older: OnOlder,
+            Select: OnSelect,
+            SelectAll: OnSelectAll),
         Composer: new ComposerActions(
             Send: OnSend,
             SendSilent: OnSendSilent,
@@ -370,6 +372,7 @@ public partial class MainWindow : Window
         _currentChat = chat;
         _currentMessage = null;
         _replyToMessageId = 0;
+        _selected.Clear();
         _showingTransient = false;
         _openChatTimer.Stop();
         _openChatTimer.Start();
@@ -1044,6 +1047,7 @@ public partial class MainWindow : Window
     }
 
     private bool _training;
+    private readonly HashSet<long> _selected = [];
 
     private void OnTraining()
     {
@@ -1142,6 +1146,39 @@ public partial class MainWindow : Window
         {
             Announce(Errors.Describe(exception));
         }
+    }
+
+    private void OnSelect()
+    {
+        if (_currentMessage is null)
+        {
+            Announce(Strings.Status_NoSelection);
+            return;
+        }
+
+        if (!_selected.Add(_currentMessage.Id))
+        {
+            _selected.Remove(_currentMessage.Id);
+        }
+
+        Announce(PluralFormatter.Format(Strings.Plural_SelectedMessages, _selected.Count, Strings.Culture));
+    }
+
+    private void OnSelectAll()
+    {
+        if (MessageList.ItemsSource is not IReadOnlyList<MessageRow> loaded)
+        {
+            return;
+        }
+
+        _selected.Clear();
+
+        foreach (var row in loaded)
+        {
+            _selected.Add(row.Id);
+        }
+
+        Announce(PluralFormatter.Format(Strings.Plural_SelectedMessages, _selected.Count, Strings.Culture));
     }
 
     private void OnDeleteForMe() => _ = DeleteForMeAsync();
@@ -1440,7 +1477,9 @@ public partial class MainWindow : Window
 
         try
         {
-            await _telegram.DeleteMessagesAsync(_currentChat.Id, [_currentMessage.Id], _currentMessage.IsOutgoing);
+            var ids = _selected.Count > 0 ? _selected.ToArray() : new[] { _currentMessage.Id };
+            _selected.Clear();
+            await _telegram.DeleteMessagesAsync(_currentChat.Id, ids, _currentMessage.IsOutgoing);
             Announce(_currentMessage.IsOutgoing ? Strings.Status_DeletedForAll : Strings.Status_DeletedLocal);
             await RefreshMessagesAsync(_currentChat);
         }
@@ -1504,7 +1543,14 @@ public partial class MainWindow : Window
                 return;
             }
 
-            await _telegram.ForwardMessageAsync(_currentChat.Id, destination.Id, _currentMessage.Id);
+            var ids = _selected.Count > 0 ? _selected.ToArray() : new[] { _currentMessage.Id };
+            _selected.Clear();
+
+            foreach (var id in ids)
+            {
+                await _telegram.ForwardMessageAsync(_currentChat.Id, destination.Id, id);
+            }
+
             Announce(Strings.Status_Forwarded);
         }
         catch (Exception exception)

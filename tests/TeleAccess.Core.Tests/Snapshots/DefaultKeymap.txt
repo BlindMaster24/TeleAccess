@@ -32,6 +32,8 @@ message.deleteForMe | Message | Ctrl+Shift+D
 message.forward | Message | Ctrl+Shift+F
 message.pin | Message | Ctrl+P
 message.copy | Message | Ctrl+C
+message.select | Message | Space
+messageList.selectAll | MessageList | Ctrl+A
 message.save | Message | Ctrl+S
 message.translate | Message | Ctrl+Shift+T
 message.react | Message | Ctrl+Shift+E

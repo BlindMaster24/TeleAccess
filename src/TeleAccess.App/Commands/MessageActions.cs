@@ -14,4 +14,6 @@ public sealed record MessageActions(
     Action JumpToPinned,
     Action Translate,
     Action Save,
-    Action Older);
+    Action Older,
+    Action Select,
+    Action SelectAll);

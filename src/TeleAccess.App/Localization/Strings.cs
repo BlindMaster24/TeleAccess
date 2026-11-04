@@ -414,4 +414,8 @@ public static class Strings
 
     public static string Status_Playing => Get(nameof(Status_Playing));
 
+    public static string Cmd_Select => Get(nameof(Cmd_Select));
+
+    public static string Cmd_SelectAll => Get(nameof(Cmd_SelectAll));
+
 }

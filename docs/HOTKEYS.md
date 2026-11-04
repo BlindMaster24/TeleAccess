@@ -79,7 +79,7 @@ menu of the focused area.
 | `Home` / `End` | first / last message |
 | `Ctrl+G` | jump to date |
 | `Ctrl+Shift+P` | jump to the pinned message |
-| `Space` | toggle selection |
+| `Space` | select or unselect the current message |
 | `Ctrl+A` | select all loaded messages |
 | `Ctrl+Up` | load the previous page of history |
 

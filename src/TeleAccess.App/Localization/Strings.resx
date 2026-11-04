@@ -621,4 +621,10 @@
   <data name="Status_Playing" xml:space="preserve">
     <value>Playing</value>
   </data>
+  <data name="Cmd_Select" xml:space="preserve">
+    <value>Select or unselect message</value>
+  </data>
+  <data name="Cmd_SelectAll" xml:space="preserve">
+    <value>Select all loaded messages</value>
+  </data>
 </root>
