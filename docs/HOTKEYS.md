@@ -116,7 +116,16 @@ menu of the focused area.
 
 ## Scheduling
 
-`Ctrl+Shift+Enter` asks for a time and accepts three forms:
+`Ctrl+Shift+Enter` opens the schedule window. It offers three ways to pick a moment, and
+all of them are keyboard-reachable:
+
+| Way | How |
+| --- | --- |
+| Quick choices | a list of five presets: in 10 minutes, in an hour, in three hours, tomorrow at 9:00, Monday at 9:00. `Up`/`Down` to choose, `Enter` to schedule |
+| Calendar and time | `Tab` to the date picker, type or pick a date, then type the time as `HH:mm` and press `Enter` |
+| Typed value | type into the manual box; it wins over the calendar when filled |
+
+Typed values accept:
 
 | Input | Meaning |
 | --- | --- |
@@ -124,8 +133,8 @@ menu of the focused area.
 | `18:30` | today at that time, or tomorrow if it has already passed |
 | `2026-12-31 09:00`, `31.12.2026 09:00` | exact local date and time |
 
-Anything the parser cannot read, or a moment in the past, is refused with
-`Error_BadTime` and the message stays in the composer.
+Anything the parser cannot read, or a moment in the past, is refused with a spoken
+message and the value stays where it was.
 
 ## Voice messages
 

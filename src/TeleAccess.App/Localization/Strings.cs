@@ -238,4 +238,30 @@ public static class Strings
 
     public static string Status_MutedChatSend => Get(nameof(Status_MutedChatSend));
 
+    public static string Schedule_Title => Get(nameof(Schedule_Title));
+
+    public static string Schedule_Presets => Get(nameof(Schedule_Presets));
+
+    public static string Schedule_Preset10Minutes => Get(nameof(Schedule_Preset10Minutes));
+
+    public static string Schedule_PresetHour => Get(nameof(Schedule_PresetHour));
+
+    public static string Schedule_PresetThreeHours => Get(nameof(Schedule_PresetThreeHours));
+
+    public static string Schedule_PresetTomorrow => Get(nameof(Schedule_PresetTomorrow));
+
+    public static string Schedule_PresetMonday => Get(nameof(Schedule_PresetMonday));
+
+    public static string Schedule_Manual => Get(nameof(Schedule_Manual));
+
+    public static string Schedule_ManualHint => Get(nameof(Schedule_ManualHint));
+
+    public static string Schedule_Date => Get(nameof(Schedule_Date));
+
+    public static string Schedule_Time => Get(nameof(Schedule_Time));
+
+    public static string Schedule_Send => Get(nameof(Schedule_Send));
+
+    public static string Schedule_Invalid => Get(nameof(Schedule_Invalid));
+
 }

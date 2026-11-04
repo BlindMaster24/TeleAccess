@@ -357,4 +357,43 @@
   <data name="Status_MutedChatSend" xml:space="preserve">
     <value>Message sent silently</value>
   </data>
+  <data name="Schedule_Title" xml:space="preserve">
+    <value>Schedule message</value>
+  </data>
+  <data name="Schedule_Presets" xml:space="preserve">
+    <value>Quick choices</value>
+  </data>
+  <data name="Schedule_Preset10Minutes" xml:space="preserve">
+    <value>In 10 minutes</value>
+  </data>
+  <data name="Schedule_PresetHour" xml:space="preserve">
+    <value>In an hour</value>
+  </data>
+  <data name="Schedule_PresetThreeHours" xml:space="preserve">
+    <value>In three hours</value>
+  </data>
+  <data name="Schedule_PresetTomorrow" xml:space="preserve">
+    <value>Tomorrow at 9:00</value>
+  </data>
+  <data name="Schedule_PresetMonday" xml:space="preserve">
+    <value>Monday at 9:00</value>
+  </data>
+  <data name="Schedule_Manual" xml:space="preserve">
+    <value>Or type the time</value>
+  </data>
+  <data name="Schedule_ManualHint" xml:space="preserve">
+    <value>Type +10m, 18:30, 2026-12-31 09:00 or 31.12.2026 09:00</value>
+  </data>
+  <data name="Schedule_Date" xml:space="preserve">
+    <value>Date</value>
+  </data>
+  <data name="Schedule_Time" xml:space="preserve">
+    <value>Time</value>
+  </data>
+  <data name="Schedule_Send" xml:space="preserve">
+    <value>Schedule</value>
+  </data>
+  <data name="Schedule_Invalid" xml:space="preserve">
+    <value>Choose a quick option first</value>
+  </data>
 </root>

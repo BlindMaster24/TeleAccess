@@ -357,4 +357,43 @@
   <data name="Status_MutedChatSend" xml:space="preserve">
     <value>Сообщение отправлено без звука</value>
   </data>
+  <data name="Schedule_Title" xml:space="preserve">
+    <value>Отложенная отправка</value>
+  </data>
+  <data name="Schedule_Presets" xml:space="preserve">
+    <value>Быстрый выбор</value>
+  </data>
+  <data name="Schedule_Preset10Minutes" xml:space="preserve">
+    <value>Через 10 минут</value>
+  </data>
+  <data name="Schedule_PresetHour" xml:space="preserve">
+    <value>Через час</value>
+  </data>
+  <data name="Schedule_PresetThreeHours" xml:space="preserve">
+    <value>Через три часа</value>
+  </data>
+  <data name="Schedule_PresetTomorrow" xml:space="preserve">
+    <value>Завтра в 9:00</value>
+  </data>
+  <data name="Schedule_PresetMonday" xml:space="preserve">
+    <value>В понедельник в 9:00</value>
+  </data>
+  <data name="Schedule_Manual" xml:space="preserve">
+    <value>Или введите время</value>
+  </data>
+  <data name="Schedule_ManualHint" xml:space="preserve">
+    <value>Можно так: +10m, 18:30, 2026-12-31 09:00 или 31.12.2026 09:00</value>
+  </data>
+  <data name="Schedule_Date" xml:space="preserve">
+    <value>Дата</value>
+  </data>
+  <data name="Schedule_Time" xml:space="preserve">
+    <value>Время</value>
+  </data>
+  <data name="Schedule_Send" xml:space="preserve">
+    <value>Отложить</value>
+  </data>
+  <data name="Schedule_Invalid" xml:space="preserve">
+    <value>Сначала выберите вариант</value>
+  </data>
 </root>

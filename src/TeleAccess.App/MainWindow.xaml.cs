@@ -10,7 +10,6 @@ using TeleAccess.App.Services;
 using TeleAccess.App.Windows;
 using TeleAccess.Core;
 using TeleAccess.Core.Data;
-using TeleAccess.Core.Scheduling;
 
 namespace TeleAccess.App;
 
@@ -366,19 +365,13 @@ public partial class MainWindow : Window
 
     private void OnSendScheduled()
     {
-        var answer = PromptWindow.Ask(this, Strings.Prompt_ScheduleWhen);
-        if (string.IsNullOrWhiteSpace(answer))
+        var at = ScheduleWindow.Ask(this);
+        if (at is null)
         {
             return;
         }
 
-        if (!ScheduleParser.TryParse(answer, DateTimeOffset.Now, out var at))
-        {
-            Announce(Strings.Error_BadTime);
-            return;
-        }
-
-        SendPending(new SendOptions(SendAt: at), at);
+        SendPending(new SendOptions(SendAt: at.Value), at.Value);
     }
 
     private void SendPending(SendOptions options, DateTimeOffset? announceAt = null)
