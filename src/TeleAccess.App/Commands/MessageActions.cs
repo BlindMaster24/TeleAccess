@@ -28,4 +28,7 @@ public sealed record MessageActions(
     Action RenameTopic,
     Action ReadTopic,
     Action Vote,
-    Action ShowReplied);
+    Action ShowReplied,
+    Action TopicLink,
+    Action MessageLink,
+    Action StopPoll);

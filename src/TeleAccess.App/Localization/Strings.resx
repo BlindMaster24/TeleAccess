@@ -918,4 +918,16 @@
   <data name="Status_NoReplied" xml:space="preserve">
     <value>This message replies to nothing</value>
   </data>
+  <data name="Cmd_TopicLink" xml:space="preserve">
+    <value>Copy the topic link</value>
+  </data>
+  <data name="Cmd_MessageLink" xml:space="preserve">
+    <value>Copy the message link</value>
+  </data>
+  <data name="Cmd_StopPoll" xml:space="preserve">
+    <value>Stop the poll</value>
+  </data>
+  <data name="Status_PollStopped" xml:space="preserve">
+    <value>Poll stopped</value>
+  </data>
 </root>

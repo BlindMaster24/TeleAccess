@@ -612,4 +612,12 @@ public static class Strings
 
     public static string Status_NoReplied => Get(nameof(Status_NoReplied));
 
+    public static string Cmd_TopicLink => Get(nameof(Cmd_TopicLink));
+
+    public static string Cmd_MessageLink => Get(nameof(Cmd_MessageLink));
+
+    public static string Cmd_StopPoll => Get(nameof(Cmd_StopPoll));
+
+    public static string Status_PollStopped => Get(nameof(Status_PollStopped));
+
 }

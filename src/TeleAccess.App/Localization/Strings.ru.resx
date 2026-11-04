@@ -918,4 +918,16 @@
   <data name="Status_NoReplied" xml:space="preserve">
     <value>Это сообщение не является ответом</value>
   </data>
+  <data name="Cmd_TopicLink" xml:space="preserve">
+    <value>Скопировать ссылку на тему</value>
+  </data>
+  <data name="Cmd_MessageLink" xml:space="preserve">
+    <value>Скопировать ссылку на сообщение</value>
+  </data>
+  <data name="Cmd_StopPoll" xml:space="preserve">
+    <value>Остановить опрос</value>
+  </data>
+  <data name="Status_PollStopped" xml:space="preserve">
+    <value>Опрос остановлен</value>
+  </data>
 </root>

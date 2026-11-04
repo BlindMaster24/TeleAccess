@@ -318,7 +318,10 @@ public partial class MainWindow : Window
         RenameTopic: OnRenameTopic,
         ReadTopic: OnReadTopic,
         Vote: OnVote,
-        ShowReplied: OnShowReplied);
+        ShowReplied: OnShowReplied,
+        TopicLink: OnTopicLink,
+        MessageLink: OnMessageLink,
+        StopPoll: OnStopPoll);
 
     private ComposerActions CreateComposerActions() => new(
         Send: OnSend,
@@ -2168,6 +2171,74 @@ public partial class MainWindow : Window
 
             await _telegram.SetMemberBannedAsync(_currentChat.Id, members[index].Id, true);
             Announce(Strings.Status_MemberBanned);
+        }
+        catch (Exception exception)
+        {
+            Announce(Errors.Describe(exception));
+        }
+    }
+
+    private void OnTopicLink() => _ = ShowTopicLinkAsync();
+
+    private async Task ShowTopicLinkAsync()
+    {
+        var topic = SelectedTopic();
+
+        if (_currentChat is null || topic is null)
+        {
+            Announce(Strings.Status_NoSelection);
+            return;
+        }
+
+        try
+        {
+            var link = await _telegram.GetTopicLinkAsync(_currentChat.Id, topic.Id);
+            Composer.Text = link;
+            Announce(link);
+        }
+        catch (Exception exception)
+        {
+            Announce(Errors.Describe(exception));
+        }
+    }
+
+    private void OnMessageLink() => _ = ShowMessageLinkAsync();
+
+    private async Task ShowMessageLinkAsync()
+    {
+        if (_currentChat is null || _currentMessage is null)
+        {
+            Announce(Strings.Status_NoSelection);
+            return;
+        }
+
+        try
+        {
+            var link = await _telegram.GetMessageLinkAsync(_currentChat.Id, _currentMessage.Id);
+            Composer.Text = link;
+            Announce(link);
+        }
+        catch (Exception exception)
+        {
+            Announce(Errors.Describe(exception));
+        }
+    }
+
+    private void OnStopPoll() => _ = StopPollAsync();
+
+    private async Task StopPollAsync()
+    {
+        if (_currentChat is null || _currentMessage is null)
+        {
+            Announce(Strings.Status_NoSelection);
+            return;
+        }
+
+        try
+        {
+            await _telegram.StopPollAsync(_currentChat.Id, _currentMessage.Id);
+            Announce(Strings.Status_PollStopped);
+            await RefreshMessagesAsync(_currentChat);
         }
         catch (Exception exception)
         {

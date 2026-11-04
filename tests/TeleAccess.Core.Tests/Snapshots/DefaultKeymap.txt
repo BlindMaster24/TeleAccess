@@ -58,6 +58,9 @@ messageList.jumpToDate | MessageList | Ctrl+G
 message.select | Message | Space
 messageList.selectAll | MessageList | Ctrl+A
 message.save | Message | Ctrl+S
+message.vote | Message | none
+message.link | Message | none
+message.stopPoll | Message | none
 message.replied | Message | none
 message.translate | Message | Ctrl+Shift+T
 message.react | Message | Ctrl+Shift+E
@@ -65,6 +68,9 @@ message.searchInChat | Message | Ctrl+F
 messageList.topicOpen | MessageList | Enter
 messageList.topicBack | MessageList | Backspace
 messageList.topicCreate | MessageList | Ctrl+Alt+N
+messageList.topicRename | MessageList | none
+messageList.topicRead | MessageList | none
+messageList.topicLink | MessageList | none
 messageList.topicClose | MessageList | none
 messageList.topicDelete | MessageList | none
 messageList.topicPin | MessageList | none

@@ -1516,6 +1516,49 @@ public sealed class TelegramService : IDisposable
         }
     }
 
+    public async Task<string> GetTopicLinkAsync(long chatId, int topicId)
+    {
+        RequireClient();
+
+        var link = await _client!.ExecuteAsync(new TdApi.GetForumTopicLink
+        {
+            ChatId = chatId,
+            ForumTopicId = topicId
+        });
+
+        return link.Link;
+    }
+
+    public async Task<string> GetMessageLinkAsync(long chatId, long messageId)
+    {
+        RequireClient();
+
+        var link = await _client!.ExecuteAsync(new TdApi.GetMessageLink
+        {
+            ChatId = chatId,
+            MessageId = messageId,
+            MediaTimestamp = 0,
+            ChecklistTaskId = 0,
+            PollOptionId = string.Empty,
+            ForAlbum = false,
+            InMessageThread = false
+        });
+
+        return link.Link;
+    }
+
+    public async Task StopPollAsync(long chatId, long messageId)
+    {
+        RequireClient();
+
+        await _client!.ExecuteAsync(new TdApi.StopPoll
+        {
+            ChatId = chatId,
+            MessageId = messageId,
+            ReplyMarkup = null
+        });
+    }
+
     public async Task RenameTopicAsync(long chatId, int topicId, string name)
     {
         RequireClient();

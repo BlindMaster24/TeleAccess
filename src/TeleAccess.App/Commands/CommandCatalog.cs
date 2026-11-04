@@ -90,6 +90,9 @@ public static class CommandCatalog
         Add(registry, "message.select", Strings.Cmd_Select, CommandScope.Message, "Space", actions.Message.Select, actions.HasMessage);
         Add(registry, "messageList.selectAll", Strings.Cmd_SelectAll, CommandScope.MessageList, "Ctrl+A", actions.Message.SelectAll, actions.HasChat);
         Add(registry, "message.save", Strings.Cmd_Save, CommandScope.Message, "Ctrl+S", actions.Message.Save, actions.HasMessage);
+        Add(registry, "message.vote", Strings.Cmd_Vote, CommandScope.Message, null, actions.Message.Vote, actions.HasMessage);
+        Add(registry, "message.link", Strings.Cmd_MessageLink, CommandScope.Message, null, actions.Message.MessageLink, actions.HasMessage);
+        Add(registry, "message.stopPoll", Strings.Cmd_StopPoll, CommandScope.Message, null, actions.Message.StopPoll, actions.HasMessage);
         Add(registry, "message.replied", Strings.Cmd_ShowReplied, CommandScope.Message, null, actions.Message.ShowReplied, actions.HasMessage);
         Add(registry, "message.translate", Strings.Cmd_Translate, CommandScope.Message, "Ctrl+Shift+T", actions.Message.Translate, actions.HasMessage);
         Add(registry, "message.react", Strings.Cmd_React, CommandScope.Message, "Ctrl+Shift+E", actions.Message.React, actions.HasMessage);
@@ -101,6 +104,9 @@ public static class CommandCatalog
         Add(registry, "messageList.topicOpen", Strings.Cmd_TopicOpen, CommandScope.MessageList, "Enter", actions.Message.OpenTopic);
         Add(registry, "messageList.topicBack", Strings.Cmd_TopicBack, CommandScope.MessageList, "Backspace", actions.Message.BackToTopics);
         Add(registry, "messageList.topicCreate", Strings.Cmd_TopicCreate, CommandScope.MessageList, "Ctrl+Alt+N", actions.Message.CreateTopic, actions.HasChat);
+        Add(registry, "messageList.topicRename", Strings.Cmd_TopicRename, CommandScope.MessageList, null, actions.Message.RenameTopic, actions.HasChat);
+        Add(registry, "messageList.topicRead", Strings.Cmd_TopicRead, CommandScope.MessageList, null, actions.Message.ReadTopic, actions.HasChat);
+        Add(registry, "messageList.topicLink", Strings.Cmd_TopicLink, CommandScope.MessageList, null, actions.Message.TopicLink, actions.HasChat);
         Add(registry, "messageList.topicClose", Strings.Cmd_TopicClose, CommandScope.MessageList, null, actions.Message.CloseTopic, actions.HasChat);
         Add(registry, "messageList.topicDelete", Strings.Cmd_TopicDelete, CommandScope.MessageList, null, actions.Message.DeleteTopic, actions.HasChat);
         Add(registry, "messageList.topicPin", Strings.Cmd_TopicPin, CommandScope.MessageList, null, actions.Message.PinTopic, actions.HasChat);
