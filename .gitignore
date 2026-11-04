@@ -1,0 +1,15 @@
+bin/
+obj/
+*.user
+*.suo
+.vs/
+TestResults/
+artifacts/
+*.binlog
+*.db
+*.db-shm
+*.db-wal
+.metrics/
+.idea/
+docs/td_api.tl
+docs/tdsharp-*.md

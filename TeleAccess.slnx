@@ -1,0 +1,9 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/TeleAccess.App/TeleAccess.App.csproj" />
+    <Project Path="src/TeleAccess.Core/TeleAccess.Core.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/TeleAccess.Core.Tests/TeleAccess.Core.Tests.csproj" />
+  </Folder>
+</Solution>
