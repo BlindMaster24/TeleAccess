@@ -1180,6 +1180,60 @@ public sealed class TelegramService : IDisposable
         });
     }
 
+    public async Task<IReadOnlyList<TopicRow>> LoadTopicsAsync(long chatId, int limit = 100)
+    {
+        RequireClient();
+
+        var topics = await _client!.ExecuteAsync(new TdApi.GetForumTopics
+        {
+            ChatId = chatId,
+            Query = string.Empty,
+            OffsetDate = 0,
+            OffsetMessageId = 0,
+            OffsetForumTopicId = 0,
+            Limit = limit
+        });
+
+        return topics.Topics
+            .Select(topic => new TopicRow(
+                topic.Info.ForumTopicId,
+                topic.Info.Name,
+                topic.UnreadCount,
+                topic.IsPinned,
+                topic.Info.IsClosed,
+                topic.Order,
+                topic.LastMessage?.Id ?? 0))
+            .ToArray();
+    }
+
+    public async Task<IReadOnlyList<MessageRow>> LoadTopicMessagesAsync(long chatId, long lastMessageId, int limit = 40)
+    {
+        RequireClient();
+
+        if (lastMessageId == 0)
+        {
+            return [];
+        }
+
+        var history = await _client!.ExecuteAsync(new TdApi.GetMessageThreadHistory
+        {
+            ChatId = chatId,
+            MessageId = lastMessageId,
+            FromMessageId = 0,
+            Offset = 0,
+            Limit = limit
+        });
+
+        var rows = new List<MessageRow>(history.Messages_.Length);
+
+        foreach (var message in history.Messages_.Reverse())
+        {
+            rows.Add(await ToRowAsync(message));
+        }
+
+        return rows;
+    }
+
     public async Task<IReadOnlyList<MessageRow>> LoadScheduledAsync(long chatId)
     {
         RequireClient();
