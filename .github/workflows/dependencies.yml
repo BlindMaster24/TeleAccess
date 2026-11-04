@@ -1,0 +1,57 @@
+name: dependencies
+
+on:
+  pull_request:
+    branches: [main]
+  schedule:
+    - cron: "0 5 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pull-requests: write
+  issues: write
+
+jobs:
+  review:
+    name: review dependency changes
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/dependency-review-action@v4
+        with:
+          fail-on-severity: moderate
+
+  outdated:
+    name: report outdated packages
+    if: github.event_name != 'pull_request'
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 10.0.x
+
+      - name: Collect outdated packages
+        id: check
+        shell: pwsh
+        run: |
+          dotnet list package --outdated --include-transitive | Tee-Object -FilePath outdated.txt | Out-Host
+          $outdated = Select-String -Path outdated.txt -Pattern '^\s*>' -Quiet
+          "outdated=$($outdated.ToString().ToLower())" | Out-File -FilePath $env:GITHUB_OUTPUT -Append
+
+      - name: Open an issue when updates exist
+        if: steps.check.outputs.outdated == 'true'
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          $existing = gh issue list --search "Dependency updates available in:title" --state open --json number --jq 'length'
+          if ($existing -eq '0') {
+            gh issue create --title "Dependency updates available" --body-file outdated.txt
+          } else {
+            Write-Host "An open issue already tracks this."
+          }
