@@ -26,6 +26,8 @@ All notable changes are recorded here. Format follows
 - Photos (with real dimensions), videos (dimensions probed from the media pipeline), animations, stickers, contacts, locations and polls can be sent; the typing action is reported to the other side.
 - Attachment routing is one pure classifier in Core, covered by 16 tests.
 - Message translation (`Ctrl+Shift+T`), search across all chats (`Ctrl+Shift+F`) and polls (`Ctrl+Alt+P`).
+- Chat information (type, member count, description), member lists, forum topic lists, contact lists, secret chat creation, joining chats.
+- Settings window: language, api_id, api_hash, phone, sign out (`Ctrl+Comma`).
 - Localization tests: Russian must cover every English key, no empty values, no duplicate keys, every shipped string resolved.
 - Pinned message jump (`Ctrl+Shift+P`), delete for me only (`Ctrl+Shift+D`) and pin/unpin toggle.
 - Speech announcements through Prism (`Prismatoid`) behind `ISpeechService`.
@@ -37,7 +39,7 @@ All notable changes are recorded here. Format follows
 
 ### Not implemented yet
 
-- Calls, video, animation, stickers, polls, forums, secret chat UI.
+- Calls.
 
 ## [0.1.0] - 2026-11-04
 

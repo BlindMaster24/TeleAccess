@@ -4,6 +4,13 @@ global.focusComposer | Global | Alt+3
 global.focusSearch | Global | Alt+4
 global.search | Global | Ctrl+K
 global.searchGlobal | Global | Ctrl+Shift+F
+global.chatInfo | Global | Ctrl+I
+global.chatMembers | Global | Ctrl+Shift+I
+global.chatTopics | Global | Ctrl+T
+global.chatJoin | Global | Ctrl+J
+global.contacts | Global | Ctrl+Shift+C
+global.secretChat | Global | Ctrl+Shift+X
+global.settings | Global | Ctrl+Comma
 global.refresh | Global | F5
 global.hotkeys | Global | Ctrl+Shift+K
 global.quit | Global | none

@@ -38,6 +38,13 @@ menu of the focused area.
 | `Alt+4` | focus search |
 | `Ctrl+K` | search chats |
 | `Ctrl+Shift+F` | search across all chats |
+| `Ctrl+I` | chat information: type, members, description |
+| `Ctrl+Shift+I` | list chat members into the composer |
+| `Ctrl+T` | list forum topics |
+| `Ctrl+J` | join the current chat |
+| `Ctrl+Shift+C` | contacts |
+| `Ctrl+Shift+X` | start a secret chat |
+| `Ctrl+Comma` | settings: language, api_id, api_hash, phone, sign out |
 | `Ctrl+N` | new chat |
 | `Ctrl+Shift+K` | open keyboard shortcut editor |
 | `F1` | read the shortcuts of the current area aloud |

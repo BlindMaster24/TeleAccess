@@ -83,6 +83,13 @@ public partial class MainWindow : Window
         Refresh: () => _ = RefreshChatsAsync(SearchBox.Text),
         Hotkeys: OnHotkeys,
         SearchGlobal: OnSearchGlobal,
+        ChatInfo: OnChatInfo,
+        ChatMembers: OnChatMembers,
+        ChatTopics: OnChatTopics,
+        ChatJoin: OnChatJoin,
+        Contacts: OnContacts,
+        Settings: OnSettings,
+        SecretChat: OnSecretChat,
         Quit: Close,
         Chat: new ChatActions(
             Open: OnOpenChat,
@@ -813,6 +820,191 @@ public partial class MainWindow : Window
             _replyToMessageId = 0;
             Announce(Strings.Status_PollSent);
             await RefreshMessagesAsync(_currentChat);
+        }
+        catch (Exception exception)
+        {
+            Announce(Errors.Describe(exception));
+        }
+    }
+
+    private void OnChatInfo() => _ = ShowChatInfoAsync();
+
+    private async Task ShowChatInfoAsync()
+    {
+        if (_currentChat is null)
+        {
+            Announce(Strings.Status_NoChat);
+            return;
+        }
+
+        try
+        {
+            var info = await _telegram.GetChatInfoAsync(_currentChat.Id);
+            Announce(string.IsNullOrEmpty(info.Description)
+                ? info.Display
+                : $"{info.Display}. {info.Description}");
+        }
+        catch (Exception exception)
+        {
+            Announce(Errors.Describe(exception));
+        }
+    }
+
+    private void OnChatMembers() => _ = ShowMembersAsync();
+
+    private async Task ShowMembersAsync()
+    {
+        if (_currentChat is null)
+        {
+            Announce(Strings.Status_NoChat);
+            return;
+        }
+
+        try
+        {
+            var members = await _telegram.GetMembersAsync(_currentChat.Id);
+
+            if (members.Count == 0)
+            {
+                Announce(Strings.Status_NoMembers);
+                return;
+            }
+
+            Composer.Text = string.Join(Environment.NewLine, members);
+            Announce(PluralFormatter.Format(Strings.Plural_SelectedMessages, members.Count, Strings.Culture));
+        }
+        catch (Exception exception)
+        {
+            Announce(Errors.Describe(exception));
+        }
+    }
+
+    private void OnChatTopics() => _ = ShowTopicsAsync();
+
+    private async Task ShowTopicsAsync()
+    {
+        if (_currentChat is null)
+        {
+            Announce(Strings.Status_NoChat);
+            return;
+        }
+
+        try
+        {
+            var topics = await _telegram.GetForumTopicsAsync(_currentChat.Id);
+
+            if (topics.Count == 0)
+            {
+                Announce(Strings.Status_NoTopics);
+                return;
+            }
+
+            Composer.Text = string.Join(Environment.NewLine, topics);
+            Announce(string.Join(". ", topics));
+        }
+        catch (Exception exception)
+        {
+            Announce(Errors.Describe(exception));
+        }
+    }
+
+    private void OnChatJoin() => _ = JoinChatAsync();
+
+    private async Task JoinChatAsync()
+    {
+        if (_currentChat is null)
+        {
+            Announce(Strings.Status_NoChat);
+            return;
+        }
+
+        try
+        {
+            await _telegram.JoinChatAsync(_currentChat.Id);
+            Announce(Strings.Status_Joined);
+        }
+        catch (Exception exception)
+        {
+            Announce(Errors.Describe(exception));
+        }
+    }
+
+    private void OnContacts() => _ = ShowContactsAsync();
+
+    private async Task ShowContactsAsync()
+    {
+        try
+        {
+            var contacts = await _telegram.GetContactsAsync();
+
+            if (contacts.Count == 0)
+            {
+                Announce(Strings.Status_NoContacts);
+                return;
+            }
+
+            Composer.Text = string.Join(Environment.NewLine, contacts);
+            Announce(string.Join(". ", contacts));
+        }
+        catch (Exception exception)
+        {
+            Announce(Errors.Describe(exception));
+        }
+    }
+
+    private void OnSecretChat() => _ = StartSecretChatAsync();
+
+    private async Task StartSecretChatAsync()
+    {
+        var username = PromptWindow.Ask(this, Strings.Prompt_SecretChatUser);
+        if (string.IsNullOrWhiteSpace(username))
+        {
+            return;
+        }
+
+        try
+        {
+            var chatId = await _telegram.CreateSecretChatAsync(username.Trim());
+
+            if (chatId == 0)
+            {
+                Announce(Strings.Status_NoUser);
+                return;
+            }
+
+            Announce(Strings.Status_SecretChatStarted);
+            await RefreshChatsAsync();
+        }
+        catch (Exception exception)
+        {
+            Announce(Errors.Describe(exception));
+        }
+    }
+
+    private void OnSettings()
+    {
+        var window = new SettingsWindow(_settings, _settingsRepository) { Owner = this };
+
+        if (window.ShowDialog() != true)
+        {
+            return;
+        }
+
+        Announce(Strings.Settings_Saved);
+        LocalizationManager.Apply(_settings.Language);
+
+        if (window.SignOutRequested)
+        {
+            _ = SignOutAsync();
+        }
+    }
+
+    private async Task SignOutAsync()
+    {
+        try
+        {
+            await _telegram.LogOutAsync();
+            Announce(Strings.Status_SignedOut);
         }
         catch (Exception exception)
         {

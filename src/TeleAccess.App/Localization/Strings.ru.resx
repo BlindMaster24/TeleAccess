@@ -522,4 +522,79 @@
   <data name="Error_VideoUnreadable" xml:space="preserve">
     <value>Не удалось определить размеры видео</value>
   </data>
+  <data name="Cmd_ChatInfo" xml:space="preserve">
+    <value>Информация о чате</value>
+  </data>
+  <data name="Cmd_ChatMembers" xml:space="preserve">
+    <value>Участники чата</value>
+  </data>
+  <data name="Cmd_ChatTopics" xml:space="preserve">
+    <value>Темы форума</value>
+  </data>
+  <data name="Cmd_ChatJoin" xml:space="preserve">
+    <value>Вступить в чат</value>
+  </data>
+  <data name="Cmd_Contacts" xml:space="preserve">
+    <value>Контакты</value>
+  </data>
+  <data name="Cmd_SecretChat" xml:space="preserve">
+    <value>Начать секретный чат</value>
+  </data>
+  <data name="Cmd_Settings" xml:space="preserve">
+    <value>Настройки</value>
+  </data>
+  <data name="Status_NoMembers" xml:space="preserve">
+    <value>Участников нет</value>
+  </data>
+  <data name="Status_NoTopics" xml:space="preserve">
+    <value>В этом чате нет тем форума</value>
+  </data>
+  <data name="Status_NoContacts" xml:space="preserve">
+    <value>Контактов пока нет</value>
+  </data>
+  <data name="Status_Joined" xml:space="preserve">
+    <value>Вы вступили</value>
+  </data>
+  <data name="Prompt_Username" xml:space="preserve">
+    <value>Имя или юзернейм для поиска</value>
+  </data>
+  <data name="Prompt_SecretChatUser" xml:space="preserve">
+    <value>Юзернейм собеседника для секретного чата</value>
+  </data>
+  <data name="Status_SecretChatStarted" xml:space="preserve">
+    <value>Секретный чат создан</value>
+  </data>
+  <data name="Status_NoUser" xml:space="preserve">
+    <value>Пользователь не найден</value>
+  </data>
+  <data name="Settings_Title" xml:space="preserve">
+    <value>Настройки</value>
+  </data>
+  <data name="Settings_Language" xml:space="preserve">
+    <value>Язык</value>
+  </data>
+  <data name="Settings_ApiId" xml:space="preserve">
+    <value>api_id</value>
+  </data>
+  <data name="Settings_ApiHash" xml:space="preserve">
+    <value>api_hash</value>
+  </data>
+  <data name="Settings_Phone" xml:space="preserve">
+    <value>Номер телефона</value>
+  </data>
+  <data name="Settings_Save" xml:space="preserve">
+    <value>Сохранить</value>
+  </data>
+  <data name="Settings_LogOut" xml:space="preserve">
+    <value>Выйти из аккаунта</value>
+  </data>
+  <data name="Settings_Saved" xml:space="preserve">
+    <value>Настройки сохранены</value>
+  </data>
+  <data name="Settings_RestartNeeded" xml:space="preserve">
+    <value>Перезапустите TeleAccess, чтобы применить язык</value>
+  </data>
+  <data name="Status_SignedOut" xml:space="preserve">
+    <value>Вы вышли из аккаунта</value>
+  </data>
 </root>

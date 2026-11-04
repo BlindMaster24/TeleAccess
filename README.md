@@ -34,7 +34,9 @@ sending (normal, silent and scheduled), voice messages, file attachments, audio,
 edit, delete, forward, pin, copy, reactions, search inside a chat, scheduled messages,
 chat deletion, mute, pin, archive, Telegram folders, and the full command and shortcut
 system, photos, video, animation, stickers, polls, contacts, locations, translation and
-global search. Not implemented yet: calls, forum topic UI and secret chat UI.
+global search, chat information, member lists, forum topic lists, contact lists, secret
+chat creation, joining chats, and a settings window (language, credentials, sign out).
+Not implemented yet: calls.
 
 ## Build
 

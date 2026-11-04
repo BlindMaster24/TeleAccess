@@ -348,4 +348,54 @@ public static class Strings
 
     public static string Error_VideoUnreadable => Get(nameof(Error_VideoUnreadable));
 
+    public static string Cmd_ChatInfo => Get(nameof(Cmd_ChatInfo));
+
+    public static string Cmd_ChatMembers => Get(nameof(Cmd_ChatMembers));
+
+    public static string Cmd_ChatTopics => Get(nameof(Cmd_ChatTopics));
+
+    public static string Cmd_ChatJoin => Get(nameof(Cmd_ChatJoin));
+
+    public static string Cmd_Contacts => Get(nameof(Cmd_Contacts));
+
+    public static string Cmd_SecretChat => Get(nameof(Cmd_SecretChat));
+
+    public static string Cmd_Settings => Get(nameof(Cmd_Settings));
+
+    public static string Status_NoMembers => Get(nameof(Status_NoMembers));
+
+    public static string Status_NoTopics => Get(nameof(Status_NoTopics));
+
+    public static string Status_NoContacts => Get(nameof(Status_NoContacts));
+
+    public static string Status_Joined => Get(nameof(Status_Joined));
+
+    public static string Prompt_Username => Get(nameof(Prompt_Username));
+
+    public static string Prompt_SecretChatUser => Get(nameof(Prompt_SecretChatUser));
+
+    public static string Status_SecretChatStarted => Get(nameof(Status_SecretChatStarted));
+
+    public static string Status_NoUser => Get(nameof(Status_NoUser));
+
+    public static string Settings_Title => Get(nameof(Settings_Title));
+
+    public static string Settings_Language => Get(nameof(Settings_Language));
+
+    public static string Settings_ApiId => Get(nameof(Settings_ApiId));
+
+    public static string Settings_ApiHash => Get(nameof(Settings_ApiHash));
+
+    public static string Settings_Phone => Get(nameof(Settings_Phone));
+
+    public static string Settings_Save => Get(nameof(Settings_Save));
+
+    public static string Settings_LogOut => Get(nameof(Settings_LogOut));
+
+    public static string Settings_Saved => Get(nameof(Settings_Saved));
+
+    public static string Settings_RestartNeeded => Get(nameof(Settings_RestartNeeded));
+
+    public static string Status_SignedOut => Get(nameof(Status_SignedOut));
+
 }

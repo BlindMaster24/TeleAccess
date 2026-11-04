@@ -28,6 +28,13 @@ public static class CommandCatalog
         Add(registry, "global.focusSearch", Strings.Main_Search, CommandScope.Global, "Alt+4", actions.FocusSearch);
         Add(registry, "global.search", Strings.Cmd_Search, CommandScope.Global, "Ctrl+K", actions.Search);
         Add(registry, "global.searchGlobal", Strings.Cmd_GlobalSearch, CommandScope.Global, "Ctrl+Shift+F", actions.SearchGlobal);
+        Add(registry, "global.chatInfo", Strings.Cmd_ChatInfo, CommandScope.Global, "Ctrl+I", actions.ChatInfo, actions.HasChat);
+        Add(registry, "global.chatMembers", Strings.Cmd_ChatMembers, CommandScope.Global, "Ctrl+Shift+I", actions.ChatMembers, actions.HasChat);
+        Add(registry, "global.chatTopics", Strings.Cmd_ChatTopics, CommandScope.Global, "Ctrl+T", actions.ChatTopics, actions.HasChat);
+        Add(registry, "global.chatJoin", Strings.Cmd_ChatJoin, CommandScope.Global, "Ctrl+J", actions.ChatJoin, actions.HasChat);
+        Add(registry, "global.contacts", Strings.Cmd_Contacts, CommandScope.Global, "Ctrl+Shift+C", actions.Contacts);
+        Add(registry, "global.secretChat", Strings.Cmd_SecretChat, CommandScope.Global, "Ctrl+Shift+X", actions.SecretChat);
+        Add(registry, "global.settings", Strings.Cmd_Settings, CommandScope.Global, "Ctrl+Comma", actions.Settings);
         Add(registry, "global.refresh", Strings.Cmd_Refresh, CommandScope.Global, "F5", actions.Refresh);
         Add(registry, "global.hotkeys", Strings.Cmd_Hotkeys, CommandScope.Global, "Ctrl+Shift+K", actions.Hotkeys);
         Add(registry, "global.quit", Strings.Cmd_Quit, CommandScope.Global, null, actions.Quit);

@@ -12,6 +12,13 @@ public sealed record UiActions(
     Action Hotkeys,
     Action Quit,
     Action SearchGlobal,
+    Action ChatInfo,
+    Action ChatMembers,
+    Action ChatTopics,
+    Action ChatJoin,
+    Action Contacts,
+    Action Settings,
+    Action SecretChat,
     ChatActions Chat,
     MessageActions Message,
     ComposerActions Composer);

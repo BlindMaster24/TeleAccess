@@ -522,4 +522,79 @@
   <data name="Error_VideoUnreadable" xml:space="preserve">
     <value>Cannot read the video dimensions</value>
   </data>
+  <data name="Cmd_ChatInfo" xml:space="preserve">
+    <value>Chat information</value>
+  </data>
+  <data name="Cmd_ChatMembers" xml:space="preserve">
+    <value>Chat members</value>
+  </data>
+  <data name="Cmd_ChatTopics" xml:space="preserve">
+    <value>Forum topics</value>
+  </data>
+  <data name="Cmd_ChatJoin" xml:space="preserve">
+    <value>Join this chat</value>
+  </data>
+  <data name="Cmd_Contacts" xml:space="preserve">
+    <value>Contacts</value>
+  </data>
+  <data name="Cmd_SecretChat" xml:space="preserve">
+    <value>Start a secret chat</value>
+  </data>
+  <data name="Cmd_Settings" xml:space="preserve">
+    <value>Settings</value>
+  </data>
+  <data name="Status_NoMembers" xml:space="preserve">
+    <value>No members to show</value>
+  </data>
+  <data name="Status_NoTopics" xml:space="preserve">
+    <value>This chat has no forum topics</value>
+  </data>
+  <data name="Status_NoContacts" xml:space="preserve">
+    <value>No contacts yet</value>
+  </data>
+  <data name="Status_Joined" xml:space="preserve">
+    <value>Joined</value>
+  </data>
+  <data name="Prompt_Username" xml:space="preserve">
+    <value>Username or name to search</value>
+  </data>
+  <data name="Prompt_SecretChatUser" xml:space="preserve">
+    <value>Username of the person for a secret chat</value>
+  </data>
+  <data name="Status_SecretChatStarted" xml:space="preserve">
+    <value>Secret chat started</value>
+  </data>
+  <data name="Status_NoUser" xml:space="preserve">
+    <value>No such user</value>
+  </data>
+  <data name="Settings_Title" xml:space="preserve">
+    <value>Settings</value>
+  </data>
+  <data name="Settings_Language" xml:space="preserve">
+    <value>Language</value>
+  </data>
+  <data name="Settings_ApiId" xml:space="preserve">
+    <value>api_id</value>
+  </data>
+  <data name="Settings_ApiHash" xml:space="preserve">
+    <value>api_hash</value>
+  </data>
+  <data name="Settings_Phone" xml:space="preserve">
+    <value>Phone number</value>
+  </data>
+  <data name="Settings_Save" xml:space="preserve">
+    <value>Save</value>
+  </data>
+  <data name="Settings_LogOut" xml:space="preserve">
+    <value>Sign out</value>
+  </data>
+  <data name="Settings_Saved" xml:space="preserve">
+    <value>Settings saved</value>
+  </data>
+  <data name="Settings_RestartNeeded" xml:space="preserve">
+    <value>Restart TeleAccess to apply the language</value>
+  </data>
+  <data name="Status_SignedOut" xml:space="preserve">
+    <value>Signed out</value>
+  </data>
 </root>

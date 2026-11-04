@@ -641,6 +641,144 @@ public sealed class TelegramService : IDisposable
         }, replyToMessageId, null);
     }
 
+    public async Task<ChatInfoRow> GetChatInfoAsync(long chatId)
+    {
+        RequireClient();
+
+        var chat = await _client!.ExecuteAsync(new TdApi.GetChat { ChatId = chatId });
+        var members = 0;
+        var description = string.Empty;
+
+        switch (chat.Type)
+        {
+            case TdApi.ChatType.ChatTypeBasicGroup basic:
+                var group = await _client.ExecuteAsync(new TdApi.GetBasicGroup { BasicGroupId = basic.BasicGroupId });
+                members = group.MemberCount;
+                break;
+
+            case TdApi.ChatType.ChatTypeSupergroup supergroup:
+                var info = await _client.ExecuteAsync(new TdApi.GetSupergroup { SupergroupId = supergroup.SupergroupId });
+                members = info.MemberCount;
+                var full = await _client.ExecuteAsync(new TdApi.GetSupergroupFullInfo { SupergroupId = supergroup.SupergroupId });
+                description = full.Description;
+                break;
+
+            default:
+                break;
+        }
+
+        var kind = chat.Type switch
+        {
+            TdApi.ChatType.ChatTypePrivate => "private",
+            TdApi.ChatType.ChatTypeBasicGroup => "group",
+            TdApi.ChatType.ChatTypeSupergroup super => super.IsChannel ? "channel" : "supergroup",
+            TdApi.ChatType.ChatTypeSecret => "secret",
+            _ => "chat"
+        };
+
+        return new ChatInfoRow(chat.Title, kind, members, description);
+    }
+
+    public async Task<IReadOnlyList<string>> GetMembersAsync(long chatId, int limit = 50)
+    {
+        RequireClient();
+
+        var chat = await _client!.ExecuteAsync(new TdApi.GetChat { ChatId = chatId });
+        TdApi.ChatMember[] members;
+
+        switch (chat.Type)
+        {
+            case TdApi.ChatType.ChatTypeSupergroup supergroup:
+                var found = await _client.ExecuteAsync(new TdApi.GetSupergroupMembers
+                {
+                    SupergroupId = supergroup.SupergroupId,
+                    Filter = new TdApi.SupergroupMembersFilter.SupergroupMembersFilterRecent(),
+                    Offset = 0,
+                    Limit = limit
+                });
+                members = found.Members;
+                break;
+
+            case TdApi.ChatType.ChatTypeBasicGroup basic:
+                var full = await _client.ExecuteAsync(new TdApi.GetBasicGroupFullInfo { BasicGroupId = basic.BasicGroupId });
+                members = [.. full.Members.Take(limit)];
+                break;
+
+            default:
+                return [];
+        }
+
+        return await Task.WhenAll(members.Select(ResolveMemberNameAsync));
+    }
+
+    private async Task<string> ResolveMemberNameAsync(TdApi.ChatMember member)
+    {
+        var name = await ResolveSenderAsync(member.MemberId);
+        return string.IsNullOrEmpty(name) ? member.MemberId.DataType : name;
+    }
+
+    public async Task<IReadOnlyList<string>> GetContactsAsync(int limit = 100)
+    {
+        RequireClient();
+
+        var users = await _client!.ExecuteAsync(new TdApi.GetContacts());
+        var names = new List<string>(Math.Min(users.UserIds.Length, limit));
+
+        foreach (var id in users.UserIds.Take(limit))
+        {
+            var user = await _client.ExecuteAsync(new TdApi.GetUser { UserId = id });
+            var name = $"{user.FirstName} {user.LastName}".Trim();
+            names.Add(string.IsNullOrEmpty(name) ? user.Usernames?.ActiveUsernames.FirstOrDefault() ?? id.ToString(CultureInfo.InvariantCulture) : name);
+        }
+
+        return names;
+    }
+
+    public async Task<IReadOnlyList<string>> GetForumTopicsAsync(long chatId, int limit = 50)
+    {
+        RequireClient();
+
+        var topics = await _client!.ExecuteAsync(new TdApi.GetForumTopics
+        {
+            ChatId = chatId,
+            Query = string.Empty,
+            OffsetDate = 0,
+            OffsetMessageId = 0,
+            OffsetForumTopicId = 0,
+            Limit = limit
+        });
+
+        return topics.Topics.Select(topic => topic.Info.Name).ToArray();
+    }
+
+    public async Task<long> CreateSecretChatAsync(string username)
+    {
+        RequireClient();
+        ArgumentException.ThrowIfNullOrWhiteSpace(username);
+
+        var found = await _client!.ExecuteAsync(new TdApi.SearchContacts { Query = username, Limit = 1 });
+
+        if (found.UserIds.Length == 0)
+        {
+            return 0;
+        }
+
+        var chat = await _client.ExecuteAsync(new TdApi.CreateNewSecretChat { UserId = found.UserIds[0] });
+        return chat.Id;
+    }
+
+    public async Task JoinChatAsync(long chatId)
+    {
+        RequireClient();
+        await _client!.ExecuteAsync(new TdApi.JoinChat { ChatId = chatId });
+    }
+
+    public async Task LogOutAsync()
+    {
+        RequireClient();
+        await _client!.ExecuteAsync(new TdApi.LogOut());
+    }
+
     public async Task<IReadOnlyList<MessageRow>> LoadScheduledAsync(long chatId)
     {
         RequireClient();

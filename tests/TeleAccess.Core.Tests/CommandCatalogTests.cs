@@ -21,6 +21,13 @@ public class CommandCatalogTests
             Hotkeys: noop,
             Quit: noop,
             SearchGlobal: noop,
+            ChatInfo: noop,
+            ChatMembers: noop,
+            ChatTopics: noop,
+            ChatJoin: noop,
+            Contacts: noop,
+            Settings: noop,
+            SecretChat: noop,
             Chat: new ChatActions(noop, noop, noop, noop, noop, noop, noop, noop),
             Message: new MessageActions(noop, noop, noop, noop, noop, noop, noop, noop, noop, noop, noop, noop),
             Composer: new ComposerActions(noop, noop, noop, noop, noop, noop, noop, noop, noop));
