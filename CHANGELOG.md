@@ -31,7 +31,7 @@ All notable changes are recorded here. Format follows
 - Attachments download with `Ctrl+S`, history pages back with `Ctrl+Up`, new messages elsewhere announce with an earcon, and `Ctrl+F1` turns on training mode.
 - Multi-account: each account has its own TDLib directory, switching recreates the client in place, the active account is remembered in SQLite; ids and paths are covered by eight tests.
 - Eight rare commands (topics, stories, proxy, bio, scope mutes, account management) ship without a default shortcut and are assigned in the editor.
-- Drafts: the composer text is saved with `setChatDraftMessage` after a pause, restored from `chat.draftMessage` on open and cleared on send; DraftPolicy is covered by six tests.
+- Drafts: the composer text is saved with `setChatDraftMessage` after a pause, restored from `chat.draftMessage` on open and cleared on send. The draft also carries the reply target, is capped at 4096 characters, and is not applied over text the user already typed — the same three rules Unigram uses in `DialogViewModel`. DraftPolicy is covered by thirteen tests.
 - Chat folders: create with `Ctrl+Alt+F` and delete the current one with `Ctrl+Alt+D`; name preparation and case-insensitive uniqueness are covered by seven tests.
 - Member moderation: `Ctrl+Alt+B` lists members with numbers and bans the chosen one through `setChatMemberStatus`; index parsing is covered by eleven tests.
 - Notification scopes: mute private chats, groups and channels for N hours through get/setScopeNotificationSettings, with hour conversion tested.

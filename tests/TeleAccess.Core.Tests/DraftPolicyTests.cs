@@ -27,6 +27,27 @@ public class DraftPolicyTests
         DraftPolicy.ShouldSave(null, "hello").ShouldBeTrue();
     }
 
+    [Theory]
+    [InlineData(null, null, "hello", true)]
+    [InlineData("", null, "hello", true)]
+    [InlineData("hello", null, "hello", false)]
+    [InlineData("typing", null, "hello", false)]
+    [InlineData("hello", "hello", "hello", false)]
+    [InlineData("hello", null, null, false)]
+    public void Decides_whether_to_apply_a_restored_draft(string? typing, string? stored, string? incoming, bool expected)
+    {
+        DraftPolicy.ShouldApply(typing, stored, incoming).ShouldBe(expected);
+    }
+
+    [Fact]
+    public void Limits_long_text_without_throwing()
+    {
+        DraftPolicy.Limit("abcdef", 4).ShouldBe("abcd");
+        DraftPolicy.Limit("ab", 4).ShouldBe("ab");
+        DraftPolicy.Limit(null, 4).ShouldBe(string.Empty);
+        Should.Throw<ArgumentOutOfRangeException>(() => DraftPolicy.Limit("a", 0));
+    }
+
     [Fact]
     public void Normalize_keeps_meaningful_text()
     {

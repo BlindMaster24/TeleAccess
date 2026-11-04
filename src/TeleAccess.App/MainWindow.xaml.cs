@@ -566,10 +566,10 @@ public partial class MainWindow : Window
             return;
         }
 
-        _ = SaveDraftAsync(_currentChat.Id, Composer.Text);
+        _ = SaveDraftAsync(_currentChat.Id, Composer.Text, _replyToMessageId);
     }
 
-    private async Task SaveDraftAsync(long chatId, string text)
+    private async Task SaveDraftAsync(long chatId, string text, long replyToMessageId)
     {
         if (!DraftPolicy.ShouldSave(text, _savedDraft))
         {
@@ -580,7 +580,7 @@ public partial class MainWindow : Window
 
         try
         {
-            await _telegram.SetDraftAsync(chatId, text);
+            await _telegram.SetDraftAsync(chatId, text, replyToMessageId);
         }
         catch (Exception exception)
         {
@@ -618,9 +618,15 @@ public partial class MainWindow : Window
 
             await _telegram.MarkChatReadAsync(chat.Id);
 
-            var draft = await _telegram.GetDraftAsync(chat.Id);
-            _savedDraft = draft;
-            Composer.Text = draft ?? string.Empty;
+            var (draftText, draftReplyTo) = await _telegram.GetDraftAsync(chat.Id);
+
+            if (DraftPolicy.ShouldApply(Composer.Text, _savedDraft, draftText))
+            {
+                Composer.Text = draftText ?? string.Empty;
+            }
+
+            _savedDraft = draftText;
+            _replyToMessageId = draftReplyTo;
 
             Announce(messages.Count == 0
                 ? $"{chat.Title}. {Strings.Main_NoMessages}"

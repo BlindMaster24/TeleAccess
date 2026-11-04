@@ -17,6 +17,38 @@ public static class DraftPolicy
         return draft.Length >= MinLengthToStore || previous.Length > 0;
     }
 
+    public static bool ShouldApply(string? typing, string? stored, string? incoming)
+    {
+        if (incoming is null)
+        {
+            return false;
+        }
+
+        if (string.Equals(incoming, stored, StringComparison.Ordinal))
+        {
+            return false;
+        }
+
+        if (string.IsNullOrEmpty(typing))
+        {
+            return true;
+        }
+
+        return string.Equals(typing, stored, StringComparison.Ordinal);
+    }
+
+    public static string Limit(string? text, int maxLength)
+    {
+        ArgumentOutOfRangeException.ThrowIfNegativeOrZero(maxLength);
+
+        if (string.IsNullOrEmpty(text))
+        {
+            return string.Empty;
+        }
+
+        return text.Length <= maxLength ? text : text[..maxLength];
+    }
+
     public static string? Normalize(string? current)
     {
         if (string.IsNullOrWhiteSpace(current))

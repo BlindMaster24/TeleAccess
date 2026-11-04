@@ -13,6 +13,8 @@ namespace TeleAccess.App.Services;
 public sealed class TelegramService : IDisposable
 {
     private readonly Dictionary<long, string> _userNames = [];
+    private const int MessageTextLimit = 4096;
+
     private readonly string _dataDirectory;
     private AppSettings _settings = new();
     private TdClient? _client;
@@ -1119,41 +1121,62 @@ public sealed class TelegramService : IDisposable
         });
     }
 
-    public async Task<string?> GetDraftAsync(long chatId)
+    public async Task<(string? Text, long ReplyToMessageId)> GetDraftAsync(long chatId)
     {
         RequireClient();
 
         var chat = await _client!.ExecuteAsync(new TdApi.GetChat { ChatId = chatId });
+        var draft = chat.DraftMessage;
 
-        return chat.DraftMessage?.Content is TdApi.DraftMessageContent.DraftMessageContentText text
-            ? text.Text.Text
+        var text = draft?.Content is TdApi.DraftMessageContent.DraftMessageContentText content
+            ? content.Text.Text
             : null;
+
+        var replyTo = draft?.ReplyTo is TdApi.InputMessageReplyTo.InputMessageReplyToMessage message
+            ? message.MessageId
+            : 0;
+
+        return (text, replyTo);
     }
 
-    public async Task SetDraftAsync(long chatId, string? text)
+    public async Task SetDraftAsync(long chatId, string? text, long replyToMessageId = 0)
     {
         RequireClient();
 
-        var normalized = DraftPolicy.Normalize(text);
+        var prepared = DraftPolicy.Normalize(text);
+        var limited = prepared is null ? null : DraftPolicy.Limit(prepared, MessageTextLimit);
+
+        TdApi.DraftMessage? draft = null;
+
+        if (limited is not null || replyToMessageId != 0)
+        {
+            draft = new TdApi.DraftMessage
+            {
+                ReplyTo = replyToMessageId == 0
+                    ? null
+                    : new TdApi.InputMessageReplyTo.InputMessageReplyToMessage
+                    {
+                        MessageId = replyToMessageId,
+                        Quote = null,
+                        ChecklistTaskId = 0,
+                        PollOptionId = string.Empty
+                    },
+                Date = (int)DateTimeOffset.UtcNow.ToUnixTimeSeconds(),
+                Content = new TdApi.DraftMessageContent.DraftMessageContentText
+                {
+                    Text = new TdApi.FormattedText { Text = limited ?? string.Empty, Entities = [] },
+                    LinkPreviewOptions = null
+                },
+                EffectId = 0,
+                SuggestedPostInfo = null
+            };
+        }
 
         await _client!.ExecuteAsync(new TdApi.SetChatDraftMessage
         {
             ChatId = chatId,
             TopicId = null,
-            DraftMessage = normalized is null
-                ? null
-                : new TdApi.DraftMessage
-                {
-                    ReplyTo = null,
-                    Date = (int)DateTimeOffset.UtcNow.ToUnixTimeSeconds(),
-                    Content = new TdApi.DraftMessageContent.DraftMessageContentText
-                    {
-                        Text = new TdApi.FormattedText { Text = normalized, Entities = [] },
-                        LinkPreviewOptions = null
-                    },
-                    EffectId = 0,
-                    SuggestedPostInfo = null
-                }
+            DraftMessage = draft
         });
     }
 
