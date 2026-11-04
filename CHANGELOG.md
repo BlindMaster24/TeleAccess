@@ -29,6 +29,7 @@ All notable changes are recorded here. Format follows
 - Chat information (type, member count, description), member lists, forum topic lists, contact lists, secret chat creation, joining chats.
 - Incoming voice notes and audio play through NAudio (`MediaFoundationReader`), `Enter` plays, `Escape` stops.
 - Attachments download with `Ctrl+S`, history pages back with `Ctrl+Up`, new messages elsewhere announce with an earcon, and `Ctrl+F1` turns on training mode.
+- Member moderation: `Ctrl+Alt+B` lists members with numbers and bans the chosen one through `setChatMemberStatus`; index parsing is covered by eleven tests.
 - Notification scopes: mute private chats, groups and channels for N hours through get/setScopeNotificationSettings, with hour conversion tested.
 - Active stories of a chat are listed with dates.
 - Invite links: create with a lifetime and list the existing ones, with day-to-unix conversion tested.

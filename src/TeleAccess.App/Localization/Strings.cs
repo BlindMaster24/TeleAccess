@@ -480,4 +480,10 @@ public static class Strings
 
     public static string Status_NoStories => Get(nameof(Status_NoStories));
 
+    public static string Cmd_BanMember => Get(nameof(Cmd_BanMember));
+
+    public static string Prompt_BanMember => Get(nameof(Prompt_BanMember));
+
+    public static string Status_MemberBanned => Get(nameof(Status_MemberBanned));
+
 }

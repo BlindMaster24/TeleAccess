@@ -18,6 +18,7 @@ using TeleAccess.Core.Dates;
 using TeleAccess.Core.Network;
 using TeleAccess.Core.Notifications;
 using TeleAccess.Core.Profiles;
+using TeleAccess.Core.Selection;
 
 namespace TeleAccess.App;
 
@@ -122,7 +123,8 @@ public partial class MainWindow : Window
         ShowScheduled: OnScheduled,
         SwitchList: OnSwitchList,
         Rename: OnRename,
-        InviteLink: OnInviteLink);
+        InviteLink: OnInviteLink,
+        BanMember: OnBanMember);
 
     private MessageActions CreateMessageActions() => new(
         ReadAloud: OnReadAloud,
@@ -1506,6 +1508,46 @@ public partial class MainWindow : Window
 
             Composer.Text = string.Join(Environment.NewLine, stories);
             Announce(string.Join(". ", stories));
+        }
+        catch (Exception exception)
+        {
+            Announce(Errors.Describe(exception));
+        }
+    }
+
+    private void OnBanMember() => _ = BanMemberAsync();
+
+    private async Task BanMemberAsync()
+    {
+        if (_currentChat is null)
+        {
+            Announce(Strings.Status_NoChat);
+            return;
+        }
+
+        try
+        {
+            var members = await _telegram.GetMemberRowsAsync(_currentChat.Id);
+
+            if (members.Count == 0)
+            {
+                Announce(Strings.Status_NoMembers);
+                return;
+            }
+
+            Composer.Text = string.Join(Environment.NewLine, members.Select((member, index) => (index + 1) + ". " + member.Name));
+            Announce(string.Join(". ", members.Select(member => member.Name)));
+
+            var answer = PromptWindow.Ask(this, Strings.Prompt_BanMember);
+
+            if (!IndexSelection.TrySelect(answer, members.Count, out var index))
+            {
+                Announce(Strings.Error_BadNumber);
+                return;
+            }
+
+            await _telegram.SetMemberBannedAsync(_currentChat.Id, members[index].Id, true);
+            Announce(Strings.Status_MemberBanned);
         }
         catch (Exception exception)
         {

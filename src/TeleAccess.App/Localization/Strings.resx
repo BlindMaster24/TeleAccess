@@ -720,4 +720,13 @@
   <data name="Status_NoStories" xml:space="preserve">
     <value>No active stories</value>
   </data>
+  <data name="Cmd_BanMember" xml:space="preserve">
+    <value>Ban a member</value>
+  </data>
+  <data name="Prompt_BanMember" xml:space="preserve">
+    <value>Member number to ban</value>
+  </data>
+  <data name="Status_MemberBanned" xml:space="preserve">
+    <value>Member banned</value>
+  </data>
 </root>

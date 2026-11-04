@@ -71,6 +71,7 @@ menu of the focused area.
 | `Ctrl+Shift+U` | mark as read / unread |
 | `Ctrl+Shift+S` | show scheduled messages |
 | `F2` | rename chat |
+| `Ctrl+Alt+B` | ban a member by its number in the listed members |
 | `Ctrl+Shift+I` | create an invite link (days, 0 for unlimited) |
 | `Ctrl+Shift+L` | cycle chat lists: main, each Telegram folder, archive |
 | `Ctrl+Shift+L` | leave group or channel |

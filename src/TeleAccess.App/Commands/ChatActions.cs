@@ -10,4 +10,5 @@ public sealed record ChatActions(
     Action ShowScheduled,
     Action SwitchList,
     Action Rename,
-    Action InviteLink);
+    Action InviteLink,
+    Action BanMember);

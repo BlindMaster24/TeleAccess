@@ -1014,6 +1014,55 @@ public sealed class TelegramService : IDisposable
         });
     }
 
+    public async Task<IReadOnlyList<MemberRow>> GetMemberRowsAsync(long chatId, int limit = 50)
+    {
+        RequireClient();
+
+        var chat = await _client!.ExecuteAsync(new TdApi.GetChat { ChatId = chatId });
+        TdApi.ChatMember[] members;
+
+        switch (chat.Type)
+        {
+            case TdApi.ChatType.ChatTypeSupergroup supergroup:
+                var found = await _client.ExecuteAsync(new TdApi.GetSupergroupMembers
+                {
+                    SupergroupId = supergroup.SupergroupId,
+                    Filter = new TdApi.SupergroupMembersFilter.SupergroupMembersFilterRecent(),
+                    Offset = 0,
+                    Limit = limit
+                });
+                members = found.Members;
+                break;
+
+            case TdApi.ChatType.ChatTypeBasicGroup basic:
+                var full = await _client.ExecuteAsync(new TdApi.GetBasicGroupFullInfo { BasicGroupId = basic.BasicGroupId });
+                members = [.. full.Members.Take(limit)];
+                break;
+
+            default:
+                return [];
+        }
+
+        return await Task.WhenAll(members.Select(ToMemberRowAsync));
+    }
+
+    private async Task<MemberRow> ToMemberRowAsync(TdApi.ChatMember member) =>
+        new(member.MemberId, await ResolveSenderAsync(member.MemberId));
+
+    public async Task SetMemberBannedAsync(long chatId, TdApi.MessageSender member, bool banned)
+    {
+        RequireClient();
+
+        await _client!.ExecuteAsync(new TdApi.SetChatMemberStatus
+        {
+            ChatId = chatId,
+            MemberId = member,
+            Status = banned
+                ? new TdApi.ChatMemberStatus.ChatMemberStatusBanned { BannedUntilDate = 0 }
+                : new TdApi.ChatMemberStatus.ChatMemberStatusMember()
+        });
+    }
+
     public async Task<IReadOnlyList<MessageRow>> LoadScheduledAsync(long chatId)
     {
         RequireClient();
