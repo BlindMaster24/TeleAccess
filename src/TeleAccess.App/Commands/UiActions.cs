@@ -1,0 +1,26 @@
+namespace TeleAccess.App.Commands;
+
+public sealed record UiActions(
+    Func<bool> HasChat,
+    Func<bool> HasMessage,
+    Action FocusChats,
+    Action FocusMessages,
+    Action FocusComposer,
+    Action FocusSearch,
+    Action Search,
+    Action Refresh,
+    Action OpenChat,
+    Action DeleteChat,
+    Action MarkUnread,
+    Action Send,
+    Action NewLine,
+    Action ReadAloud,
+    Action Reply,
+    Action Edit,
+    Action DeleteMessage,
+    Action Forward,
+    Action Pin,
+    Action Copy,
+    Action Voice,
+    Action Hotkeys,
+    Action Quit);

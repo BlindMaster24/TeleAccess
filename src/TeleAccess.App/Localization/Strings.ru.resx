@@ -249,4 +249,40 @@
   <data name="Error_TdlibMissing" xml:space="preserve">
     <value>Нет движка Telegram: нативная библиотека TDLib не найдена для этой платформы</value>
   </data>
+  <data name="Cmd_OpenChat" xml:space="preserve">
+    <value>Открыть чат</value>
+  </data>
+  <data name="Cmd_Newline" xml:space="preserve">
+    <value>Новая строка</value>
+  </data>
+  <data name="Cmd_MarkUnread" xml:space="preserve">
+    <value>Отметить прочитанным или непрочитанным</value>
+  </data>
+  <data name="Cmd_DeleteChat" xml:space="preserve">
+    <value>Удалить чат</value>
+  </data>
+  <data name="Status_ChatDeleted" xml:space="preserve">
+    <value>Чат удалён</value>
+  </data>
+  <data name="Status_MarkedUnread" xml:space="preserve">
+    <value>Отмечено непрочитанным</value>
+  </data>
+  <data name="Status_MarkedRead" xml:space="preserve">
+    <value>Отмечено прочитанным</value>
+  </data>
+  <data name="Prompt_ConfirmDeleteChat" xml:space="preserve">
+    <value>Удалить чат со всеми сообщениями? Введите yes для подтверждения</value>
+  </data>
+  <data name="Prompt_Yes" xml:space="preserve">
+    <value>yes</value>
+  </data>
+  <data name="Hotkeys_ResetAll" xml:space="preserve">
+    <value>Вернуть все по умолчанию</value>
+  </data>
+  <data name="Error_NotConfigured" xml:space="preserve">
+    <value>Сначала введите api_id и api_hash с my.telegram.org</value>
+  </data>
+  <data name="Main_SignedInAs" xml:space="preserve">
+    <value>Вы вошли как {0}</value>
+  </data>
 </root>

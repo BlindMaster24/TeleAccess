@@ -67,6 +67,9 @@ dotnet_diagnostic.CA1863.severity = none
 dotnet_diagnostic.MA0049.severity = none
 dotnet_diagnostic.S2325.severity = none
 dotnet_diagnostic.MA0004.severity = none
+dotnet_diagnostic.S3168.severity = none
+dotnet_diagnostic.CA1001.severity = none
+dotnet_diagnostic.MA0134.severity = none
 
 dotnet_naming_rule.interfaces_start_with_i.symbols = interfaces
 dotnet_naming_rule.interfaces_start_with_i.style = i_prefix

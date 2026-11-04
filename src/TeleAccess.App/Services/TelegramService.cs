@@ -237,6 +237,39 @@ public sealed class TelegramService : IDisposable
         });
     }
 
+    public Task RetryParametersAsync() => ApplyParametersAsync();
+
+    public async Task OpenChatAsync(long chatId)
+    {
+        RequireClient();
+        await _client!.ExecuteAsync(new TdApi.OpenChat { ChatId = chatId });
+    }
+
+    public async Task DeleteChatAsync(long chatId)
+    {
+        RequireClient();
+        await _client!.ExecuteAsync(new TdApi.DeleteChat { ChatId = chatId });
+    }
+
+    public async Task ToggleMarkedUnreadAsync(long chatId, bool unread)
+    {
+        RequireClient();
+        await _client!.ExecuteAsync(new TdApi.ToggleChatIsMarkedAsUnread
+        {
+            ChatId = chatId,
+            IsMarkedAsUnread = unread
+        });
+    }
+
+    public async Task<string> GetOwnDisplayNameAsync()
+    {
+        RequireClient();
+
+        var me = await _client!.ExecuteAsync(new TdApi.GetMe());
+        var name = $"{me.FirstName} {me.LastName}".Trim();
+        return string.IsNullOrEmpty(name) ? me.Usernames?.ActiveUsernames.FirstOrDefault() ?? string.Empty : name;
+    }
+
     public void Dispose()
     {
         _client?.Dispose();
