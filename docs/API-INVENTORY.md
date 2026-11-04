@@ -1,13 +1,18 @@
-# Что умеет TDLib — инвентарь по схеме (2026-11)
+# What TDLib can do
 
-Источник — `docs/td_api.tl`, схема с master `tdlib/td`: **17 696 строк,
-1 076 функций, 2 289 типов**. Всё, что ниже, проверено по ней, а не по памяти.
+Inventory taken from `docs/td_api.tl`, the schema from `tdlib/td` master: **17 696
+lines, 1 076 functions, 2 289 types**. Everything below was checked against that file,
+not against memory. Fetch it with:
 
-## 1. Отправка сообщений: ровно 23 типа контента
+```shell
+curl -sL -o docs/td_api.tl https://raw.githubusercontent.com/tdlib/td/master/td/generate/scheme/td_api.tl
+```
 
-Только `sendMessage` (одно) и `sendMessageAlbum` (группа). Отдельных `sendVoice`,
-`sendPhoto`, `sendDocument` **не существует** — это устаревшие представления.
-Контент задаётся подтипом `InputMessageContent`:
+## 1. Sending messages: 23 content types
+
+There is only `sendMessage` (one) and `sendMessageAlbum` (a group). Separate
+`sendVoice`, `sendPhoto` or `sendDocument` functions **do not exist** in the current
+schema; content is a subtype of `InputMessageContent`:
 
 ```
 inputMessageText          inputMessageVoiceNote     inputMessageVideoNote
@@ -20,69 +25,73 @@ inputMessageInvoice       inputMessagePaidMedia     inputMessageStory
 inputMessageForwarded     inputMessageRichMessage
 ```
 
-**Голосовое** = `sendMessage` + `inputMessageVoiceNote(voiceNote=VoiceNote)`,
-где `VoiceNote` содержит `duration`, `waveform`, `mime_type`. Запись с микрофона
-и кодирование в Opus — **наша сторона**, TDLib файл только принимает.
-Чтение голосового на входе — `messageVoiceNote`.
+A **voice message** is `sendMessage` with `inputMessageVoiceNote(voiceNote=VoiceNote)`,
+where `VoiceNote` carries `duration`, `waveform` and the file. Recording from the
+microphone and Opus encoding happen on our side; TDLib only accepts the file. Incoming
+voice messages arrive as `messageVoiceNote`.
 
-## 2. Файлы: `uploadFile` больше нет
+## 2. Files: `uploadFile` no longer exists
 
-| Есть | Что делает |
-|---|---|
-| `preliminaryUploadFile` | залить файл заранее, получить `file_id` |
-| `readFilePart` | **потоковая** передача (так и заливается файл) |
-| `downloadFile` / `cancelDownloadFile` | скачивание |
-| `getFile` / `getRemoteFile` | метаданные и прогресс |
-| `deleteFile` | удалить из локального кеша |
+| Function | Purpose |
+| --- | --- |
+| `preliminaryUploadFile` | upload a file ahead of time, receive `file_id` |
+| `readFilePart` | streaming transfer (this is how uploads actually run) |
+| `downloadFile` / `cancelDownloadFile` | downloads |
+| `getFile` / `getRemoteFile` | metadata and progress |
+| `deleteFile` | remove from the local cache |
 
-## 3. Действия с сообщениями: 156 функций
+## 3. Message actions: 156 functions
 
-Для контекстного меню и горячих клавиш хватает этого ядра:
+The core used by this client:
 
-| Действие | Функция |
-|---|---|
-| Ответ / ответ в тему | `sendMessage` + `reply_to` |
-| Изменить текст | `editMessageText` |
-| Удалить (у себя / у всех) | `deleteMessages` (`revoke`) |
-| Переслать | `forwardMessages` (одиночное — тоже он) |
-| Закрепить / открепить | `pinChatMessage`, `unpinChatMessage` |
-| Реакция / теги | `getMessageAvailableReactions` → `addMessageReaction` |
-| Повторить отправку | `resendMessages` (ждёт `retry_after` при флуде) |
-| «печатает…» / «записывает голосовое» | `sendChatAction` |
-| Скопировать текст | клиентская сторона, не TDLib |
-| Выделить несколько | клиентская сторона (набор `message_id`) |
+| Action | Function |
+| --- | --- |
+| Reply, reply in a topic | `sendMessage` + `reply_to` |
+| Edit text | `editMessageText` |
+| Delete (for me / for everyone) | `deleteMessages` (`revoke`) |
+| Forward | `forwardMessages` |
+| Pin / unpin | `pinChatMessage`, `unpinChatMessage` |
+| Jump to pinned | `getChatPinnedMessage` |
+| Reactions | `getMessageAvailableReactions` then `addMessageReaction` |
+| Resend after flood wait | `resendMessages` |
+| Typing / recording indicator | `sendChatAction` |
+| Scheduled queue | `getChatScheduledMessages` + `messageSchedulingState` |
+| Translate | `translateText` |
 
-## 4. Навигация и поиск: 120 функций
+## 4. Search and navigation: 120 functions
 
 `loadChats`, `getChats`, `searchChats`, `searchChatsOnServer`, `searchMessages`,
 `searchChatMessages`, `searchSecretMessages`, `getChat`, `getChatHistory`,
 `getMessage`, `getMessages`, `joinChat`, `leaveChat`, `createPrivateChat`,
-`createNewSecretChat`, `getTopChats`, `toggleChatIsPinned`, `addChatToList`
-(папки), плюс темы форумов (`getForumTopics`, …).
+`createNewSecretChat`, `getTopChats`, `toggleChatIsPinned`, `addChatToList`,
+`setChatNotificationSettings`. Chat lists are `chatListMain`, `chatListArchive` and
+`chatListFolder(folder_id)`; folders arrive through `updateChatFolders`. Forums expose
+`getForumTopics`, `getForumTopic`, `createForumTopic`.
 
-## 5. Звонки и секретные чаты
+## 5. Calls, secret chats, forums
 
-- Сигналинг звонка в TDLib **есть**: `createCall`, `acceptCall`,
-  `sendCallSignalingData`, `discardCall`, `sendCallRating`,
-  `sendCallDebugInformation`, `sendCallLog`.
-- Медиа (WebRTC, ICE/DTLS/SRTP, эхо-подавление) **отсутствует** — это отдельный
-  движок, см. `RESEARCH.md` §2–3.
-- Секретные чаты: `createNewSecretChat`, `getSecretChat`, `closeSecretChat`;
-  дальше обычный `sendMessage` в `secret_chat_id`.
+- Call signalling lives in TDLib: `createCall`, `acceptCall`, `sendCallSignalingData`,
+  `discardCall`, `sendCallRating`, `sendCallDebugInformation`, `sendCallLog`.
+- Media (WebRTC, ICE/DTLS/SRTP, echo cancellation) is **not** part of TDLib: that is a
+  separate engine, see `RESEARCH.md`.
+- Secret chats: `createNewSecretChat`, `getSecretChat`, `closeSecretChat`; afterwards a
+  normal `sendMessage` with `secret_chat_id`.
+- Forums: topic-aware `sendMessage` takes `topic_id`, and `getForumTopics` lists them.
 
-## 6. Чего в TDLib нет вообще — и это наша работа
+## 6. What TDLib has no concept of — our own work
 
-| Нет | Значит |
-|---|---|
-| Понятия «горячая клавиша», «команда», «контекстное меню» | только `quickReplyShortcut*` — это заготовки ответов Telegram, не клавиатура |
-| Записи с микрофона и кодирования Opus | WASAPI + Opus-энкодер |
-| Отрисовки голосовой волны | считаем сами из `waveform` |
-| Воспроизведения аудио | NAudio |
-| Уведомлений ОС | наши тосты |
-| Доступности, скринридера, фокуса | WPF + UIA |
-| Форматирования дат и чисел словами | Humanizer |
-| Локального поиска по скачанному | либо `searchChatMessages`, либо свой индекс |
+| Missing | Consequence |
+| --- | --- |
+| Hotkeys, commands, context menus | only `quickReplyShortcut*`, which are saved replies, not keyboard |
+| Microphone capture and Opus encoding | WASAPI plus an Opus encoder |
+| Waveform rendering | computed from the `waveform` bytes |
+| Audio playback | NAudio |
+| OS notifications | our own toasts |
+| Accessibility, screen reader, focus | WPF plus UI Automation |
+| Dates and numbers in words | Humanizer-style formatting |
+| Local search over downloaded files | `searchChatMessages` or our own index |
 
-**Вывод:** TDLib закрывает сеть, авторизацию, кеш, все действия с сообщениями и
-поиск — 100% «телеграмной» части. Всё, что делает клиента клиентом для незрячих
-(клавиатура, команды, озвучка, запись голоса), — наш слой, и TDLib тут не мешает.
+**Conclusion:** TDLib covers the network, authorization, cache, every message action and
+search — the entire "Telegram" half. Everything that makes the client usable for a blind
+user (keyboard, commands, speech, voice recording) is our layer, and TDLib does not get
+in its way.

@@ -15,11 +15,26 @@ Deliberately not added: Moq (SponsorLink), FluentAssertions (licence), NSubstitu
 interface worth mocking yet), Bogus (no random data needed yet). Add them when a real test
 needs them, not before.
 
+## Current numbers
+
+101 tests, all green. Line coverage: **TeleAccess.Core 95.9 %**, TeleAccess.App 9.0 %,
+overall 23.6 % (branch 20.2 %).
+
+The App figure is low on purpose and honestly so: it is WPF code-behind plus the TDLib
+service, and both need a live Telegram session or a UI harness. What could be pulled out
+of the window was pulled out — attachment routing is `AttachmentClassifier` in Core with
+sixteen tests, scheduling logic is `ScheduleParser` and `ScheduleComposer`, list cycling is
+`ChatListCycle`, hotkey rules are `CommandRegistry`.
+
 ## What is tested
 
 - `TeleAccess.Core` behaviour: hotkey parsing and normalization, per-scope conflict
   detection, scope resolution with global fallback, reset and clear, SQLite persistence of
   settings and keymap.
+- Attachment classification by extension, including unknown and extensionless files.
+- Localization parity: Russian covers every English key, no empty values, no duplicate
+  keys, unknown culture falls back to English.
+- Presentation: message and chat lines, credential resolution, error mapping.
 - The real command catalog from the app: the default keymap is compared against
   `tests/TeleAccess.Core.Tests/Snapshots/DefaultKeymap.txt`, so a shortcut cannot drift
   away from `docs/HOTKEYS.md` unnoticed. Duplicate ids, conflicts inside a scope and

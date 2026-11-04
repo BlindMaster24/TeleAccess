@@ -33,8 +33,8 @@ Early development. Implemented: sign-in with api_id/api_hash, chat list, message
 sending (normal, silent and scheduled), voice messages, file attachments, audio, reply,
 edit, delete, forward, pin, copy, reactions, search inside a chat, scheduled messages,
 chat deletion, mute, pin, archive, Telegram folders, and the full command and shortcut
-system, photos, contacts, locations, translation and global search. Not implemented yet:
-calls, video, animation, stickers, polls, forums and secret chat UI.
+system, photos, video, animation, stickers, polls, contacts, locations, translation and
+global search. Not implemented yet: calls, forum topic UI and secret chat UI.
 
 ## Build
 
