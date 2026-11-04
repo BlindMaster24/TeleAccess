@@ -28,6 +28,8 @@ public sealed record UiActions(
     Action AddAccount,
     Action SwitchAccount,
     Action RemoveAccount,
+    Action UnbanMember,
+    Action DisableProxy,
     ChatActions Chat,
     MessageActions Message,
     ComposerActions Composer);

@@ -1285,6 +1285,59 @@ public sealed class TelegramService : IDisposable
         _ => null
     };
 
+    public async Task ToggleTopicClosedAsync(long chatId, int topicId, bool closed)
+    {
+        RequireClient();
+
+        await _client!.ExecuteAsync(new TdApi.ToggleForumTopicIsClosed
+        {
+            ChatId = chatId,
+            ForumTopicId = topicId,
+            IsClosed = closed
+        });
+    }
+
+    public async Task DeleteTopicAsync(long chatId, int topicId)
+    {
+        RequireClient();
+
+        await _client!.ExecuteAsync(new TdApi.DeleteForumTopic
+        {
+            ChatId = chatId,
+            ForumTopicId = topicId
+        });
+    }
+
+    public async Task ToggleTopicPinnedAsync(long chatId, int topicId, bool pinned)
+    {
+        RequireClient();
+
+        await _client!.ExecuteAsync(new TdApi.ToggleForumTopicIsPinned
+        {
+            ChatId = chatId,
+            ForumTopicId = topicId,
+            IsPinned = pinned
+        });
+    }
+
+    public async Task UnbanMemberAsync(long chatId, TdApi.MessageSender member)
+    {
+        RequireClient();
+
+        await _client!.ExecuteAsync(new TdApi.SetChatMemberStatus
+        {
+            ChatId = chatId,
+            MemberId = member,
+            Status = new TdApi.ChatMemberStatus.ChatMemberStatusMember { MemberUntilDate = 0 }
+        });
+    }
+
+    public async Task DisableProxyAsync()
+    {
+        RequireClient();
+        await _client!.ExecuteAsync(new TdApi.DisableProxy());
+    }
+
     public async Task CreateForumTopicAsync(long chatId, string name)
     {
         RequireClient();

@@ -530,4 +530,26 @@ public static class Strings
 
     public static string Status_TopicCreated => Get(nameof(Status_TopicCreated));
 
+    public static string Cmd_TopicClose => Get(nameof(Cmd_TopicClose));
+
+    public static string Cmd_TopicDelete => Get(nameof(Cmd_TopicDelete));
+
+    public static string Cmd_TopicPin => Get(nameof(Cmd_TopicPin));
+
+    public static string Cmd_UnbanMember => Get(nameof(Cmd_UnbanMember));
+
+    public static string Cmd_DisableProxy => Get(nameof(Cmd_DisableProxy));
+
+    public static string Prompt_UnbanMember => Get(nameof(Prompt_UnbanMember));
+
+    public static string Status_TopicClosed => Get(nameof(Status_TopicClosed));
+
+    public static string Status_TopicReopened => Get(nameof(Status_TopicReopened));
+
+    public static string Status_TopicDeleted => Get(nameof(Status_TopicDeleted));
+
+    public static string Status_MemberUnbanned => Get(nameof(Status_MemberUnbanned));
+
+    public static string Status_ProxyDisabled => Get(nameof(Status_ProxyDisabled));
+
 }

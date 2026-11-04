@@ -795,4 +795,37 @@
   <data name="Status_TopicCreated" xml:space="preserve">
     <value>Topic created</value>
   </data>
+  <data name="Cmd_TopicClose" xml:space="preserve">
+    <value>Close or reopen topic</value>
+  </data>
+  <data name="Cmd_TopicDelete" xml:space="preserve">
+    <value>Delete topic</value>
+  </data>
+  <data name="Cmd_TopicPin" xml:space="preserve">
+    <value>Pin or unpin topic</value>
+  </data>
+  <data name="Cmd_UnbanMember" xml:space="preserve">
+    <value>Unban a member</value>
+  </data>
+  <data name="Cmd_DisableProxy" xml:space="preserve">
+    <value>Disable the proxy</value>
+  </data>
+  <data name="Prompt_UnbanMember" xml:space="preserve">
+    <value>Member number to unban</value>
+  </data>
+  <data name="Status_TopicClosed" xml:space="preserve">
+    <value>Topic closed</value>
+  </data>
+  <data name="Status_TopicReopened" xml:space="preserve">
+    <value>Topic reopened</value>
+  </data>
+  <data name="Status_TopicDeleted" xml:space="preserve">
+    <value>Topic deleted</value>
+  </data>
+  <data name="Status_MemberUnbanned" xml:space="preserve">
+    <value>Member unbanned</value>
+  </data>
+  <data name="Status_ProxyDisabled" xml:space="preserve">
+    <value>Proxy disabled</value>
+  </data>
 </root>

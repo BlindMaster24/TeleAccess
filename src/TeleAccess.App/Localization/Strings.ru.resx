@@ -795,4 +795,37 @@
   <data name="Status_TopicCreated" xml:space="preserve">
     <value>Тема создана</value>
   </data>
+  <data name="Cmd_TopicClose" xml:space="preserve">
+    <value>Закрыть или открыть тему</value>
+  </data>
+  <data name="Cmd_TopicDelete" xml:space="preserve">
+    <value>Удалить тему</value>
+  </data>
+  <data name="Cmd_TopicPin" xml:space="preserve">
+    <value>Закрепить или открепить тему</value>
+  </data>
+  <data name="Cmd_UnbanMember" xml:space="preserve">
+    <value>Разбанить участника</value>
+  </data>
+  <data name="Cmd_DisableProxy" xml:space="preserve">
+    <value>Отключить прокси</value>
+  </data>
+  <data name="Prompt_UnbanMember" xml:space="preserve">
+    <value>Номер участника для разбана</value>
+  </data>
+  <data name="Status_TopicClosed" xml:space="preserve">
+    <value>Тема закрыта</value>
+  </data>
+  <data name="Status_TopicReopened" xml:space="preserve">
+    <value>Тема открыта</value>
+  </data>
+  <data name="Status_TopicDeleted" xml:space="preserve">
+    <value>Тема удалена</value>
+  </data>
+  <data name="Status_MemberUnbanned" xml:space="preserve">
+    <value>Участник разбанен</value>
+  </data>
+  <data name="Status_ProxyDisabled" xml:space="preserve">
+    <value>Прокси отключён</value>
+  </data>
 </root>

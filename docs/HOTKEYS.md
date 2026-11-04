@@ -96,6 +96,7 @@ menu of the focused area.
 | `Enter` | in a forum chat: open the selected topic |
 | `Backspace` | in a topic: back to the topic list |
 | `Ctrl+Alt+N` | create a topic |
+| — | close/reopen topic, delete topic, pin/unpin topic |
 
 ### Message
 

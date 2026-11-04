@@ -41,6 +41,7 @@ public static class CommandCatalog
         Add(registry, "global.addAccount", Strings.Cmd_AddAccount, CommandScope.Global, null, actions.AddAccount);
         Add(registry, "global.switchAccount", Strings.Cmd_SwitchAccount, CommandScope.Global, null, actions.SwitchAccount);
         Add(registry, "global.removeAccount", Strings.Cmd_RemoveAccount, CommandScope.Global, null, actions.RemoveAccount);
+        Add(registry, "global.disableProxy", Strings.Cmd_DisableProxy, CommandScope.Global, null, actions.DisableProxy);
         Add(registry, "global.proxy", Strings.Cmd_Proxy, CommandScope.Global, null, actions.Proxy);
         Add(registry, "global.training", Strings.Cmd_Training, CommandScope.Global, "Ctrl+F1", actions.Training);
         Add(registry, "global.settings", Strings.Cmd_Settings, CommandScope.Global, "Ctrl+Comma", actions.Settings);
@@ -59,6 +60,7 @@ public static class CommandCatalog
         Add(registry, "chatList.archive", Strings.Cmd_ArchiveChat, CommandScope.ChatList, "Ctrl+Shift+A", actions.Chat.Archive, actions.HasChat);
         Add(registry, "chatList.createFolder", Strings.Cmd_CreateFolder, CommandScope.ChatList, "Ctrl+Alt+F", actions.Chat.CreateFolder);
         Add(registry, "chatList.deleteFolder", Strings.Cmd_DeleteFolder, CommandScope.ChatList, "Ctrl+Alt+D", actions.Chat.DeleteFolder, actions.HasChat);
+        Add(registry, "chatList.unbanMember", Strings.Cmd_UnbanMember, CommandScope.ChatList, null, actions.UnbanMember, actions.HasChat);
         Add(registry, "chatList.banMember", Strings.Cmd_BanMember, CommandScope.ChatList, "Ctrl+Alt+B", actions.Chat.BanMember, actions.HasChat);
         Add(registry, "chatList.inviteLink", Strings.Cmd_InviteLink, CommandScope.ChatList, "Ctrl+Shift+I", actions.Chat.InviteLink, actions.HasChat);
         Add(registry, "chatList.rename", Strings.Cmd_Rename, CommandScope.ChatList, "F2", actions.Chat.Rename, actions.HasChat);
@@ -92,6 +94,9 @@ public static class CommandCatalog
         Add(registry, "messageList.topicOpen", Strings.Cmd_TopicOpen, CommandScope.MessageList, "Enter", actions.Message.OpenTopic);
         Add(registry, "messageList.topicBack", Strings.Cmd_TopicBack, CommandScope.MessageList, "Backspace", actions.Message.BackToTopics);
         Add(registry, "messageList.topicCreate", Strings.Cmd_TopicCreate, CommandScope.MessageList, "Ctrl+Alt+N", actions.Message.CreateTopic, actions.HasChat);
+        Add(registry, "messageList.topicClose", Strings.Cmd_TopicClose, CommandScope.MessageList, null, actions.Message.CloseTopic, actions.HasChat);
+        Add(registry, "messageList.topicDelete", Strings.Cmd_TopicDelete, CommandScope.MessageList, null, actions.Message.DeleteTopic, actions.HasChat);
+        Add(registry, "messageList.topicPin", Strings.Cmd_TopicPin, CommandScope.MessageList, null, actions.Message.PinTopic, actions.HasChat);
         Add(registry, "messageList.older", Strings.Cmd_Older, CommandScope.MessageList, "Ctrl+Up", actions.Message.Older, actions.HasChat);
         Add(registry, "composer.send", Strings.Cmd_Send, CommandScope.Composer, "Enter", actions.Composer.Send, actions.HasChat);
         Add(registry, "composer.sendSilent", Strings.Cmd_SendSilent, CommandScope.Composer, "Ctrl+Enter", actions.Composer.SendSilent, actions.HasChat);

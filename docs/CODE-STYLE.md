@@ -37,7 +37,8 @@ counter++;
 ```
 
 ```csharp
-// TODO: fix later.
+// Calls the service.
+_service.DoWork();
 ```
 
 ## Style

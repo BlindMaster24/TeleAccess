@@ -262,6 +262,8 @@ public partial class MainWindow : Window
         AddAccount: OnAddAccount,
         SwitchAccount: OnSwitchAccount,
         RemoveAccount: OnRemoveAccount,
+        UnbanMember: OnUnbanMember,
+        DisableProxy: OnDisableProxy,
         Quit: Close,
         Chat: CreateChatActions(),
         Message: CreateMessageActions(),
@@ -303,7 +305,10 @@ public partial class MainWindow : Window
         Buttons: OnButtons,
         OpenTopic: OnOpenTopic,
         BackToTopics: OnBackToTopics,
-        CreateTopic: OnCreateTopic);
+        CreateTopic: OnCreateTopic,
+        CloseTopic: OnCloseTopic,
+        DeleteTopic: OnDeleteTopic,
+        PinTopic: OnPinTopic);
 
     private ComposerActions CreateComposerActions() => new(
         Send: OnSend,
@@ -1476,6 +1481,135 @@ public partial class MainWindow : Window
         _currentTopic = null;
         _currentMessage = null;
         _ = RefreshMessagesAsync(_currentChat);
+    }
+
+    private TopicRow? SelectedTopic() =>
+        MessageList.SelectedItem as TopicRow ?? _currentTopic;
+
+    private void OnCloseTopic() => _ = ToggleTopicClosedAsync();
+
+    private async Task ToggleTopicClosedAsync()
+    {
+        var topic = SelectedTopic();
+
+        if (_currentChat is null || topic is null)
+        {
+            Announce(Strings.Status_NoSelection);
+            return;
+        }
+
+        try
+        {
+            await _telegram.ToggleTopicClosedAsync(_currentChat.Id, topic.Id, !topic.IsClosed);
+            Announce(topic.IsClosed ? Strings.Status_TopicReopened : Strings.Status_TopicClosed);
+            await ShowTopicListAsync(_currentChat);
+        }
+        catch (Exception exception)
+        {
+            Announce(Errors.Describe(exception));
+        }
+    }
+
+    private void OnDeleteTopic() => _ = DeleteTopicAsync();
+
+    private async Task DeleteTopicAsync()
+    {
+        var topic = SelectedTopic();
+
+        if (_currentChat is null || topic is null)
+        {
+            Announce(Strings.Status_NoSelection);
+            return;
+        }
+
+        try
+        {
+            await _telegram.DeleteTopicAsync(_currentChat.Id, topic.Id);
+            _currentTopic = null;
+            Announce(Strings.Status_TopicDeleted);
+            await ShowTopicListAsync(_currentChat);
+        }
+        catch (Exception exception)
+        {
+            Announce(Errors.Describe(exception));
+        }
+    }
+
+    private void OnPinTopic() => _ = ToggleTopicPinnedAsync();
+
+    private async Task ToggleTopicPinnedAsync()
+    {
+        var topic = SelectedTopic();
+
+        if (_currentChat is null || topic is null)
+        {
+            Announce(Strings.Status_NoSelection);
+            return;
+        }
+
+        try
+        {
+            await _telegram.ToggleTopicPinnedAsync(_currentChat.Id, topic.Id, !topic.IsPinned);
+            Announce(topic.IsPinned ? Strings.Status_Unpinned : Strings.Status_Pinned);
+            await ShowTopicListAsync(_currentChat);
+        }
+        catch (Exception exception)
+        {
+            Announce(Errors.Describe(exception));
+        }
+    }
+
+    private void OnUnbanMember() => _ = UnbanMemberAsync();
+
+    private async Task UnbanMemberAsync()
+    {
+        if (_currentChat is null)
+        {
+            Announce(Strings.Status_NoChat);
+            return;
+        }
+
+        try
+        {
+            var members = await _telegram.GetMemberRowsAsync(_currentChat.Id);
+
+            if (members.Count == 0)
+            {
+                Announce(Strings.Status_NoMembers);
+                return;
+            }
+
+            Composer.Text = string.Join(Environment.NewLine, members.Select((member, index) => (index + 1) + ". " + member.Name));
+            var answer = PromptWindow.Ask(this, Strings.Prompt_UnbanMember);
+
+            if (!IndexSelection.TrySelect(answer, members.Count, out var index))
+            {
+                Announce(Strings.Error_BadNumber);
+                return;
+            }
+
+            await _telegram.UnbanMemberAsync(_currentChat.Id, members[index].Id);
+            Announce(Strings.Status_MemberUnbanned);
+        }
+        catch (Exception exception)
+        {
+            Announce(Errors.Describe(exception));
+        }
+    }
+
+    private void OnDisableProxy() => _ = DisableProxyAsync();
+
+    private async Task DisableProxyAsync()
+    {
+        try
+        {
+            await _telegram.DisableProxyAsync();
+            Announce(Strings.Status_ProxyDisabled);
+        }
+        catch (Exception exception)
+        {
+            Announce(Errors.Describe(exception));
+        }
     }
 
     private void OnCreateTopic() => _ = CreateTopicAsync();

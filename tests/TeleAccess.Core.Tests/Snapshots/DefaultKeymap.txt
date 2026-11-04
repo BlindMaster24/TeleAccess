@@ -17,6 +17,7 @@ global.stories | Global | none
 global.addAccount | Global | none
 global.switchAccount | Global | none
 global.removeAccount | Global | none
+global.disableProxy | Global | none
 global.proxy | Global | none
 global.training | Global | Ctrl+F1
 global.settings | Global | Ctrl+Comma
@@ -31,6 +32,7 @@ chatList.pin | ChatList | Ctrl+Shift+P
 chatList.archive | ChatList | Ctrl+Shift+A
 chatList.createFolder | ChatList | Ctrl+Alt+F
 chatList.deleteFolder | ChatList | Ctrl+Alt+D
+chatList.unbanMember | ChatList | none
 chatList.banMember | ChatList | Ctrl+Alt+B
 chatList.inviteLink | ChatList | Ctrl+Shift+I
 chatList.rename | ChatList | F2
@@ -56,6 +58,9 @@ message.searchInChat | Message | Ctrl+F
 messageList.topicOpen | MessageList | Enter
 messageList.topicBack | MessageList | Backspace
 messageList.topicCreate | MessageList | Ctrl+Alt+N
+messageList.topicClose | MessageList | none
+messageList.topicDelete | MessageList | none
+messageList.topicPin | MessageList | none
 messageList.older | MessageList | Ctrl+Up
 composer.send | Composer | Enter
 composer.sendSilent | Composer | Ctrl+Enter

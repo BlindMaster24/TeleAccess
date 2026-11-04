@@ -30,6 +30,9 @@ All notable changes are recorded here. Format follows
 - Incoming voice notes and audio play through NAudio (`MediaFoundationReader`), `Enter` plays, `Escape` stops.
 - Attachments download with `Ctrl+S`, history pages back with `Ctrl+Up`, new messages elsewhere announce with an earcon, and `Ctrl+F1` turns on training mode.
 - Global search filters: `type:` and `date:` tokens become a TDLib filter and a date range; the token parser is pure and covered by thirteen tests.
+- Topic lifecycle: close/reopen, delete and pin/unpin, all unassigned by default.
+- Member unban and proxy disable are available next to their counterparts.
+- The anti-pattern example in the style guide no longer contains a marker token.
 - Text formatting: `**bold**`, `__bold__`, `_italic_` and backticks become Telegram entities; the parser is pure and covered by twelve tests.
 - Forum topics UI: a forum chat opens with its topic list, `Enter` opens a topic, `Backspace` returns, `Ctrl+Alt+N` creates one, and sending inside a topic passes `MessageTopicForum`.
 - Forum topics: the service loads topics with unread, pin and closed state plus the last message id, and reads history inside a topic through getMessageThreadHistory; ordering and unread aggregation live in TopicSorter with six tests.
