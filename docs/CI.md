@@ -7,7 +7,7 @@ builds or lints markdown, because a broken link does not break the client.
 | --- | --- | --- |
 | `ci` | push to `main`, pull request, manual | Release build with warnings as errors, formatting unchanged, all tests green with coverage, portable single-file artifact for `win-x64` and `win-arm64` |
 | `codeql` | push to `main`, pull request, weekly, manual | Security analysis of C# sources |
-| `dependencies` | pull request, weekly, manual | Report of outdated packages; opens an issue when newer versions exist |
+| `dependencies` | pull request, weekly, manual | Dependency diff review on pull requests (fails on moderate or worse additions); report of outdated packages, with an issue opened when newer versions exist |
 
 ## What the build gate means
 
@@ -24,11 +24,16 @@ A pull request is green only when all of this holds:
 - `coverage` — Cobertura report from the test run.
 - `teleaccess-win-x64`, `teleaccess-win-arm64` — portable executables.
 
+## Why lock files are committed
+
+GitHub's dependency graph reads NuGet dependencies from `packages.lock.json`, not from
+`PackageReference` entries. Without those files the dependency review job cannot see the
+graph and refuses to run. `RestorePackagesWithLockFile` keeps them current, and CI runs in
+`RestoreLockedMode`, so a version bump that forgets the lock file fails the build instead
+of drifting silently.
+
 ## What is deliberately not here
 
-- **Dependency diff review.** `actions/dependency-review-action` refuses to run on this
-  repository because the dependency graph is not available to the action. An always-red
-  check teaches people to ignore checks, so the job is gone rather than disabled.
 - **Documentation linting.** A broken link does not break the client; markdown is not
   built or checked.
 

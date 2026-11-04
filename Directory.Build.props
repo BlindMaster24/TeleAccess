@@ -14,6 +14,8 @@
     <NeutralLanguage>en</NeutralLanguage>
     <SatelliteResourceLanguages>en;ru</SatelliteResourceLanguages>
     <InvariantGlobalization>false</InvariantGlobalization>
+    <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
+    <RestoreLockedMode Condition="'$(CI)' == 'true'">true</RestoreLockedMode>
     <NoWarn>$(NoWarn);CS1591;CA1707;CA1848;CA2007;CA1303;CA1031;CA1812;CA1852</NoWarn>
   </PropertyGroup>
 
