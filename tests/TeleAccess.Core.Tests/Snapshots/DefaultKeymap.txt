@@ -14,10 +14,12 @@ chatList.pin | ChatList | Ctrl+Shift+P
 chatList.archive | ChatList | Ctrl+Shift+A
 chatList.scheduled | ChatList | Ctrl+Shift+S
 chatList.switchList | ChatList | Ctrl+Shift+L
+messageList.pinned | MessageList | Ctrl+Shift+P
 message.read | Message | Enter
 message.reply | Message | Ctrl+R
 message.edit | Message | Ctrl+E
 message.delete | Message | Ctrl+D
+message.deleteForMe | Message | Ctrl+Shift+D
 message.forward | Message | Ctrl+Shift+F
 message.pin | Message | Ctrl+P
 message.copy | Message | Ctrl+C

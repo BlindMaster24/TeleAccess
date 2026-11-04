@@ -7,7 +7,8 @@ public sealed record MessageRow(
     MessageKind Kind,
     string Text,
     string Time,
-    bool IsOutgoing)
+    bool IsOutgoing,
+    bool IsPinned)
 {
     public string Display => string.IsNullOrEmpty(Sender)
         ? $"{Time}. {Text}"

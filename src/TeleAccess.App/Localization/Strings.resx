@@ -112,7 +112,7 @@
     <value>Forward message</value>
   </data>
   <data name="Cmd_Pin" xml:space="preserve">
-    <value>Pin message</value>
+    <value>Pin or unpin message</value>
   </data>
   <data name="Cmd_Unpin" xml:space="preserve">
     <value>Unpin message</value>
@@ -449,5 +449,17 @@
   </data>
   <data name="Error_UnsupportedAudio" xml:space="preserve">
     <value>Unsupported audio format</value>
+  </data>
+  <data name="Cmd_JumpPinned" xml:space="preserve">
+    <value>Jump to the pinned message</value>
+  </data>
+  <data name="Cmd_DeleteForMe" xml:space="preserve">
+    <value>Delete for me only</value>
+  </data>
+  <data name="Status_NoPinned" xml:space="preserve">
+    <value>No pinned message</value>
+  </data>
+  <data name="Status_ListSwitched" xml:space="preserve">
+    <value>Chat list: {0}</value>
   </data>
 </root>

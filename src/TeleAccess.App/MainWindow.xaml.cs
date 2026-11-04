@@ -10,6 +10,7 @@ using TeleAccess.App.Localization;
 using TeleAccess.App.Services;
 using TeleAccess.App.Windows;
 using TeleAccess.Core;
+using TeleAccess.Core.ChatLists;
 using TeleAccess.Core.Data;
 
 namespace TeleAccess.App;
@@ -30,7 +31,8 @@ public partial class MainWindow : Window
     private MessageRow? _currentMessage;
     private long _replyToMessageId;
     private bool _showingTransient;
-    private bool _archiveList;
+    private ChatListEntry _chatList = new("Main", ChatListKind.Main);
+    private IReadOnlyList<ChatListEntry> _listEntries = [new("Main", ChatListKind.Main), new("Archive", ChatListKind.Archive)];
 
     public MainWindow()
     {
@@ -53,6 +55,7 @@ public partial class MainWindow : Window
         _telegram.AuthStageChanged += OnAuthStageChanged;
         _telegram.ChatsChanged += OnChatsChanged;
         _telegram.ChatMessagesChanged += OnChatMessagesChanged;
+        _telegram.FoldersChanged += OnFoldersChanged;
 
         LoadSettingsIntoForm();
         _telegram.Start(_settings);
@@ -96,7 +99,9 @@ public partial class MainWindow : Window
             Pin: OnPin,
             Copy: OnCopy,
             React: OnReact,
-            SearchInChat: OnSearchInChat),
+            SearchInChat: OnSearchInChat,
+            DeleteForMe: OnDeleteForMe,
+            JumpToPinned: OnJumpToPinned),
         Composer: new ComposerActions(
             Send: OnSend,
             SendSilent: OnSendSilent,
@@ -143,6 +148,27 @@ public partial class MainWindow : Window
 
     private void OnAuthStageChanged(object? sender, AuthStageChangedEventArgs e) =>
         Dispatcher.Invoke(() => ApplyStage(e.Stage));
+
+    private void OnFoldersChanged(object? sender, EventArgs e) => Dispatcher.Invoke(RebuildLists);
+
+    private void RebuildLists()
+    {
+        var entries = new List<ChatListEntry> { new("Main", ChatListKind.Main) };
+
+        foreach (var folder in _telegram.Folders)
+        {
+            entries.Add(new ChatListEntry(folder.Title, ChatListKind.Folder, folder.Id));
+        }
+
+        entries.Add(new ChatListEntry("Archive", ChatListKind.Archive));
+
+        if (!entries.Contains(_chatList))
+        {
+            _chatList = entries[0];
+        }
+
+        _listEntries = entries;
+    }
 
     private void OnChatsChanged(object? sender, EventArgs e) =>
         Dispatcher.Invoke(() => _ = RefreshChatsAsync(SearchBox.Text));
@@ -263,7 +289,7 @@ public partial class MainWindow : Window
         {
             var chats = await _telegram.LoadChatsAsync(
                 query: string.IsNullOrWhiteSpace(query) ? null : query,
-                archive: _archiveList);
+                list: _chatList);
             var selected = (ChatList.SelectedItem as ChatRow)?.Id;
             ChatList.ItemsSource = chats;
 
@@ -604,10 +630,61 @@ public partial class MainWindow : Window
         MessageList.Focus();
     }
 
+    private void OnDeleteForMe() => _ = DeleteForMeAsync();
+
+    private async Task DeleteForMeAsync()
+    {
+        if (_currentChat is null || _currentMessage is null)
+        {
+            Announce(Strings.Status_NoSelection);
+            return;
+        }
+
+        try
+        {
+            await _telegram.DeleteMessagesAsync(_currentChat.Id, [_currentMessage.Id], false);
+            Announce(Strings.Status_DeletedLocal);
+            await RefreshMessagesAsync(_currentChat);
+        }
+        catch (Exception exception)
+        {
+            Announce(Errors.Describe(exception));
+        }
+    }
+
+    private void OnJumpToPinned() => _ = JumpToPinnedAsync();
+
+    private async Task JumpToPinnedAsync()
+    {
+        if (_currentChat is null)
+        {
+            Announce(Strings.Status_NoChat);
+            return;
+        }
+
+        try
+        {
+            var pinned = await _telegram.GetPinnedAsync(_currentChat.Id);
+
+            if (pinned is null)
+            {
+                Announce(Strings.Status_NoPinned);
+                return;
+            }
+
+            ShowTransient([pinned]);
+            Announce($"{Strings.Status_Pinned}. {pinned.Display}");
+        }
+        catch (Exception exception)
+        {
+            Announce(Errors.Describe(exception));
+        }
+    }
+
     private void OnSwitchList()
     {
-        _archiveList = !_archiveList;
-        Announce(_archiveList ? Strings.Status_ListArchive : Strings.Status_ListMain);
+        _chatList = ChatListCycle.Next(_listEntries, _chatList);
+        Announce(string.Format(Strings.Culture, Strings.Status_ListSwitched, _chatList.Title));
         _ = RefreshChatsAsync(SearchBox.Text);
     }
 
@@ -845,8 +922,9 @@ public partial class MainWindow : Window
 
         try
         {
-            await _telegram.PinMessageAsync(_currentChat.Id, _currentMessage.Id, true);
-            Announce(Strings.Status_Pinned);
+            var pin = !_currentMessage.IsPinned;
+            await _telegram.PinMessageAsync(_currentChat.Id, _currentMessage.Id, pin);
+            Announce(pin ? Strings.Status_Pinned : Strings.Status_Unpinned);
         }
         catch (Exception exception)
         {

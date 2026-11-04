@@ -56,7 +56,7 @@ menu of the focused area.
 | `Ctrl+Shift+A` | archive / unarchive |
 | `Ctrl+Shift+U` | mark as read / unread |
 | `Ctrl+Shift+S` | show scheduled messages |
-| `Ctrl+Shift+L` | switch between main and archived chats |
+| `Ctrl+Shift+L` | cycle chat lists: main, each Telegram folder, archive |
 | `Ctrl+Shift+L` | leave group or channel |
 | `Ctrl+Shift+F` | switch folder |
 | `Ctrl+Shift+N` | create folder from selection |
@@ -69,7 +69,7 @@ menu of the focused area.
 | `PageUp` / `PageDown` | page of messages |
 | `Home` / `End` | first / last message |
 | `Ctrl+G` | jump to date |
-| `Ctrl+Shift+P` | jump to pinned message |
+| `Ctrl+Shift+P` | jump to the pinned message |
 | `Space` | toggle selection |
 | `Ctrl+A` | select all loaded messages |
 
@@ -84,7 +84,7 @@ menu of the focused area.
 | `Ctrl+D` | delete: for everyone when own, for me otherwise |
 | `Ctrl+Shift+D` | delete for me only |
 | `Ctrl+Shift+F` | forward |
-| `Ctrl+P` | pin |
+| `Ctrl+P` | pin or unpin |
 | `Ctrl+Shift+P` | unpin |
 | `Ctrl+Shift+E` | add reaction |
 | `Ctrl+F` | search in this chat |

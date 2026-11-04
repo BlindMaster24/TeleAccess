@@ -31,10 +31,12 @@ public static class CommandCatalog
 
         Add(registry, "chatList.switchList", Strings.Cmd_SwitchList, CommandScope.ChatList, "Ctrl+Shift+L", actions.Chat.SwitchList);
 
+        Add(registry, "messageList.pinned", Strings.Cmd_JumpPinned, CommandScope.MessageList, "Ctrl+Shift+P", actions.Message.JumpToPinned, actions.HasChat);
         Add(registry, "message.read", Strings.Cmd_Listen, CommandScope.Message, "Enter", actions.Message.ReadAloud, actions.HasMessage);
         Add(registry, "message.reply", Strings.Cmd_Reply, CommandScope.Message, "Ctrl+R", actions.Message.Reply, actions.HasMessage);
         Add(registry, "message.edit", Strings.Cmd_Edit, CommandScope.Message, "Ctrl+E", actions.Message.Edit, actions.HasMessage);
         Add(registry, "message.delete", Strings.Cmd_Delete, CommandScope.Message, "Ctrl+D", actions.Message.Delete, actions.HasMessage);
+        Add(registry, "message.deleteForMe", Strings.Cmd_DeleteForMe, CommandScope.Message, "Ctrl+Shift+D", actions.Message.DeleteForMe, actions.HasMessage);
         Add(registry, "message.forward", Strings.Cmd_Forward, CommandScope.Message, "Ctrl+Shift+F", actions.Message.Forward, actions.HasMessage);
         Add(registry, "message.pin", Strings.Cmd_Pin, CommandScope.Message, "Ctrl+P", actions.Message.Pin, actions.HasMessage);
         Add(registry, "message.copy", Strings.Cmd_Copy, CommandScope.Message, "Ctrl+C", actions.Message.Copy, actions.HasMessage);

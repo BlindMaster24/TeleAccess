@@ -3,6 +3,7 @@ using System.Globalization;
 using System.IO;
 using TdLib;
 using TdLib.Bindings;
+using TeleAccess.Core.ChatLists;
 
 namespace TeleAccess.App.Services;
 
@@ -17,6 +18,10 @@ public sealed class TelegramService : IDisposable
     public event EventHandler? ChatsChanged;
 
     public event EventHandler<ChatMessagesChangedEventArgs>? ChatMessagesChanged;
+
+    public event EventHandler? FoldersChanged;
+
+    public IReadOnlyList<FolderRow> Folders { get; private set; } = [];
 
     public AuthStage Stage { get; private set; } = AuthStage.Starting;
 
@@ -58,13 +63,11 @@ public sealed class TelegramService : IDisposable
         await _client!.ExecuteAsync(new TdApi.CheckAuthenticationPassword { Password = password });
     }
 
-    public async Task<IReadOnlyList<ChatRow>> LoadChatsAsync(int limit = 60, string? query = null, bool archive = false)
+    public async Task<IReadOnlyList<ChatRow>> LoadChatsAsync(int limit = 60, string? query = null, ChatListEntry? list = null)
     {
         RequireClient();
 
-        TdApi.ChatList chatList = archive
-            ? new TdApi.ChatList.ChatListArchive()
-            : new TdApi.ChatList.ChatListMain();
+        var chatList = ToChatList(list);
 
         var ids = new List<long>();
 
@@ -519,6 +522,11 @@ public sealed class TelegramService : IDisposable
                 HandleAuthorization(auth.AuthorizationState);
                 break;
 
+            case TdApi.Update.UpdateChatFolders folders:
+                Folders = folders.ChatFolders.Select(folder => new FolderRow(folder.Id, folder.Name.Text.Text)).ToArray();
+                FoldersChanged?.Invoke(this, EventArgs.Empty);
+                break;
+
             case TdApi.Update.UpdateNewChat:
             case TdApi.Update.UpdateChatTitle:
             case TdApi.Update.UpdateChatLastMessage:
@@ -646,6 +654,13 @@ public sealed class TelegramService : IDisposable
         ChatsChanged?.Invoke(this, EventArgs.Empty);
     }
 
+    private static TdApi.ChatList ToChatList(ChatListEntry? list) => list?.Kind switch
+    {
+        ChatListKind.Archive => new TdApi.ChatList.ChatListArchive(),
+        ChatListKind.Folder => new TdApi.ChatList.ChatListFolder { ChatFolderId = list.FolderId },
+        _ => new TdApi.ChatList.ChatListMain()
+    };
+
     private static (MessageKind Kind, string Text) PreviewOf(TdApi.Chat chat)
     {
         var content = chat.LastMessage?.Content;
@@ -671,7 +686,7 @@ public sealed class TelegramService : IDisposable
         var sender = message.IsOutgoing ? string.Empty : await ResolveSenderAsync(message.SenderId);
         var time = DateTimeOffset.FromUnixTimeSeconds(message.Date).ToLocalTime().ToString("HH:mm", CultureInfo.InvariantCulture);
 
-        return new MessageRow(message.Id, message.ChatId, sender, kind, text, time, message.IsOutgoing);
+        return new MessageRow(message.Id, message.ChatId, sender, kind, text, time, message.IsOutgoing, message.IsPinned);
     }
 
     private static (MessageKind Kind, string Text) Describe(TdApi.MessageContent content) => content switch

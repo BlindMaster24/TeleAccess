@@ -22,7 +22,8 @@ All notable changes are recorded here. Format follows
 - Voice messages: WASAPI capture, Opus encoding through Concentus, OGG muxing, sent as `inputMessageVoiceNote`; `Ctrl+Shift+V` starts and stops recording.
 - OGG/Opus container writer with the OpusHead/OpusTags headers and per-page CRC.
 - Audio files (mp3, m4a, flac, aac, wav, ogg, opus) are sent as audio messages, everything else as documents.
-- Archived chat list is reachable with `Ctrl+Shift+L`.
+- Chat lists cycle with `Ctrl+Shift+L`: main, every Telegram folder, archive.
+- Pinned message jump (`Ctrl+Shift+P`), delete for me only (`Ctrl+Shift+D`) and pin/unpin toggle.
 - Speech announcements through Prism (`Prismatoid`) behind `ISpeechService`.
 - Localization with English as the neutral resource and Russian as a satellite; error
   messages and plurals are resource-driven.
@@ -32,7 +33,7 @@ All notable changes are recorded here. Format follows
 
 ### Not implemented yet
 
-- Telegram folders (named chat folders), calls.
+- Calls.
 
 ## [0.1.0] - 2026-11-04
 

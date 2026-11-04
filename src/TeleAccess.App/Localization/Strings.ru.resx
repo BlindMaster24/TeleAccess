@@ -112,7 +112,7 @@
     <value>Переслать сообщение</value>
   </data>
   <data name="Cmd_Pin" xml:space="preserve">
-    <value>Закрепить сообщение</value>
+    <value>Закрепить или открепить сообщение</value>
   </data>
   <data name="Cmd_Unpin" xml:space="preserve">
     <value>Открепить сообщение</value>
@@ -449,5 +449,17 @@
   </data>
   <data name="Error_UnsupportedAudio" xml:space="preserve">
     <value>Неподдерживаемый аудиоформат</value>
+  </data>
+  <data name="Cmd_JumpPinned" xml:space="preserve">
+    <value>Перейти к закреплённому</value>
+  </data>
+  <data name="Cmd_DeleteForMe" xml:space="preserve">
+    <value>Удалить только у себя</value>
+  </data>
+  <data name="Status_NoPinned" xml:space="preserve">
+    <value>Закреплённых сообщений нет</value>
+  </data>
+  <data name="Status_ListSwitched" xml:space="preserve">
+    <value>Список чатов: {0}</value>
   </data>
 </root>

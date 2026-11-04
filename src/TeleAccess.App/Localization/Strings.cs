@@ -300,4 +300,12 @@ public static class Strings
 
     public static string Error_UnsupportedAudio => Get(nameof(Error_UnsupportedAudio));
 
+    public static string Cmd_JumpPinned => Get(nameof(Cmd_JumpPinned));
+
+    public static string Cmd_DeleteForMe => Get(nameof(Cmd_DeleteForMe));
+
+    public static string Status_NoPinned => Get(nameof(Status_NoPinned));
+
+    public static string Status_ListSwitched => Get(nameof(Status_ListSwitched));
+
 }
