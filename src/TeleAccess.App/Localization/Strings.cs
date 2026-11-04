@@ -270,4 +270,16 @@ public static class Strings
 
     public static string Error_FileNotFound => Get(nameof(Error_FileNotFound));
 
+    public static string Schedule_PickDate => Get(nameof(Schedule_PickDate));
+
+    public static string Schedule_Year => Get(nameof(Schedule_Year));
+
+    public static string Schedule_Month => Get(nameof(Schedule_Month));
+
+    public static string Schedule_Day => Get(nameof(Schedule_Day));
+
+    public static string Schedule_Hour => Get(nameof(Schedule_Hour));
+
+    public static string Schedule_Minute => Get(nameof(Schedule_Minute));
+
 }

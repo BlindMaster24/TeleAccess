@@ -122,8 +122,8 @@ all of them are keyboard-reachable:
 | Way | How |
 | --- | --- |
 | Quick choices | a list of five presets: in 10 minutes, in an hour, in three hours, tomorrow at 9:00, Monday at 9:00. `Up`/`Down` to choose, `Enter` to schedule |
-| Calendar and time | `Tab` to the date picker, type or pick a date, then type the time as `HH:mm` and press `Enter` |
-| Typed value | type into the manual box; it wins over the calendar when filled |
+| Year, month, day, hour, minute | five explicit lists — every value is announced, so a year is chosen directly instead of paging a calendar popup |
+| Typed value | type into the manual box; it wins over the lists when filled |
 
 Typed values accept:
 

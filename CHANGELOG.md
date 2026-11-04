@@ -19,6 +19,7 @@ All notable changes are recorded here. Format follows
   manual parser for relative, time-only and absolute input.
 - Scheduled queue, search inside a chat, reactions, chat mute, pin and archive.
 - File attachments: `Ctrl+O` sends any local file as a document, with the composer text as caption.
+- OGG/Opus container writer for voice messages, with the OpusHead/OpusTags headers and per-page CRC.
 - Speech announcements through Prism (`Prismatoid`) behind `ISpeechService`.
 - Localization with English as the neutral resource and Russian as a satellite; error
   messages and plurals are resource-driven.
@@ -28,7 +29,7 @@ All notable changes are recorded here. Format follows
 
 ### Not implemented yet
 
-- Voice messages, folders, calls.
+- Voice messages (recording and sending), folders, calls.
 
 ## [0.1.0] - 2026-11-04
 

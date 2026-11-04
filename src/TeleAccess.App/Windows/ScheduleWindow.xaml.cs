@@ -1,5 +1,6 @@
 using System.Globalization;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
 using TeleAccess.App.Localization;
 using TeleAccess.Core.Scheduling;
@@ -19,6 +20,7 @@ public partial class ScheduleWindow : Window
         InitializeComponent();
 
         var now = DateTimeOffset.Now;
+
         _presets =
         [
             new Preset(Strings.Schedule_Preset10Minutes, () => DateTimeOffset.Now.AddMinutes(10)),
@@ -29,8 +31,8 @@ public partial class ScheduleWindow : Window
         ];
 
         PresetList.ItemsSource = _presets.Select(p => p.Title).ToArray();
-        DateBox.SelectedDate = now.Date.AddDays(1);
-        TimeBox.Text = "09:00";
+
+        FillSelectors(now);
 
         Loaded += (_, _) =>
         {
@@ -50,6 +52,44 @@ public partial class ScheduleWindow : Window
         return window.ShowDialog() == true ? window._result : null;
     }
 
+    private void FillSelectors(DateTimeOffset now)
+    {
+        var culture = Strings.Culture;
+
+        YearBox.ItemsSource = Enumerable.Range(now.Year - 1, 11).ToArray();
+        MonthBox.ItemsSource = Enumerable.Range(1, 12).Select(m => new MonthItem(m, culture.DateTimeFormat.GetMonthName(m))).ToArray();
+        HourBox.ItemsSource = Enumerable.Range(0, 24).Select(h => h.ToString("00", CultureInfo.InvariantCulture)).ToArray();
+        MinuteBox.ItemsSource = Enumerable.Range(0, 12).Select(m => (m * 5).ToString("00", CultureInfo.InvariantCulture)).ToArray();
+
+        YearBox.SelectedItem = now.Year;
+        MonthBox.SelectedIndex = now.Month - 1;
+        HourBox.SelectedItem = "09";
+        MinuteBox.SelectedItem = "00";
+        FillDays(now.Day);
+    }
+
+    private void FillDays(int selectDay)
+    {
+        if (YearBox.SelectedItem is not int year || MonthBox.SelectedItem is not MonthItem month)
+        {
+            return;
+        }
+
+        var days = DateTime.DaysInMonth(year, month.Number);
+        DayBox.ItemsSource = Enumerable.Range(1, days).ToArray();
+        DayBox.SelectedItem = Math.Min(selectDay, days);
+    }
+
+    private void OnDatePartChanged(object sender, SelectionChangedEventArgs e)
+    {
+        if (DayBox is null)
+        {
+            return;
+        }
+
+        FillDays(DayBox.SelectedItem as int? ?? 1);
+    }
+
     private void OnPresetKeyDown(object sender, KeyEventArgs e)
     {
         if (e.Key == Key.Enter)
@@ -58,8 +98,6 @@ public partial class ScheduleWindow : Window
             e.Handled = true;
         }
     }
-
-    private void OnPresetDoubleClick(object sender, MouseButtonEventArgs e) => ApplySelectedPreset();
 
     private void ApplySelectedPreset()
     {
@@ -87,14 +125,20 @@ public partial class ScheduleWindow : Window
             return;
         }
 
-        if (DateBox.SelectedDate is not { } date || !TryReadTime(TimeBox.Text, out var time))
+        if (YearBox.SelectedItem is not int year ||
+            MonthBox.SelectedItem is not MonthItem month ||
+            DayBox.SelectedItem is not int day)
         {
             Say(Strings.Error_BadTime);
-            TimeBox.Focus();
             return;
         }
 
-        if (!ScheduleComposer.TryCombine(date, time, DateTimeOffset.Now, out var combined))
+        var hour = int.TryParse(HourBox.SelectedItem as string, CultureInfo.InvariantCulture, out var h) ? h : 0;
+        var minute = int.TryParse(MinuteBox.SelectedItem as string, CultureInfo.InvariantCulture, out var m) ? m : 0;
+
+        var date = new DateTime(year, month.Number, day, 0, 0, 0, DateTimeKind.Unspecified);
+
+        if (!ScheduleComposer.TryCombine(date, new TimeOnly(hour, minute), DateTimeOffset.Now, out var combined))
         {
             Say(Strings.Error_BadTime);
             return;
@@ -103,9 +147,6 @@ public partial class ScheduleWindow : Window
         Accept(combined);
     }
 
-    private static bool TryReadTime(string text, out TimeOnly time) =>
-        TimeOnly.TryParseExact(text.Trim(), ["HH:mm", "H:mm"], CultureInfo.InvariantCulture, DateTimeStyles.None, out time);
-
     private void Accept(DateTimeOffset when)
     {
         _result = when;
@@ -113,4 +154,9 @@ public partial class ScheduleWindow : Window
     }
 
     private void Say(string text) => StatusText.Text = text;
+
+    private sealed record MonthItem(int Number, string Name)
+    {
+        public override string ToString() => Name;
+    }
 }

@@ -405,4 +405,22 @@
   <data name="Error_FileNotFound" xml:space="preserve">
     <value>Файл не найден</value>
   </data>
+  <data name="Schedule_PickDate" xml:space="preserve">
+    <value>Выберите дату и время</value>
+  </data>
+  <data name="Schedule_Year" xml:space="preserve">
+    <value>Год</value>
+  </data>
+  <data name="Schedule_Month" xml:space="preserve">
+    <value>Месяц</value>
+  </data>
+  <data name="Schedule_Day" xml:space="preserve">
+    <value>День</value>
+  </data>
+  <data name="Schedule_Hour" xml:space="preserve">
+    <value>Часы</value>
+  </data>
+  <data name="Schedule_Minute" xml:space="preserve">
+    <value>Минуты</value>
+  </data>
 </root>

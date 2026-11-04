@@ -405,4 +405,22 @@
   <data name="Error_FileNotFound" xml:space="preserve">
     <value>File not found</value>
   </data>
+  <data name="Schedule_PickDate" xml:space="preserve">
+    <value>Pick date and time</value>
+  </data>
+  <data name="Schedule_Year" xml:space="preserve">
+    <value>Year</value>
+  </data>
+  <data name="Schedule_Month" xml:space="preserve">
+    <value>Month</value>
+  </data>
+  <data name="Schedule_Day" xml:space="preserve">
+    <value>Day</value>
+  </data>
+  <data name="Schedule_Hour" xml:space="preserve">
+    <value>Hour</value>
+  </data>
+  <data name="Schedule_Minute" xml:space="preserve">
+    <value>Minute</value>
+  </data>
 </root>
