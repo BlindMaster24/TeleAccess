@@ -19,6 +19,7 @@ public sealed record UiActions(
     Action Contacts,
     Action Settings,
     Action SecretChat,
+    Action Training,
     ChatActions Chat,
     MessageActions Message,
     ComposerActions Composer);

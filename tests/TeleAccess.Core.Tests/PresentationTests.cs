@@ -10,7 +10,7 @@ public class PresentationTests
     [Fact]
     public void Message_row_shows_sender_when_present()
     {
-        var row = new MessageRow(1, 2, "Anna", MessageKind.Text, "hello", "10:30", false, false);
+        var row = new MessageRow(1, 2, "Anna", MessageKind.Text, "hello", "10:30", false, false, 0);
 
         row.Display.ShouldBe("Anna, 10:30. hello");
     }
@@ -18,7 +18,7 @@ public class PresentationTests
     [Fact]
     public void Message_row_omits_sender_when_empty()
     {
-        var row = new MessageRow(1, 2, string.Empty, MessageKind.Text, "hello", "10:30", true, false);
+        var row = new MessageRow(1, 2, string.Empty, MessageKind.Text, "hello", "10:30", true, false, 0);
 
         row.Display.ShouldBe("10:30. hello");
     }

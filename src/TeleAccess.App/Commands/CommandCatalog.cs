@@ -34,6 +34,7 @@ public static class CommandCatalog
         Add(registry, "global.chatJoin", Strings.Cmd_ChatJoin, CommandScope.Global, "Ctrl+J", actions.ChatJoin, actions.HasChat);
         Add(registry, "global.contacts", Strings.Cmd_Contacts, CommandScope.Global, "Ctrl+Shift+C", actions.Contacts);
         Add(registry, "global.secretChat", Strings.Cmd_SecretChat, CommandScope.Global, "Ctrl+Shift+X", actions.SecretChat);
+        Add(registry, "global.training", Strings.Cmd_Training, CommandScope.Global, "Ctrl+F1", actions.Training);
         Add(registry, "global.settings", Strings.Cmd_Settings, CommandScope.Global, "Ctrl+Comma", actions.Settings);
         Add(registry, "global.refresh", Strings.Cmd_Refresh, CommandScope.Global, "F5", actions.Refresh);
         Add(registry, "global.hotkeys", Strings.Cmd_Hotkeys, CommandScope.Global, "Ctrl+Shift+K", actions.Hotkeys);
@@ -63,6 +64,7 @@ public static class CommandCatalog
         Add(registry, "message.forward", Strings.Cmd_Forward, CommandScope.Message, "Ctrl+Shift+F", actions.Message.Forward, actions.HasMessage);
         Add(registry, "message.pin", Strings.Cmd_Pin, CommandScope.Message, "Ctrl+P", actions.Message.Pin, actions.HasMessage);
         Add(registry, "message.copy", Strings.Cmd_Copy, CommandScope.Message, "Ctrl+C", actions.Message.Copy, actions.HasMessage);
+        Add(registry, "message.save", Strings.Cmd_Save, CommandScope.Message, "Ctrl+S", actions.Message.Save, actions.HasMessage);
         Add(registry, "message.translate", Strings.Cmd_Translate, CommandScope.Message, "Ctrl+Shift+T", actions.Message.Translate, actions.HasMessage);
         Add(registry, "message.react", Strings.Cmd_React, CommandScope.Message, "Ctrl+Shift+E", actions.Message.React, actions.HasMessage);
         Add(registry, "message.searchInChat", Strings.Cmd_SearchInChat, CommandScope.Message, "Ctrl+F", actions.Message.SearchInChat, actions.HasChat);
@@ -70,6 +72,7 @@ public static class CommandCatalog
 
     private static void AddComposer(CommandRegistry registry, UiActions actions)
     {
+        Add(registry, "messageList.older", Strings.Cmd_Older, CommandScope.MessageList, "Ctrl+Up", actions.Message.Older, actions.HasChat);
         Add(registry, "composer.send", Strings.Cmd_Send, CommandScope.Composer, "Enter", actions.Composer.Send, actions.HasChat);
         Add(registry, "composer.sendSilent", Strings.Cmd_SendSilent, CommandScope.Composer, "Ctrl+Enter", actions.Composer.SendSilent, actions.HasChat);
         Add(registry, "composer.sendScheduled", Strings.Cmd_SendScheduled, CommandScope.Composer, "Ctrl+Shift+Enter", actions.Composer.SendScheduled, actions.HasChat);

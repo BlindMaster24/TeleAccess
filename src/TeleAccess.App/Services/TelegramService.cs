@@ -21,6 +21,8 @@ public sealed class TelegramService : IDisposable
 
     public event EventHandler? FoldersChanged;
 
+    public event EventHandler<IncomingMessageEventArgs>? MessageArrived;
+
     public IReadOnlyList<FolderRow> Folders { get; private set; } = [];
 
     public AuthStage Stage { get; private set; } = AuthStage.Starting;
@@ -779,6 +781,50 @@ public sealed class TelegramService : IDisposable
         await _client!.ExecuteAsync(new TdApi.LogOut());
     }
 
+    public async Task<string> DownloadAsync(int fileId)
+    {
+        RequireClient();
+
+        if (fileId == 0)
+        {
+            return string.Empty;
+        }
+
+        var file = await _client!.ExecuteAsync(new TdApi.DownloadFile
+        {
+            FileId = fileId,
+            Priority = 32,
+            Offset = 0,
+            Limit = 0,
+            Synchronous = true
+        });
+
+        return file.Local?.Path ?? string.Empty;
+    }
+
+    public async Task<IReadOnlyList<MessageRow>> LoadOlderAsync(long chatId, long fromMessageId, int limit = 40)
+    {
+        RequireClient();
+
+        var history = await _client!.ExecuteAsync(new TdApi.GetChatHistory
+        {
+            ChatId = chatId,
+            FromMessageId = fromMessageId,
+            Offset = 0,
+            Limit = limit,
+            OnlyLocal = false
+        });
+
+        var rows = new List<MessageRow>(history.Messages_.Length);
+
+        foreach (var message in history.Messages_.Reverse())
+        {
+            rows.Add(await ToRowAsync(message));
+        }
+
+        return rows;
+    }
+
     public async Task<IReadOnlyList<MessageRow>> LoadScheduledAsync(long chatId)
     {
         RequireClient();
@@ -933,6 +979,14 @@ public sealed class TelegramService : IDisposable
             case TdApi.Update.UpdateNewMessage newMessage:
                 ChatMessagesChanged?.Invoke(this, new ChatMessagesChangedEventArgs(newMessage.Message.ChatId));
                 ChatsChanged?.Invoke(this, EventArgs.Empty);
+
+                if (!newMessage.Message.IsOutgoing)
+                {
+                    MessageArrived?.Invoke(
+                        this,
+                        new IncomingMessageEventArgs(newMessage.Message.ChatId, Describe(newMessage.Message.Content).Text));
+                }
+
                 break;
 
             case TdApi.Update.UpdateMessageEdited edited:
@@ -1080,8 +1134,18 @@ public sealed class TelegramService : IDisposable
         var sender = message.IsOutgoing ? string.Empty : await ResolveSenderAsync(message.SenderId);
         var time = DateTimeOffset.FromUnixTimeSeconds(message.Date).ToLocalTime().ToString("HH:mm", CultureInfo.InvariantCulture);
 
-        return new MessageRow(message.Id, message.ChatId, sender, kind, text, time, message.IsOutgoing, message.IsPinned);
+        return new MessageRow(message.Id, message.ChatId, sender, kind, text, time, message.IsOutgoing, message.IsPinned, FileIdOf(message.Content));
     }
+
+    private static int FileIdOf(TdApi.MessageContent content) => content switch
+    {
+        TdApi.MessageContent.MessageVoiceNote voice => voice.VoiceNote.Voice.Id,
+        TdApi.MessageContent.MessageAudio audio => audio.Audio.Audio_.Id,
+        TdApi.MessageContent.MessageDocument document => document.Document.Document_.Id,
+        TdApi.MessageContent.MessageVideo video => video.Video.Video_.Id,
+        TdApi.MessageContent.MessageAnimation animation => animation.Animation.Animation_.Id,
+        _ => 0
+    };
 
     private static (MessageKind Kind, string Text) Describe(TdApi.MessageContent content) => content switch
     {

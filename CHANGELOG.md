@@ -27,6 +27,8 @@ All notable changes are recorded here. Format follows
 - Attachment routing is one pure classifier in Core, covered by 16 tests.
 - Message translation (`Ctrl+Shift+T`), search across all chats (`Ctrl+Shift+F`) and polls (`Ctrl+Alt+P`).
 - Chat information (type, member count, description), member lists, forum topic lists, contact lists, secret chat creation, joining chats.
+- Incoming voice notes and audio play through NAudio (`MediaFoundationReader`), `Enter` plays, `Escape` stops.
+- Attachments download with `Ctrl+S`, history pages back with `Ctrl+Up`, new messages elsewhere announce with an earcon, and `Ctrl+F1` turns on training mode.
 - Settings window: language, api_id, api_hash, phone, sign out (`Ctrl+Comma`).
 - Localization tests: Russian must cover every English key, no empty values, no duplicate keys, every shipped string resolved.
 - Pinned message jump (`Ctrl+Shift+P`), delete for me only (`Ctrl+Shift+D`) and pin/unpin toggle.
@@ -39,7 +41,7 @@ All notable changes are recorded here. Format follows
 
 ### Not implemented yet
 
-- Calls.
+- Calls only.
 
 ## [0.1.0] - 2026-11-04
 

@@ -45,6 +45,7 @@ menu of the focused area.
 | `Ctrl+Shift+C` | contacts |
 | `Ctrl+Shift+X` | start a secret chat |
 | `Ctrl+Comma` | settings: language, api_id, api_hash, phone, sign out |
+| `Ctrl+F1` | training mode: every command announces itself |
 | `Ctrl+N` | new chat |
 | `Ctrl+Shift+K` | open keyboard shortcut editor |
 | `F1` | read the shortcuts of the current area aloud |
@@ -80,12 +81,13 @@ menu of the focused area.
 | `Ctrl+Shift+P` | jump to the pinned message |
 | `Space` | toggle selection |
 | `Ctrl+A` | select all loaded messages |
+| `Ctrl+Up` | load the previous page of history |
 
 ### Message
 
 | Shortcut | Command |
 | --- | --- |
-| `Enter` | read the message aloud |
+| `Enter` | read the message aloud; voice notes and audio play instead |
 | `Ctrl+R` | reply |
 | `Ctrl+Shift+R` | reply in another chat |
 | `Ctrl+E` | edit (own messages only) |
@@ -98,7 +100,7 @@ menu of the focused area.
 | `Ctrl+Shift+T` | translate the message |
 | `Ctrl+F` | search in this chat |
 | `Ctrl+C` | copy text |
-| `Ctrl+S` | save attached file |
+| `Ctrl+S` | download the attachment and announce the path |
 | `Shift+F10` | message actions menu |
 
 ### Composer
@@ -123,6 +125,7 @@ menu of the focused area.
 | Shortcut | Command |
 | --- | --- |
 | `Space` | play / pause |
+| `Escape` | stop playback |
 | `+` / `-` | faster / slower |
 | `Ctrl+Right` / `Ctrl+Left` | seek forward / back |
 | `Escape` | stop |

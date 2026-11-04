@@ -23,6 +23,7 @@ public partial class MainWindow : Window
     private readonly KeymapRepository _keymapRepository;
     private readonly PrismSpeechService _speech = new();
     private readonly VoiceRecorder _recorder = new();
+    private readonly AudioPlayer _player = new();
     private readonly TelegramService _telegram = new();
     private readonly CommandRegistry _registry;
     private readonly HotkeyService _hotkeys;
@@ -57,6 +58,7 @@ public partial class MainWindow : Window
         _telegram.ChatsChanged += OnChatsChanged;
         _telegram.ChatMessagesChanged += OnChatMessagesChanged;
         _telegram.FoldersChanged += OnFoldersChanged;
+        _telegram.MessageArrived += OnMessageArrived;
 
         Composer.TextChanged += OnComposerTextChanged;
         LoadSettingsIntoForm();
@@ -69,6 +71,7 @@ public partial class MainWindow : Window
         _speech.Dispose();
         _telegram.Dispose();
         _recorder.Dispose();
+        _player.Dispose();
         base.OnClosed(e);
     }
 
@@ -90,6 +93,7 @@ public partial class MainWindow : Window
         Contacts: OnContacts,
         Settings: OnSettings,
         SecretChat: OnSecretChat,
+        Training: OnTraining,
         Quit: Close,
         Chat: new ChatActions(
             Open: OnOpenChat,
@@ -112,7 +116,9 @@ public partial class MainWindow : Window
             SearchInChat: OnSearchInChat,
             DeleteForMe: OnDeleteForMe,
             JumpToPinned: OnJumpToPinned,
-            Translate: OnTranslate),
+            Translate: OnTranslate,
+            Save: OnSaveFile,
+            Older: OnOlder),
         Composer: new ComposerActions(
             Send: OnSend,
             SendSilent: OnSendSilent,
@@ -144,7 +150,32 @@ public partial class MainWindow : Window
         if (!e.Command.IsAvailable)
         {
             Announce(string.Format(Strings.Culture, Strings.Status_Unavailable, e.Command.Title));
+            return;
         }
+
+        if (_training)
+        {
+            _speech.Speak(e.Command.Title);
+        }
+    }
+
+    private void OnMessageArrived(object? sender, IncomingMessageEventArgs e)
+    {
+        if (e.ChatId == _currentChat?.Id)
+        {
+            return;
+        }
+
+        Dispatcher.Invoke(() =>
+        {
+            System.Media.SystemSounds.Asterisk.Play();
+
+            var title = (ChatList.ItemsSource as IReadOnlyList<ChatRow>)?
+                .FirstOrDefault(chat => chat.Id == e.ChatId)?.Title ?? string.Empty;
+
+            Announce(string.Format(Strings.Culture, Strings.Status_NewMessage, title, e.Text));
+            _ = RefreshChatsAsync(SearchBox.Text);
+        });
     }
 
     private void Announce(string text)
@@ -1012,6 +1043,107 @@ public partial class MainWindow : Window
         }
     }
 
+    private bool _training;
+
+    private void OnTraining()
+    {
+        _training = !_training;
+        Announce(Strings.Cmd_Training);
+    }
+
+    private void OnSaveFile() => _ = SaveFileAsync();
+
+    private async Task SaveFileAsync()
+    {
+        if (_currentMessage is null)
+        {
+            Announce(Strings.Status_NoSelection);
+            return;
+        }
+
+        if (!_currentMessage.HasFile)
+        {
+            Announce(Strings.Status_NoFile);
+            return;
+        }
+
+        try
+        {
+            var path = await _telegram.DownloadAsync(_currentMessage.FileId);
+
+            if (string.IsNullOrEmpty(path))
+            {
+                Announce(Strings.Status_NoFile);
+                return;
+            }
+
+            Announce(string.Format(Strings.Culture, Strings.Status_Saved, path));
+        }
+        catch (Exception exception)
+        {
+            Announce(Errors.Describe(exception));
+        }
+    }
+
+    private void OnOlder() => _ = LoadOlderAsync();
+
+    private async Task LoadOlderAsync()
+    {
+        if (_currentChat is null)
+        {
+            Announce(Strings.Status_NoChat);
+            return;
+        }
+
+        var loaded = MessageList.ItemsSource as IReadOnlyList<MessageRow>;
+
+        if (loaded is null || loaded.Count == 0)
+        {
+            Announce(Strings.Status_NoOlder);
+            return;
+        }
+
+        try
+        {
+            var older = await _telegram.LoadOlderAsync(_currentChat.Id, loaded[0].Id);
+
+            if (older.Count == 0)
+            {
+                Announce(Strings.Status_NoOlder);
+                return;
+            }
+
+            MessageList.ItemsSource = older.Concat(loaded).ToArray();
+            MessageList.SelectedIndex = older.Count - 1;
+            Announce(PluralFormatter.Format(Strings.Status_FoundMessages, older.Count, Strings.Culture));
+        }
+        catch (Exception exception)
+        {
+            Announce(Errors.Describe(exception));
+        }
+    }
+
+    private async Task PlayMessageAsync(MessageRow message)
+    {
+        try
+        {
+            var path = await _telegram.DownloadAsync(message.FileId);
+
+            if (string.IsNullOrEmpty(path))
+            {
+                Announce(message.Display);
+                return;
+            }
+
+            _player.Play(path);
+            Announce($"{Strings.Status_Playing}. {message.Display}");
+        }
+        catch (Exception exception)
+        {
+            Announce(Errors.Describe(exception));
+        }
+    }
+
     private void OnDeleteForMe() => _ = DeleteForMeAsync();
 
     private async Task DeleteForMeAsync()
@@ -1269,6 +1401,14 @@ public partial class MainWindow : Window
         if (_currentMessage is null)
         {
             Announce(Strings.Status_NoSelection);
+            return;
+        }
+
+        var playable = _currentMessage.Kind is MessageKind.Voice or MessageKind.Audio;
+
+        if (playable && _currentMessage.HasFile)
+        {
+            _ = PlayMessageAsync(_currentMessage);
             return;
         }
 

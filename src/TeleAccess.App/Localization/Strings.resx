@@ -597,4 +597,28 @@
   <data name="Status_SignedOut" xml:space="preserve">
     <value>Signed out</value>
   </data>
+  <data name="Cmd_Save" xml:space="preserve">
+    <value>Save attachment</value>
+  </data>
+  <data name="Cmd_Older" xml:space="preserve">
+    <value>Load older messages</value>
+  </data>
+  <data name="Cmd_Training" xml:space="preserve">
+    <value>Training mode: speak every command</value>
+  </data>
+  <data name="Status_Saved" xml:space="preserve">
+    <value>Saved to {0}</value>
+  </data>
+  <data name="Status_NoFile" xml:space="preserve">
+    <value>This message has no file</value>
+  </data>
+  <data name="Status_NoOlder" xml:space="preserve">
+    <value>No older messages</value>
+  </data>
+  <data name="Status_NewMessage" xml:space="preserve">
+    <value>New message in {0}: {1}</value>
+  </data>
+  <data name="Status_Playing" xml:space="preserve">
+    <value>Playing</value>
+  </data>
 </root>

@@ -597,4 +597,28 @@
   <data name="Status_SignedOut" xml:space="preserve">
     <value>Вы вышли из аккаунта</value>
   </data>
+  <data name="Cmd_Save" xml:space="preserve">
+    <value>Сохранить вложение</value>
+  </data>
+  <data name="Cmd_Older" xml:space="preserve">
+    <value>Загрузить более старые</value>
+  </data>
+  <data name="Cmd_Training" xml:space="preserve">
+    <value>Режим обучения: проговаривать команды</value>
+  </data>
+  <data name="Status_Saved" xml:space="preserve">
+    <value>Сохранено в {0}</value>
+  </data>
+  <data name="Status_NoFile" xml:space="preserve">
+    <value>У этого сообщения нет файла</value>
+  </data>
+  <data name="Status_NoOlder" xml:space="preserve">
+    <value>Старых сообщений нет</value>
+  </data>
+  <data name="Status_NewMessage" xml:space="preserve">
+    <value>Новое сообщение в {0}: {1}</value>
+  </data>
+  <data name="Status_Playing" xml:space="preserve">
+    <value>Играю</value>
+  </data>
 </root>

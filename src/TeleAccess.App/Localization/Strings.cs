@@ -398,4 +398,20 @@ public static class Strings
 
     public static string Status_SignedOut => Get(nameof(Status_SignedOut));
 
+    public static string Cmd_Save => Get(nameof(Cmd_Save));
+
+    public static string Cmd_Older => Get(nameof(Cmd_Older));
+
+    public static string Cmd_Training => Get(nameof(Cmd_Training));
+
+    public static string Status_Saved => Get(nameof(Status_Saved));
+
+    public static string Status_NoFile => Get(nameof(Status_NoFile));
+
+    public static string Status_NoOlder => Get(nameof(Status_NoOlder));
+
+    public static string Status_NewMessage => Get(nameof(Status_NewMessage));
+
+    public static string Status_Playing => Get(nameof(Status_Playing));
+
 }

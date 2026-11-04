@@ -10,6 +10,7 @@ global.chatTopics | Global | Ctrl+T
 global.chatJoin | Global | Ctrl+J
 global.contacts | Global | Ctrl+Shift+C
 global.secretChat | Global | Ctrl+Shift+X
+global.training | Global | Ctrl+F1
 global.settings | Global | Ctrl+Comma
 global.refresh | Global | F5
 global.hotkeys | Global | Ctrl+Shift+K
@@ -31,9 +32,11 @@ message.deleteForMe | Message | Ctrl+Shift+D
 message.forward | Message | Ctrl+Shift+F
 message.pin | Message | Ctrl+P
 message.copy | Message | Ctrl+C
+message.save | Message | Ctrl+S
 message.translate | Message | Ctrl+Shift+T
 message.react | Message | Ctrl+Shift+E
 message.searchInChat | Message | Ctrl+F
+messageList.older | MessageList | Ctrl+Up
 composer.send | Composer | Enter
 composer.sendSilent | Composer | Ctrl+Enter
 composer.sendScheduled | Composer | Ctrl+Shift+Enter
