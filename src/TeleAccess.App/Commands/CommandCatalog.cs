@@ -93,6 +93,7 @@ public static class CommandCatalog
         Add(registry, "message.vote", Strings.Cmd_Vote, CommandScope.Message, null, actions.Message.Vote, actions.HasMessage);
         Add(registry, "message.link", Strings.Cmd_MessageLink, CommandScope.Message, null, actions.Message.MessageLink, actions.HasMessage);
         Add(registry, "message.stopPoll", Strings.Cmd_StopPoll, CommandScope.Message, null, actions.Message.StopPoll, actions.HasMessage);
+        Add(registry, "message.thread", Strings.Cmd_Thread, CommandScope.Message, null, actions.Message.Thread, actions.HasMessage);
         Add(registry, "message.replied", Strings.Cmd_ShowReplied, CommandScope.Message, null, actions.Message.ShowReplied, actions.HasMessage);
         Add(registry, "message.translate", Strings.Cmd_Translate, CommandScope.Message, "Ctrl+Shift+T", actions.Message.Translate, actions.HasMessage);
         Add(registry, "message.react", Strings.Cmd_React, CommandScope.Message, "Ctrl+Shift+E", actions.Message.React, actions.HasMessage);

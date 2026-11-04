@@ -930,4 +930,10 @@
   <data name="Status_PollStopped" xml:space="preserve">
     <value>Poll stopped</value>
   </data>
+  <data name="Cmd_Thread" xml:space="preserve">
+    <value>Show the reply thread</value>
+  </data>
+  <data name="Status_NoThread" xml:space="preserve">
+    <value>This message has no thread</value>
+  </data>
 </root>

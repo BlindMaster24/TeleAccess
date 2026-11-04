@@ -61,6 +61,7 @@ message.save | Message | Ctrl+S
 message.vote | Message | none
 message.link | Message | none
 message.stopPoll | Message | none
+message.thread | Message | none
 message.replied | Message | none
 message.translate | Message | Ctrl+Shift+T
 message.react | Message | Ctrl+Shift+E

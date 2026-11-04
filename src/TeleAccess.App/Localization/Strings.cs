@@ -620,4 +620,8 @@ public static class Strings
 
     public static string Status_PollStopped => Get(nameof(Status_PollStopped));
 
+    public static string Cmd_Thread => Get(nameof(Cmd_Thread));
+
+    public static string Status_NoThread => Get(nameof(Status_NoThread));
+
 }

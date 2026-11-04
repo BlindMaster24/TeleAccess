@@ -30,6 +30,7 @@ All notable changes are recorded here. Format follows
 - Incoming voice notes and audio play through NAudio (`MediaFoundationReader`), `Enter` plays, `Escape` stops.
 - Attachments download with `Ctrl+S`, history pages back with `Ctrl+Up`, new messages elsewhere announce with an earcon, and `Ctrl+F1` turns on training mode.
 - Global search filters: `type:` and `date:` tokens become a TDLib filter and a date range; the token parser is pure and covered by thirteen tests.
+- Reply threads: `getMessageThread` shows the whole branch of a message as a list.
 - Links: `getForumTopicLink` and `getMessageLink` put a shareable link into the composer; `stopPoll` closes a running poll.
 - The split-of-two commits lost three topic commands in the catalog; they are restored.
 - Member search by name (`searchChatMembers`) and the replied-message jump (`getRepliedMessage`) are available as commands.

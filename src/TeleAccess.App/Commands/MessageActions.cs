@@ -31,4 +31,5 @@ public sealed record MessageActions(
     Action ShowReplied,
     Action TopicLink,
     Action MessageLink,
-    Action StopPoll);
+    Action StopPoll,
+    Action Thread);

@@ -321,7 +321,8 @@ public partial class MainWindow : Window
         ShowReplied: OnShowReplied,
         TopicLink: OnTopicLink,
         MessageLink: OnMessageLink,
-        StopPoll: OnStopPoll);
+        StopPoll: OnStopPoll,
+        Thread: OnThread);
 
     private ComposerActions CreateComposerActions() => new(
         Send: OnSend,
@@ -2171,6 +2172,35 @@ public partial class MainWindow : Window
 
             await _telegram.SetMemberBannedAsync(_currentChat.Id, members[index].Id, true);
             Announce(Strings.Status_MemberBanned);
+        }
+        catch (Exception exception)
+        {
+            Announce(Errors.Describe(exception));
+        }
+    }
+
+    private void OnThread() => _ = ShowThreadAsync();
+
+    private async Task ShowThreadAsync()
+    {
+        if (_currentChat is null || _currentMessage is null)
+        {
+            Announce(Strings.Status_NoSelection);
+            return;
+        }
+
+        try
+        {
+            var messages = await _telegram.GetThreadAsync(_currentChat.Id, _currentMessage.Id);
+
+            if (messages.Count == 0)
+            {
+                Announce(Strings.Status_NoThread);
+                return;
+            }
+
+            ShowTransient(messages);
+            Announce(PluralFormatter.Format(Strings.Status_FoundMessages, messages.Count, Strings.Culture));
         }
         catch (Exception exception)
         {
