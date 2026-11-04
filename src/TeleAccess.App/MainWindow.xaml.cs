@@ -10,6 +10,7 @@ using TeleAccess.App.Localization;
 using TeleAccess.App.Services;
 using TeleAccess.App.Windows;
 using TeleAccess.Core;
+using TeleAccess.Core.Accounts;
 using TeleAccess.Core.Attachments;
 using TeleAccess.Core.ChatLists;
 using TeleAccess.Core.Chats;
@@ -32,7 +33,7 @@ public partial class MainWindow : Window
     private readonly VoiceRecorder _recorder = new();
     private readonly AudioPlayer _player = new();
     private GlobalHotkeyService? _globalHotkeys;
-    private readonly TelegramService _telegram = new();
+    private TelegramService _telegram;
     private readonly CommandRegistry _registry;
     private readonly HotkeyService _hotkeys;
     private readonly DispatcherTimer _openChatTimer;
@@ -53,7 +54,10 @@ public partial class MainWindow : Window
         _database = new AppDatabase(AppSettings.DefaultDatabasePath);
         _settingsRepository = new SettingsRepository(_database);
         _keymapRepository = new KeymapRepository(_database);
+        _accounts = new AccountRepository(_database);
         _settings = AppSettings.Load(_settingsRepository);
+        _account = EnsureActiveAccount();
+        _telegram = CreateService(_account);
 
         _registry = CommandCatalog.Create(CreateActions());
         _keymapRepository.Load(_registry);
@@ -66,11 +70,7 @@ public partial class MainWindow : Window
         _openChatTimer.Tick += OnOpenChatTimerTick;
         _draftTimer.Tick += OnDraftTimerTick;
 
-        _telegram.AuthStageChanged += OnAuthStageChanged;
-        _telegram.ChatsChanged += OnChatsChanged;
-        _telegram.ChatMessagesChanged += OnChatMessagesChanged;
-        _telegram.FoldersChanged += OnFoldersChanged;
-        _telegram.MessageArrived += OnMessageArrived;
+        SubscribeToService();
 
         Composer.TextChanged += OnComposerTextChanged;
         Loaded += (_, _) => RegisterGlobalHotkey();
@@ -87,6 +87,149 @@ public partial class MainWindow : Window
         _recorder.Dispose();
         _player.Dispose();
         base.OnClosed(e);
+    }
+
+    private readonly AccountRepository _accounts;
+    private AccountEntry _account;
+
+    private AccountEntry EnsureActiveAccount()
+    {
+        var accounts = _accounts.List();
+
+        if (accounts.Count == 0)
+        {
+            var created = _accounts.Add("Main");
+            AccountRepository.SetActive(_settingsRepository, created.Id);
+            return created;
+        }
+
+        var activeId = AccountRepository.GetActive(_settingsRepository);
+        var active = accounts.FirstOrDefault(account => string.Equals(account.Id, activeId, StringComparison.Ordinal))
+            ?? accounts[0];
+
+        AccountRepository.SetActive(_settingsRepository, active.Id);
+        return active;
+    }
+
+    private static TelegramService CreateService(AccountEntry account) =>
+        new(AccountPaths.DataDirectory(AccountRoot(), account.Id));
+
+    private static string AccountRoot() => Path.Combine(
+        Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+        "TeleAccess");
+
+    private void SubscribeToService()
+    {
+        _telegram.AuthStageChanged += OnAuthStageChanged;
+        _telegram.ChatsChanged += OnChatsChanged;
+        _telegram.ChatMessagesChanged += OnChatMessagesChanged;
+        _telegram.FoldersChanged += OnFoldersChanged;
+        _telegram.MessageArrived += OnMessageArrived;
+    }
+
+    private void UnsubscribeFromService()
+    {
+        _telegram.AuthStageChanged -= OnAuthStageChanged;
+        _telegram.ChatsChanged -= OnChatsChanged;
+        _telegram.ChatMessagesChanged -= OnChatMessagesChanged;
+        _telegram.FoldersChanged -= OnFoldersChanged;
+        _telegram.MessageArrived -= OnMessageArrived;
+    }
+
+    private void RestartForAccount(AccountEntry account)
+    {
+        UnsubscribeFromService();
+        _telegram.Dispose();
+
+        _account = account;
+        AccountRepository.SetActive(_settingsRepository, account.Id);
+        _telegram = CreateService(account);
+        SubscribeToService();
+
+        _currentChat = null;
+        _currentMessage = null;
+        ChatList.ItemsSource = null;
+        MessageList.ItemsSource = null;
+        _telegram.Start(_settings);
+
+        Announce(string.Format(Strings.Culture, Strings.Status_AccountSwitched, account.Name));
+    }
+
+    private void OnAddAccount() => _ = AddAccountAsync();
+
+    private async Task AddAccountAsync()
+    {
+        var name = PromptWindow.Ask(this, Strings.Prompt_AccountName);
+
+        if (string.IsNullOrWhiteSpace(name))
+        {
+            return;
+        }
+
+        try
+        {
+            var account = _accounts.Add(name);
+            RestartForAccount(account);
+            await Task.CompletedTask;
+        }
+        catch (Exception exception)
+        {
+            Announce(Errors.Describe(exception));
+        }
+    }
+
+    private void OnSwitchAccount() => _ = SwitchAccountAsync();
+
+    private async Task SwitchAccountAsync()
+    {
+        var accounts = _accounts.List();
+
+        if (accounts.Count < 2)
+        {
+            Announce(Strings.Status_NoAccounts);
+            return;
+        }
+
+        Composer.Text = string.Join(Environment.NewLine, accounts.Select((account, index) => (index + 1) + ". " + account.Name));
+        Announce(string.Join(". ", accounts.Select(account => account.Name)));
+
+        var answer = PromptWindow.Ask(this, Strings.Prompt_AccountNumber);
+
+        if (!IndexSelection.TrySelect(answer, accounts.Count, out var index))
+        {
+            Announce(Strings.Error_BadNumber);
+            return;
+        }
+
+        RestartForAccount(accounts[index]);
+        await Task.CompletedTask;
+    }
+
+    private void OnRemoveAccount() => _ = RemoveAccountAsync();
+
+    private async Task RemoveAccountAsync()
+    {
+        var accounts = _accounts.List();
+
+        if (accounts.Count < 2)
+        {
+            Announce(Strings.Status_NoAccounts);
+            return;
+        }
+
+        try
+        {
+            _accounts.Remove(_account.Id);
+            var next = _accounts.List()[0];
+            RestartForAccount(next);
+            Announce(Strings.Status_AccountRemoved);
+        }
+        catch (Exception exception)
+        {
+            Announce(Errors.Describe(exception));
+        }
+
+        await Task.CompletedTask;
     }
 
     private UiActions CreateActions() => new(
@@ -113,6 +256,9 @@ public partial class MainWindow : Window
         Proxy: OnProxy,
         MuteScopes: OnMuteScopes,
         Stories: OnStories,
+        AddAccount: OnAddAccount,
+        SwitchAccount: OnSwitchAccount,
+        RemoveAccount: OnRemoveAccount,
         Quit: Close,
         Chat: CreateChatActions(),
         Message: CreateMessageActions(),

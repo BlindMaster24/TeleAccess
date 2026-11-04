@@ -750,4 +750,34 @@
   <data name="Error_BadFolderName" xml:space="preserve">
     <value>Это название папки использовать нельзя</value>
   </data>
+  <data name="Cmd_AddAccount" xml:space="preserve">
+    <value>Добавить аккаунт</value>
+  </data>
+  <data name="Cmd_SwitchAccount" xml:space="preserve">
+    <value>Переключить аккаунт</value>
+  </data>
+  <data name="Cmd_RemoveAccount" xml:space="preserve">
+    <value>Удалить текущий аккаунт</value>
+  </data>
+  <data name="Prompt_AccountName" xml:space="preserve">
+    <value>Название аккаунта</value>
+  </data>
+  <data name="Prompt_AccountNumber" xml:space="preserve">
+    <value>Номер аккаунта</value>
+  </data>
+  <data name="Status_AccountAdded" xml:space="preserve">
+    <value>Аккаунт {0} добавлен</value>
+  </data>
+  <data name="Status_AccountSwitched" xml:space="preserve">
+    <value>Переключено на аккаунт {0}</value>
+  </data>
+  <data name="Status_AccountRemoved" xml:space="preserve">
+    <value>Аккаунт удалён</value>
+  </data>
+  <data name="Status_NoAccounts" xml:space="preserve">
+    <value>Других аккаунтов нет</value>
+  </data>
+  <data name="Status_CurrentAccount" xml:space="preserve">
+    <value>Текущий аккаунт: {0}</value>
+  </data>
 </root>

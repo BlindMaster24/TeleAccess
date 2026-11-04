@@ -13,6 +13,7 @@ namespace TeleAccess.App.Services;
 public sealed class TelegramService : IDisposable
 {
     private readonly Dictionary<long, string> _userNames = [];
+    private readonly string _dataDirectory;
     private AppSettings _settings = new();
     private TdClient? _client;
 
@@ -29,6 +30,16 @@ public sealed class TelegramService : IDisposable
     public IReadOnlyList<FolderRow> Folders { get; private set; } = [];
 
     public AuthStage Stage { get; private set; } = AuthStage.Starting;
+
+    public TelegramService(string? dataDirectory = null)
+    {
+        _dataDirectory = string.IsNullOrWhiteSpace(dataDirectory)
+            ? Path.Combine(
+                Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+                "TeleAccess",
+                "td")
+            : dataDirectory;
+    }
 
     public void Start(AppSettings settings)
     {
@@ -1375,10 +1386,7 @@ public sealed class TelegramService : IDisposable
             return;
         }
 
-        var directory = Path.Combine(
-            Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
-            "TeleAccess",
-            "td");
+        var directory = _dataDirectory;
 
         Directory.CreateDirectory(directory);
 

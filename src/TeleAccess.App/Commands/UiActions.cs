@@ -25,6 +25,9 @@ public sealed record UiActions(
     Action Proxy,
     Action MuteScopes,
     Action Stories,
+    Action AddAccount,
+    Action SwitchAccount,
+    Action RemoveAccount,
     ChatActions Chat,
     MessageActions Message,
     ComposerActions Composer);

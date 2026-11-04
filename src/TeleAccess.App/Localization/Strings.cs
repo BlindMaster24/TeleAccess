@@ -500,4 +500,24 @@ public static class Strings
 
     public static string Error_BadFolderName => Get(nameof(Error_BadFolderName));
 
+    public static string Cmd_AddAccount => Get(nameof(Cmd_AddAccount));
+
+    public static string Cmd_SwitchAccount => Get(nameof(Cmd_SwitchAccount));
+
+    public static string Cmd_RemoveAccount => Get(nameof(Cmd_RemoveAccount));
+
+    public static string Prompt_AccountName => Get(nameof(Prompt_AccountName));
+
+    public static string Prompt_AccountNumber => Get(nameof(Prompt_AccountNumber));
+
+    public static string Status_AccountAdded => Get(nameof(Status_AccountAdded));
+
+    public static string Status_AccountSwitched => Get(nameof(Status_AccountSwitched));
+
+    public static string Status_AccountRemoved => Get(nameof(Status_AccountRemoved));
+
+    public static string Status_NoAccounts => Get(nameof(Status_NoAccounts));
+
+    public static string Status_CurrentAccount => Get(nameof(Status_CurrentAccount));
+
 }

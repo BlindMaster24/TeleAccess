@@ -40,16 +40,17 @@ menu of the focused area.
 | `Ctrl+Shift+F` | search across all chats |
 | `Ctrl+I` | chat information: type, members, description |
 | `Ctrl+Shift+I` | list chat members into the composer |
-| `Ctrl+T` | list forum topics |
+| — | list forum topics |
 | `Ctrl+J` | join the current chat |
 | `Ctrl+Shift+C` | contacts |
 | `Ctrl+Shift+X` | start a secret chat |
+| — | add, switch or remove a Telegram account |
 | `Ctrl+Comma` | settings: language, api_id, api_hash, phone, sign out |
 | `Ctrl+Shift+N` | change my name |
-| `Ctrl+Shift+B` | change my bio |
-| `Ctrl+Shift+Y` | set a SOCKS5 proxy |
-| `Ctrl+Alt+M` | mute notification scopes (p private, g groups, c channels) for N hours |
-| `Ctrl+Alt+S` | list the active stories of the chat |
+| — | change my bio |
+| — | set a SOCKS5 proxy |
+| — | mute notification scopes (p private, g groups, c channels) for N hours |
+| — | list the active stories of the chat |
 | `Ctrl+F1` | training mode: every command announces itself |
 | `Ctrl+N` | new chat |
 | `Ctrl+Shift+K` | open keyboard shortcut editor |

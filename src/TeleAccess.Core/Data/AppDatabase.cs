@@ -9,6 +9,10 @@ public sealed class AppDatabase
             key   TEXT PRIMARY KEY NOT NULL,
             value TEXT NOT NULL
         );
+        CREATE TABLE IF NOT EXISTS accounts (
+            id   TEXT PRIMARY KEY NOT NULL,
+            name TEXT NOT NULL
+        );
         CREATE TABLE IF NOT EXISTS keymap (
             command_id TEXT PRIMARY KEY NOT NULL,
             hotkey     TEXT NOT NULL

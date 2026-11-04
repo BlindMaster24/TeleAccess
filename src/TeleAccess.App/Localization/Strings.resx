@@ -750,4 +750,34 @@
   <data name="Error_BadFolderName" xml:space="preserve">
     <value>Cannot use this folder name</value>
   </data>
+  <data name="Cmd_AddAccount" xml:space="preserve">
+    <value>Add an account</value>
+  </data>
+  <data name="Cmd_SwitchAccount" xml:space="preserve">
+    <value>Switch account</value>
+  </data>
+  <data name="Cmd_RemoveAccount" xml:space="preserve">
+    <value>Remove the current account</value>
+  </data>
+  <data name="Prompt_AccountName" xml:space="preserve">
+    <value>Account name</value>
+  </data>
+  <data name="Prompt_AccountNumber" xml:space="preserve">
+    <value>Account number</value>
+  </data>
+  <data name="Status_AccountAdded" xml:space="preserve">
+    <value>Account {0} added</value>
+  </data>
+  <data name="Status_AccountSwitched" xml:space="preserve">
+    <value>Switched to account {0}</value>
+  </data>
+  <data name="Status_AccountRemoved" xml:space="preserve">
+    <value>Account removed</value>
+  </data>
+  <data name="Status_NoAccounts" xml:space="preserve">
+    <value>No other accounts</value>
+  </data>
+  <data name="Status_CurrentAccount" xml:space="preserve">
+    <value>Current account: {0}</value>
+  </data>
 </root>
