@@ -121,4 +121,5 @@ tests/TeleAccess.Core.Tests/
 - [docs/CODE-STYLE.md](docs/CODE-STYLE.md) — comment policy and style rules
 - [docs/PACKAGING.md](docs/PACKAGING.md) — portable build and installer plan
 - [docs/CI.md](docs/CI.md) — what every workflow proves and how to add one
+- [docs/TOPICS.md](docs/TOPICS.md) — forum topics: TDLib surface and the Unigram reference
 - [docs/TESTING.md](docs/TESTING.md) — test stack, what is covered, mutation blocker

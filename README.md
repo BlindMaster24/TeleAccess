@@ -63,6 +63,7 @@ dotnet test
 | [docs/CODE-STYLE.md](docs/CODE-STYLE.md) | comment policy |
 | [docs/PACKAGING.md](docs/PACKAGING.md) | portable build and installer plan |
 | [docs/CI.md](docs/CI.md) | workflows, gates and artifacts |
+| [docs/TOPICS.md](docs/TOPICS.md) | forum topics research and plan |
 | [docs/TESTING.md](docs/TESTING.md) | test stack, coverage and mutation status |
 
 ## License
