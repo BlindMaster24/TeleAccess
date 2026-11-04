@@ -37,6 +37,8 @@ chatList.archive | ChatList | Ctrl+Shift+A
 chatList.createFolder | ChatList | Ctrl+Alt+F
 chatList.renameFolder | ChatList | none
 chatList.deleteFolder | ChatList | Ctrl+Alt+D
+chatList.secretState | ChatList | none
+chatList.searchSecret | ChatList | none
 chatList.findMember | ChatList | none
 chatList.unbanMember | ChatList | none
 chatList.banMember | ChatList | Ctrl+Alt+B

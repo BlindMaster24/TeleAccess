@@ -288,7 +288,9 @@ public partial class MainWindow : Window
         CreateFolder: OnCreateFolder,
         DeleteFolder: OnDeleteFolder,
         RenameFolder: OnRenameFolder,
-        FindMember: OnFindMember);
+        FindMember: OnFindMember,
+        SecretState: OnSecretState,
+        SearchSecret: OnSearchSecret);
 
     private MessageActions CreateMessageActions() => new(
         ReadAloud: OnReadAloud,
@@ -2172,6 +2174,63 @@ public partial class MainWindow : Window
 
             await _telegram.SetMemberBannedAsync(_currentChat.Id, members[index].Id, true);
             Announce(Strings.Status_MemberBanned);
+        }
+        catch (Exception exception)
+        {
+            Announce(Errors.Describe(exception));
+        }
+    }
+
+    private void OnSecretState() => _ = ShowSecretStateAsync();
+
+    private async Task ShowSecretStateAsync()
+    {
+        if (_currentChat is null)
+        {
+            Announce(Strings.Status_NoChat);
+            return;
+        }
+
+        try
+        {
+            var state = await _telegram.GetSecretChatStateAsync(_currentChat.Id);
+            Announce(string.IsNullOrEmpty(state) ? Strings.Status_NotSecret : state);
+        }
+        catch (Exception exception)
+        {
+            Announce(Errors.Describe(exception));
+        }
+    }
+
+    private void OnSearchSecret() => _ = SearchSecretAsync();
+
+    private async Task SearchSecretAsync()
+    {
+        if (_currentChat is null)
+        {
+            Announce(Strings.Status_NoChat);
+            return;
+        }
+
+        var query = PromptWindow.Ask(this, Strings.Prompt_SearchInChat);
+
+        if (string.IsNullOrWhiteSpace(query))
+        {
+            return;
+        }
+
+        try
+        {
+            var rows = await _telegram.SearchSecretAsync(_currentChat.Id, query.Trim());
+
+            if (rows.Count == 0)
+            {
+                Announce(Strings.Status_SearchEmpty);
+                return;
+            }
+
+            ShowTransient(rows);
+            Announce(PluralFormatter.Format(Strings.Status_FoundMessages, rows.Count, Strings.Culture));
         }
         catch (Exception exception)
         {

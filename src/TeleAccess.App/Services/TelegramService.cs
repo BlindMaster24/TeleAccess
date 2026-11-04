@@ -3,6 +3,7 @@ using System.Globalization;
 using System.IO;
 using TdLib;
 using TdLib.Bindings;
+using TeleAccess.App.Localization;
 using TeleAccess.Core.ChatLists;
 using TeleAccess.Core.Drafts;
 using TeleAccess.Core.Formatting;
@@ -1572,6 +1573,50 @@ public sealed class TelegramService : IDisposable
         var rows = new List<MessageRow>(thread.Messages.Length);
 
         foreach (var message in thread.Messages.Reverse().Take(limit))
+        {
+            rows.Add(await ToRowAsync(message));
+        }
+
+        return rows;
+    }
+
+    public async Task<string> GetSecretChatStateAsync(long chatId)
+    {
+        RequireClient();
+
+        var chat = await _client!.ExecuteAsync(new TdApi.GetChat { ChatId = chatId });
+
+        if (chat.Type is not TdApi.ChatType.ChatTypeSecret secret)
+        {
+            return string.Empty;
+        }
+
+        var state = await _client.ExecuteAsync(new TdApi.GetSecretChat { SecretChatId = secret.SecretChatId });
+
+        return state.State switch
+        {
+            TdApi.SecretChatState.SecretChatStateReady => Strings.Status_SecretReady,
+            TdApi.SecretChatState.SecretChatStatePending => Strings.Status_SecretPending,
+            _ => Strings.Status_SecretClosed
+        };
+    }
+
+    public async Task<IReadOnlyList<MessageRow>> SearchSecretAsync(long chatId, string query, int limit = 40)
+    {
+        RequireClient();
+
+        var found = await _client!.ExecuteAsync(new TdApi.SearchSecretMessages
+        {
+            ChatId = chatId,
+            Query = query,
+            Offset = string.Empty,
+            Limit = limit,
+            Filter = null
+        });
+
+        var rows = new List<MessageRow>(found.Messages.Length);
+
+        foreach (var message in found.Messages)
         {
             rows.Add(await ToRowAsync(message));
         }

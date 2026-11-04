@@ -15,4 +15,6 @@ public sealed record ChatActions(
     Action CreateFolder,
     Action DeleteFolder,
     Action RenameFolder,
-    Action FindMember);
+    Action FindMember,
+    Action SecretState,
+    Action SearchSecret);

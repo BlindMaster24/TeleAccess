@@ -624,4 +624,16 @@ public static class Strings
 
     public static string Status_NoThread => Get(nameof(Status_NoThread));
 
+    public static string Cmd_SecretState => Get(nameof(Cmd_SecretState));
+
+    public static string Cmd_SearchSecret => Get(nameof(Cmd_SearchSecret));
+
+    public static string Status_SecretReady => Get(nameof(Status_SecretReady));
+
+    public static string Status_SecretPending => Get(nameof(Status_SecretPending));
+
+    public static string Status_SecretClosed => Get(nameof(Status_SecretClosed));
+
+    public static string Status_NotSecret => Get(nameof(Status_NotSecret));
+
 }

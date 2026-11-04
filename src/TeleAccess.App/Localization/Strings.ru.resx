@@ -936,4 +936,22 @@
   <data name="Status_NoThread" xml:space="preserve">
     <value>У этого сообщения нет ветки</value>
   </data>
+  <data name="Cmd_SecretState" xml:space="preserve">
+    <value>Состояние секретного чата</value>
+  </data>
+  <data name="Cmd_SearchSecret" xml:space="preserve">
+    <value>Поиск в секретном чате</value>
+  </data>
+  <data name="Status_SecretReady" xml:space="preserve">
+    <value>Секретный чат готов</value>
+  </data>
+  <data name="Status_SecretPending" xml:space="preserve">
+    <value>Секретный чат ждёт собеседника</value>
+  </data>
+  <data name="Status_SecretClosed" xml:space="preserve">
+    <value>Секретный чат закрыт</value>
+  </data>
+  <data name="Status_NotSecret" xml:space="preserve">
+    <value>Этот чат не секретный</value>
+  </data>
 </root>

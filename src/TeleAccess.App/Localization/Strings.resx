@@ -936,4 +936,22 @@
   <data name="Status_NoThread" xml:space="preserve">
     <value>This message has no thread</value>
   </data>
+  <data name="Cmd_SecretState" xml:space="preserve">
+    <value>Secret chat state</value>
+  </data>
+  <data name="Cmd_SearchSecret" xml:space="preserve">
+    <value>Search inside the secret chat</value>
+  </data>
+  <data name="Status_SecretReady" xml:space="preserve">
+    <value>Secret chat ready</value>
+  </data>
+  <data name="Status_SecretPending" xml:space="preserve">
+    <value>Secret chat is waiting for the other side</value>
+  </data>
+  <data name="Status_SecretClosed" xml:space="preserve">
+    <value>Secret chat closed</value>
+  </data>
+  <data name="Status_NotSecret" xml:space="preserve">
+    <value>This chat is not secret</value>
+  </data>
 </root>
