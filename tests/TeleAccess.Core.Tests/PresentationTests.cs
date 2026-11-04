@@ -26,7 +26,7 @@ public class PresentationTests
     [Fact]
     public void Chat_row_shows_unread_count()
     {
-        var row = new ChatRow(1, "Work", MessageKind.Text, "hi", 3, false, false, false);
+        var row = new ChatRow(1, "Work", MessageKind.Text, "hi", 3, false, false, false, false);
 
         row.Display.ShouldBe("Work (3)");
     }
@@ -34,7 +34,7 @@ public class PresentationTests
     [Fact]
     public void Chat_row_hides_zero_unread()
     {
-        var row = new ChatRow(1, "Work", MessageKind.Text, "hi", 0, true, true, false);
+        var row = new ChatRow(1, "Work", MessageKind.Text, "hi", 0, true, true, false, false);
 
         row.Display.ShouldBe("Work");
     }

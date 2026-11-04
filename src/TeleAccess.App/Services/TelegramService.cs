@@ -131,7 +131,8 @@ public sealed class TelegramService : IDisposable
                 chat.UnreadCount,
                 chat.NotificationSettings.MuteFor > 0 || chat.DefaultDisableNotification,
                 chat.Positions.Any(position => position.IsPinned),
-                chat.ChatLists.Any(list => list is TdApi.ChatList.ChatListArchive)));
+                chat.ChatLists.Any(list => list is TdApi.ChatList.ChatListArchive),
+                chat.ViewAsTopics));
         }
 
         return rows;
@@ -160,7 +161,12 @@ public sealed class TelegramService : IDisposable
         return rows;
     }
 
-    public async Task SendTextAsync(long chatId, string text, long replyToMessageId = 0, SendOptions? options = null)
+    public async Task SendTextAsync(
+        long chatId,
+        string text,
+        long replyToMessageId = 0,
+        SendOptions? options = null,
+        int topicId = 0)
     {
         RequireClient();
 
@@ -169,7 +175,7 @@ public sealed class TelegramService : IDisposable
             Text = new TdApi.FormattedText { Text = text, Entities = [] },
             LinkPreviewOptions = null,
             ClearDraft = true
-        }, replyToMessageId, options);
+        }, replyToMessageId, options, topicId);
     }
 
     public async Task DeleteMessagesAsync(long chatId, IReadOnlyCollection<long> messageIds, bool revoke)
@@ -312,7 +318,8 @@ public sealed class TelegramService : IDisposable
         long chatId,
         TdApi.InputMessageContent content,
         long replyToMessageId,
-        SendOptions? options)
+        SendOptions? options,
+        int topicId = 0)
     {
         options ??= SendOptions.Normal;
 
@@ -334,7 +341,9 @@ public sealed class TelegramService : IDisposable
         await _client!.ExecuteAsync(new TdApi.SendMessage
         {
             ChatId = chatId,
-            TopicId = null,
+            TopicId = topicId == 0
+                ? null
+                : new TdApi.MessageTopic.MessageTopicForum { ForumTopicId = topicId },
             ReplyTo = replyToMessageId == 0
                 ? null
                 : new TdApi.InputMessageReplyTo.InputMessageReplyToMessage
@@ -1232,6 +1241,19 @@ public sealed class TelegramService : IDisposable
         }
 
         return rows;
+    }
+
+    public async Task CreateForumTopicAsync(long chatId, string name)
+    {
+        RequireClient();
+
+        await _client!.ExecuteAsync(new TdApi.CreateForumTopic
+        {
+            ChatId = chatId,
+            Name = name,
+            IsNameImplicit = false,
+            Icon = null
+        });
     }
 
     public async Task<IReadOnlyList<MessageRow>> LoadScheduledAsync(long chatId)

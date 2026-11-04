@@ -520,4 +520,14 @@ public static class Strings
 
     public static string Status_CurrentAccount => Get(nameof(Status_CurrentAccount));
 
+    public static string Cmd_TopicOpen => Get(nameof(Cmd_TopicOpen));
+
+    public static string Cmd_TopicBack => Get(nameof(Cmd_TopicBack));
+
+    public static string Cmd_TopicCreate => Get(nameof(Cmd_TopicCreate));
+
+    public static string Prompt_TopicName => Get(nameof(Prompt_TopicName));
+
+    public static string Status_TopicCreated => Get(nameof(Status_TopicCreated));
+
 }

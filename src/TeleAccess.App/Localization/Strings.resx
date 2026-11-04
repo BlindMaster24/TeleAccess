@@ -780,4 +780,19 @@
   <data name="Status_CurrentAccount" xml:space="preserve">
     <value>Current account: {0}</value>
   </data>
+  <data name="Cmd_TopicOpen" xml:space="preserve">
+    <value>Open topic</value>
+  </data>
+  <data name="Cmd_TopicBack" xml:space="preserve">
+    <value>Back to the topic list</value>
+  </data>
+  <data name="Cmd_TopicCreate" xml:space="preserve">
+    <value>Create a topic</value>
+  </data>
+  <data name="Prompt_TopicName" xml:space="preserve">
+    <value>Topic name</value>
+  </data>
+  <data name="Status_TopicCreated" xml:space="preserve">
+    <value>Topic created</value>
+  </data>
 </root>

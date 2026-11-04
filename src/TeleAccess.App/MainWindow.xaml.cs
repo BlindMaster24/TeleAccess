@@ -21,6 +21,7 @@ using TeleAccess.Core.Network;
 using TeleAccess.Core.Notifications;
 using TeleAccess.Core.Profiles;
 using TeleAccess.Core.Selection;
+using TeleAccess.Core.Topics;
 
 namespace TeleAccess.App;
 
@@ -40,6 +41,7 @@ public partial class MainWindow : Window
     private readonly DispatcherTimer _draftTimer;
     private readonly AppSettings _settings;
     private ChatRow? _currentChat;
+    private TopicRow? _currentTopic;
     private MessageRow? _currentMessage;
     private long _replyToMessageId;
     private bool _showingTransient;
@@ -297,7 +299,10 @@ public partial class MainWindow : Window
         Select: OnSelect,
         SelectAll: OnSelectAll,
         JumpToDate: OnJumpToDate,
-        Buttons: OnButtons);
+        Buttons: OnButtons,
+        OpenTopic: OnOpenTopic,
+        BackToTopics: OnBackToTopics,
+        CreateTopic: OnCreateTopic);
 
     private ComposerActions CreateComposerActions() => new(
         Send: OnSend,
@@ -548,6 +553,7 @@ public partial class MainWindow : Window
         }
 
         _currentChat = chat;
+        _currentTopic = null;
         _currentMessage = null;
         _replyToMessageId = 0;
         _selected.Clear();
@@ -607,6 +613,12 @@ public partial class MainWindow : Window
         try
         {
             await _telegram.OpenChatAsync(chat.Id);
+
+            if (chat.IsForum && _currentTopic is null)
+            {
+                await ShowTopicListAsync(chat);
+                return;
+            }
             var messages = await _telegram.LoadMessagesAsync(chat.Id);
 
             MessageList.ItemsSource = messages;
@@ -710,7 +722,7 @@ public partial class MainWindow : Window
 
         try
         {
-            await _telegram.SendTextAsync(_currentChat.Id, text, replyTo, options);
+            await _telegram.SendTextAsync(_currentChat.Id, text, replyTo, options, _currentTopic?.Id ?? 0);
 
             if (announceAt is { } at)
             {
@@ -1400,6 +1412,93 @@ public partial class MainWindow : Window
             }
 
             Announce(string.Format(Strings.Culture, Strings.Status_Saved, path));
+        }
+        catch (Exception exception)
+        {
+            Announce(Errors.Describe(exception));
+        }
+    }
+
+    private async Task ShowTopicListAsync(ChatRow chat)
+    {
+        var topics = await _telegram.LoadTopicsAsync(chat.Id);
+
+        if (topics.Count == 0)
+        {
+            MessageList.ItemsSource = Array.Empty<TopicRow>();
+            Announce($"{chat.Title}. {Strings.Main_NoMessages}");
+            return;
+        }
+
+        MessageList.ItemsSource = topics;
+        Announce($"{chat.Title}. {TopicSorter.TotalUnread(topics.Select(ToItem))} unread in {topics.Count} topics");
+        MessageList.Focus();
+    }
+
+    private static TopicItem ToItem(TopicRow topic) =>
+        new(topic.Id, topic.Name, topic.UnreadCount, topic.IsPinned, topic.Order);
+
+    private void OnOpenTopic() => _ = OpenTopicAsync();
+
+    private async Task OpenTopicAsync()
+    {
+        if (_currentChat is null || MessageList.SelectedItem is not TopicRow topic)
+        {
+            Announce(Strings.Status_NoSelection);
+            return;
+        }
+
+        _currentTopic = topic;
+
+        try
+        {
+            var messages = await _telegram.LoadTopicMessagesAsync(_currentChat.Id, topic.LastMessageId);
+            MessageList.ItemsSource = messages;
+            _currentMessage = null;
+            Announce($"{topic.Name}. {messages.Count}");
+            MessageList.Focus();
+        }
+        catch (Exception exception)
+        {
+            Announce(Errors.Describe(exception));
+        }
+    }
+
+    private void OnBackToTopics()
+    {
+        if (_currentChat is null || !_currentChat.IsForum)
+        {
+            return;
+        }
+
+        _currentTopic = null;
+        _currentMessage = null;
+        _ = RefreshMessagesAsync(_currentChat);
+    }
+
+    private void OnCreateTopic() => _ = CreateTopicAsync();
+
+    private async Task CreateTopicAsync()
+    {
+        if (_currentChat is null)
+        {
+            Announce(Strings.Status_NoChat);
+            return;
+        }
+
+        var name = PromptWindow.Ask(this, Strings.Prompt_TopicName);
+
+        if (!ChatTitle.TryNormalize(name, out var title))
+        {
+            Announce(Strings.Error_BadTitle);
+            return;
+        }
+
+        try
+        {
+            await _telegram.CreateForumTopicAsync(_currentChat.Id, title);
+            Announce(Strings.Status_TopicCreated);
+            await ShowTopicListAsync(_currentChat);
         }
         catch (Exception exception)
         {

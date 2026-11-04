@@ -29,6 +29,7 @@ All notable changes are recorded here. Format follows
 - Chat information (type, member count, description), member lists, forum topic lists, contact lists, secret chat creation, joining chats.
 - Incoming voice notes and audio play through NAudio (`MediaFoundationReader`), `Enter` plays, `Escape` stops.
 - Attachments download with `Ctrl+S`, history pages back with `Ctrl+Up`, new messages elsewhere announce with an earcon, and `Ctrl+F1` turns on training mode.
+- Forum topics UI: a forum chat opens with its topic list, `Enter` opens a topic, `Backspace` returns, `Ctrl+Alt+N` creates one, and sending inside a topic passes `MessageTopicForum`.
 - Forum topics: the service loads topics with unread, pin and closed state plus the last message id, and reads history inside a topic through getMessageThreadHistory; ordering and unread aggregation live in TopicSorter with six tests.
 - Multi-account: each account has its own TDLib directory, switching recreates the client in place, the active account is remembered in SQLite; ids and paths are covered by eight tests.
 - Eight rare commands (topics, stories, proxy, bio, scope mutes, account management) ship without a default shortcut and are assigned in the editor.

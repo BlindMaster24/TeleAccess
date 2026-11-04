@@ -89,6 +89,9 @@ public static class CommandCatalog
 
     private static void AddComposer(CommandRegistry registry, UiActions actions)
     {
+        Add(registry, "messageList.topicOpen", Strings.Cmd_TopicOpen, CommandScope.MessageList, "Enter", actions.Message.OpenTopic);
+        Add(registry, "messageList.topicBack", Strings.Cmd_TopicBack, CommandScope.MessageList, "Backspace", actions.Message.BackToTopics);
+        Add(registry, "messageList.topicCreate", Strings.Cmd_TopicCreate, CommandScope.MessageList, "Ctrl+Alt+N", actions.Message.CreateTopic, actions.HasChat);
         Add(registry, "messageList.older", Strings.Cmd_Older, CommandScope.MessageList, "Ctrl+Up", actions.Message.Older, actions.HasChat);
         Add(registry, "composer.send", Strings.Cmd_Send, CommandScope.Composer, "Enter", actions.Composer.Send, actions.HasChat);
         Add(registry, "composer.sendSilent", Strings.Cmd_SendSilent, CommandScope.Composer, "Ctrl+Enter", actions.Composer.SendSilent, actions.HasChat);

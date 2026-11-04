@@ -93,6 +93,9 @@ menu of the focused area.
 | `Space` | select or unselect the current message |
 | `Ctrl+A` | select all loaded messages |
 | `Ctrl+Up` | load the previous page of history |
+| `Enter` | in a forum chat: open the selected topic |
+| `Backspace` | in a topic: back to the topic list |
+| `Ctrl+Alt+N` | create a topic |
 
 ### Message
 

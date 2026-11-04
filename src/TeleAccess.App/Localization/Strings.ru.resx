@@ -780,4 +780,19 @@
   <data name="Status_CurrentAccount" xml:space="preserve">
     <value>Текущий аккаунт: {0}</value>
   </data>
+  <data name="Cmd_TopicOpen" xml:space="preserve">
+    <value>Открыть тему</value>
+  </data>
+  <data name="Cmd_TopicBack" xml:space="preserve">
+    <value>Назад к списку тем</value>
+  </data>
+  <data name="Cmd_TopicCreate" xml:space="preserve">
+    <value>Создать тему</value>
+  </data>
+  <data name="Prompt_TopicName" xml:space="preserve">
+    <value>Название темы</value>
+  </data>
+  <data name="Status_TopicCreated" xml:space="preserve">
+    <value>Тема создана</value>
+  </data>
 </root>

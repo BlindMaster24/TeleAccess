@@ -18,4 +18,7 @@ public sealed record MessageActions(
     Action Select,
     Action SelectAll,
     Action JumpToDate,
-    Action Buttons);
+    Action Buttons,
+    Action OpenTopic,
+    Action BackToTopics,
+    Action CreateTopic);

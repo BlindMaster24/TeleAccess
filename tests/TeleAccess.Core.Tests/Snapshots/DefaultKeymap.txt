@@ -53,6 +53,9 @@ message.save | Message | Ctrl+S
 message.translate | Message | Ctrl+Shift+T
 message.react | Message | Ctrl+Shift+E
 message.searchInChat | Message | Ctrl+F
+messageList.topicOpen | MessageList | Enter
+messageList.topicBack | MessageList | Backspace
+messageList.topicCreate | MessageList | Ctrl+Alt+N
 messageList.older | MessageList | Ctrl+Up
 composer.send | Composer | Enter
 composer.sendSilent | Composer | Ctrl+Enter
