@@ -5,6 +5,7 @@ using TdLib;
 using TdLib.Bindings;
 using TeleAccess.Core.ChatLists;
 using TeleAccess.Core.Drafts;
+using TeleAccess.Core.Formatting;
 using TeleAccess.Core.Invites;
 using TeleAccess.Core.Notifications;
 
@@ -170,13 +171,41 @@ public sealed class TelegramService : IDisposable
     {
         RequireClient();
 
+        var markup = SimpleMarkup.Parse(text);
+
         await SendAsync(chatId, new TdApi.InputMessageContent.InputMessageText
         {
-            Text = new TdApi.FormattedText { Text = text, Entities = [] },
+            Text = new TdApi.FormattedText
+            {
+                Text = markup.Text,
+                Entities = markup.Entities.Select(ToEntity).ToArray()
+            },
             LinkPreviewOptions = null,
             ClearDraft = true
         }, replyToMessageId, options, topicId);
     }
+
+    private static TdApi.TextEntity ToEntity(EntitySpan span) => span.Kind switch
+    {
+        EntityKind.Bold => new TdApi.TextEntity
+        {
+            Offset = span.Offset,
+            Length = span.Length,
+            Type = new TdApi.TextEntityType.TextEntityTypeBold()
+        },
+        EntityKind.Italic => new TdApi.TextEntity
+        {
+            Offset = span.Offset,
+            Length = span.Length,
+            Type = new TdApi.TextEntityType.TextEntityTypeItalic()
+        },
+        _ => new TdApi.TextEntity
+        {
+            Offset = span.Offset,
+            Length = span.Length,
+            Type = new TdApi.TextEntityType.TextEntityTypeCode()
+        }
+    };
 
     public async Task DeleteMessagesAsync(long chatId, IReadOnlyCollection<long> messageIds, bool revoke)
     {

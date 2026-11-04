@@ -122,6 +122,7 @@ menu of the focused area.
 
 | Shortcut | Command |
 | --- | --- |
+| markup | `**bold**`, `__bold__`, `_italic_` and `` `code` `` are sent as Telegram entities |
 | `Enter` | send |
 | `Shift+Enter` | new line |
 | `Ctrl+Enter` | send without notification |
