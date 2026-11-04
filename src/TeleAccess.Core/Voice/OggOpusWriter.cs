@@ -6,11 +6,11 @@ public sealed class OggOpusWriter : IDisposable
 {
     private const int MaxSegments = 255;
 
-    private static readonly byte[] CapturePattern = "OggS"u8.ToArray();
+    private static readonly byte[] _capturePattern = "OggS"u8.ToArray();
 
-    private static readonly byte[] OpusHeadMagic = "OpusHead"u8.ToArray();
+    private static readonly byte[] _opusHeadMagic = "OpusHead"u8.ToArray();
 
-    private static readonly byte[] OpusTagsMagic = "OpusTags"u8.ToArray();
+    private static readonly byte[] _opusTagsMagic = "OpusTags"u8.ToArray();
 
     private readonly Stream _output;
     private readonly int _channels;
@@ -83,7 +83,7 @@ public sealed class OggOpusWriter : IDisposable
         }
 
         var head = new byte[19];
-        OpusHeadMagic.CopyTo(head, 0);
+        _opusHeadMagic.CopyTo(head, 0);
         head[8] = 1;
         head[9] = (byte)_channels;
         BinaryPrimitives.WriteUInt16LittleEndian(head.AsSpan(10), 312);
@@ -94,8 +94,8 @@ public sealed class OggOpusWriter : IDisposable
         WritePage(head, 0);
 
         var vendor = "TeleAccess"u8;
-        var tags = new byte[OpusTagsMagic.Length + 4 + vendor.Length + 4];
-        OpusTagsMagic.CopyTo(tags, 0);
+        var tags = new byte[_opusTagsMagic.Length + 4 + vendor.Length + 4];
+        _opusTagsMagic.CopyTo(tags, 0);
         BinaryPrimitives.WriteUInt32LittleEndian(tags.AsSpan(8), (uint)vendor.Length);
         vendor.CopyTo(tags.AsSpan(12));
         BinaryPrimitives.WriteUInt32LittleEndian(tags.AsSpan(12 + vendor.Length), 0);
@@ -132,7 +132,7 @@ public sealed class OggOpusWriter : IDisposable
         var page = new byte[headerSize + payload.Length];
         var span = page.AsSpan();
 
-        CapturePattern.CopyTo(span);
+        _capturePattern.CopyTo(span);
         span[4] = 0;
         span[5] = (byte)(_pending.Count > 0 ? 0 : 0x02);
         BinaryPrimitives.WriteInt64LittleEndian(span[6..], granule);
