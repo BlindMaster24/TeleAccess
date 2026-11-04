@@ -41,6 +41,8 @@ public static class CommandCatalog
         Add(registry, "global.addAccount", Strings.Cmd_AddAccount, CommandScope.Global, null, actions.AddAccount);
         Add(registry, "global.switchAccount", Strings.Cmd_SwitchAccount, CommandScope.Global, null, actions.SwitchAccount);
         Add(registry, "global.removeAccount", Strings.Cmd_RemoveAccount, CommandScope.Global, null, actions.RemoveAccount);
+        Add(registry, "global.enableProxy", Strings.Cmd_EnableProxy, CommandScope.Global, null, actions.EnableProxy);
+        Add(registry, "global.removeProxy", Strings.Cmd_RemoveProxy, CommandScope.Global, null, actions.RemoveProxy);
         Add(registry, "global.disableProxy", Strings.Cmd_DisableProxy, CommandScope.Global, null, actions.DisableProxy);
         Add(registry, "global.proxy", Strings.Cmd_Proxy, CommandScope.Global, null, actions.Proxy);
         Add(registry, "global.training", Strings.Cmd_Training, CommandScope.Global, "Ctrl+F1", actions.Training);

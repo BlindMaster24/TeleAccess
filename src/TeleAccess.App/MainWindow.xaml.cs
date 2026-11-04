@@ -264,6 +264,8 @@ public partial class MainWindow : Window
         RemoveAccount: OnRemoveAccount,
         UnbanMember: OnUnbanMember,
         DisableProxy: OnDisableProxy,
+        EnableProxy: OnEnableProxy,
+        RemoveProxy: OnRemoveProxy,
         Quit: Close,
         Chat: CreateChatActions(),
         Message: CreateMessageActions(),
@@ -1678,6 +1680,50 @@ public partial class MainWindow : Window
 
             await _telegram.UnbanMemberAsync(_currentChat.Id, members[index].Id);
             Announce(Strings.Status_MemberUnbanned);
+        }
+        catch (Exception exception)
+        {
+            Announce(Errors.Describe(exception));
+        }
+    }
+
+    private void OnEnableProxy() => _ = PickProxyAsync(enable: true);
+
+    private void OnRemoveProxy() => _ = PickProxyAsync(enable: false);
+
+    private async Task PickProxyAsync(bool enable)
+    {
+        try
+        {
+            var proxies = await _telegram.GetProxiesAsync();
+
+            if (proxies.Count == 0)
+            {
+                Announce(Strings.Status_NoProxies);
+                return;
+            }
+
+            Composer.Text = string.Join(Environment.NewLine, proxies.Select((proxy, index) => (index + 1) + ". " + proxy.Display));
+            Announce(string.Join(". ", proxies.Select(proxy => proxy.Display)));
+
+            var answer = PromptWindow.Ask(this, enable ? Strings.Prompt_EnableProxy : Strings.Prompt_RemoveProxy);
+
+            if (!IndexSelection.TrySelect(answer, proxies.Count, out var index))
+            {
+                Announce(Strings.Error_BadNumber);
+                return;
+            }
+
+            if (enable)
+            {
+                await _telegram.EnableProxyAsync(proxies[index].Id);
+                Announce(Strings.Status_ProxyEnabled);
+            }
+            else
+            {
+                await _telegram.RemoveProxyAsync(proxies[index].Id);
+                Announce(Strings.Status_ProxyRemoved);
+            }
         }
         catch (Exception exception)
         {

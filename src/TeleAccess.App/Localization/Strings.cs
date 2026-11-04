@@ -566,4 +566,18 @@ public static class Strings
 
     public static string Status_Voted => Get(nameof(Status_Voted));
 
+    public static string Cmd_EnableProxy => Get(nameof(Cmd_EnableProxy));
+
+    public static string Cmd_RemoveProxy => Get(nameof(Cmd_RemoveProxy));
+
+    public static string Prompt_EnableProxy => Get(nameof(Prompt_EnableProxy));
+
+    public static string Prompt_RemoveProxy => Get(nameof(Prompt_RemoveProxy));
+
+    public static string Status_ProxyEnabled => Get(nameof(Status_ProxyEnabled));
+
+    public static string Status_ProxyRemoved => Get(nameof(Status_ProxyRemoved));
+
+    public static string Status_NoProxies => Get(nameof(Status_NoProxies));
+
 }

@@ -1332,6 +1332,29 @@ public sealed class TelegramService : IDisposable
         });
     }
 
+    public async Task<IReadOnlyList<ProxyEntry>> GetProxiesAsync()
+    {
+        RequireClient();
+
+        var proxies = await _client!.ExecuteAsync(new TdApi.GetProxies());
+
+        return proxies.Proxies
+            .Select(proxy => new ProxyEntry(proxy.Id, proxy.Proxy.Server, proxy.Proxy.Port, proxy.IsEnabled, proxy.Comment))
+            .ToArray();
+    }
+
+    public async Task EnableProxyAsync(int proxyId)
+    {
+        RequireClient();
+        await _client!.ExecuteAsync(new TdApi.EnableProxy { ProxyId = proxyId });
+    }
+
+    public async Task RemoveProxyAsync(int proxyId)
+    {
+        RequireClient();
+        await _client!.ExecuteAsync(new TdApi.RemoveProxy { ProxyId = proxyId });
+    }
+
     public async Task DisableProxyAsync()
     {
         RequireClient();

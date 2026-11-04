@@ -17,6 +17,8 @@ global.stories | Global | none
 global.addAccount | Global | none
 global.switchAccount | Global | none
 global.removeAccount | Global | none
+global.enableProxy | Global | none
+global.removeProxy | Global | none
 global.disableProxy | Global | none
 global.proxy | Global | none
 global.training | Global | Ctrl+F1

@@ -849,4 +849,25 @@
   <data name="Status_Voted" xml:space="preserve">
     <value>Vote sent</value>
   </data>
+  <data name="Cmd_EnableProxy" xml:space="preserve">
+    <value>Enable a configured proxy</value>
+  </data>
+  <data name="Cmd_RemoveProxy" xml:space="preserve">
+    <value>Remove a configured proxy</value>
+  </data>
+  <data name="Prompt_EnableProxy" xml:space="preserve">
+    <value>Proxy number to enable</value>
+  </data>
+  <data name="Prompt_RemoveProxy" xml:space="preserve">
+    <value>Proxy number to remove</value>
+  </data>
+  <data name="Status_ProxyEnabled" xml:space="preserve">
+    <value>Proxy enabled</value>
+  </data>
+  <data name="Status_ProxyRemoved" xml:space="preserve">
+    <value>Proxy removed</value>
+  </data>
+  <data name="Status_NoProxies" xml:space="preserve">
+    <value>No proxies configured</value>
+  </data>
 </root>

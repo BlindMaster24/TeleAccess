@@ -849,4 +849,25 @@
   <data name="Status_Voted" xml:space="preserve">
     <value>Голос отправлен</value>
   </data>
+  <data name="Cmd_EnableProxy" xml:space="preserve">
+    <value>Включить настроенный прокси</value>
+  </data>
+  <data name="Cmd_RemoveProxy" xml:space="preserve">
+    <value>Удалить настроенный прокси</value>
+  </data>
+  <data name="Prompt_EnableProxy" xml:space="preserve">
+    <value>Номер прокси для включения</value>
+  </data>
+  <data name="Prompt_RemoveProxy" xml:space="preserve">
+    <value>Номер прокси для удаления</value>
+  </data>
+  <data name="Status_ProxyEnabled" xml:space="preserve">
+    <value>Прокси включён</value>
+  </data>
+  <data name="Status_ProxyRemoved" xml:space="preserve">
+    <value>Прокси удалён</value>
+  </data>
+  <data name="Status_NoProxies" xml:space="preserve">
+    <value>Прокси не настроены</value>
+  </data>
 </root>

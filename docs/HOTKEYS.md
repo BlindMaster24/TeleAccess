@@ -48,7 +48,7 @@ menu of the focused area.
 | `Ctrl+Comma` | settings: language, api_id, api_hash, phone, sign out |
 | `Ctrl+Shift+N` | change my name |
 | — | change my bio |
-| — | set a SOCKS5 proxy |
+| — | set, enable, remove or disable a proxy |
 | — | mute notification scopes (p private, g groups, c channels) for N hours |
 | — | list the active stories of the chat |
 | `Ctrl+F1` | training mode: every command announces itself |
