@@ -470,4 +470,14 @@ public static class Strings
 
     public static string Error_BadNumber => Get(nameof(Error_BadNumber));
 
+    public static string Cmd_MuteScopes => Get(nameof(Cmd_MuteScopes));
+
+    public static string Cmd_Stories => Get(nameof(Cmd_Stories));
+
+    public static string Prompt_MuteScopes => Get(nameof(Prompt_MuteScopes));
+
+    public static string Prompt_MuteHours => Get(nameof(Prompt_MuteHours));
+
+    public static string Status_NoStories => Get(nameof(Status_NoStories));
+
 }

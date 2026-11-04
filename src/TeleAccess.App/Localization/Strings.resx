@@ -705,4 +705,19 @@
   <data name="Error_BadNumber" xml:space="preserve">
     <value>Cannot read the number</value>
   </data>
+  <data name="Cmd_MuteScopes" xml:space="preserve">
+    <value>Mute notification scopes</value>
+  </data>
+  <data name="Cmd_Stories" xml:space="preserve">
+    <value>Active stories of this chat</value>
+  </data>
+  <data name="Prompt_MuteScopes" xml:space="preserve">
+    <value>Which scopes to mute: p private, g groups, c channels</value>
+  </data>
+  <data name="Prompt_MuteHours" xml:space="preserve">
+    <value>For how many hours, 0 to unmute</value>
+  </data>
+  <data name="Status_NoStories" xml:space="preserve">
+    <value>No active stories</value>
+  </data>
 </root>

@@ -16,6 +16,7 @@ using TeleAccess.Core.Chats;
 using TeleAccess.Core.Data;
 using TeleAccess.Core.Dates;
 using TeleAccess.Core.Network;
+using TeleAccess.Core.Notifications;
 using TeleAccess.Core.Profiles;
 
 namespace TeleAccess.App;
@@ -104,6 +105,8 @@ public partial class MainWindow : Window
         SetName: OnSetName,
         SetBio: OnSetBio,
         Proxy: OnProxy,
+        MuteScopes: OnMuteScopes,
+        Stories: OnStories,
         Quit: Close,
         Chat: CreateChatActions(),
         Message: CreateMessageActions(),
@@ -1431,6 +1434,78 @@ public partial class MainWindow : Window
 
             Composer.Text = string.Join(Environment.NewLine, existing.Prepend(link).Distinct(StringComparer.Ordinal));
             Announce(link);
+        }
+        catch (Exception exception)
+        {
+            Announce(Errors.Describe(exception));
+        }
+    }
+
+    private void OnMuteScopes() => _ = MuteScopesAsync();
+
+    private async Task MuteScopesAsync()
+    {
+        var scopes = PromptWindow.Ask(this, Strings.Prompt_MuteScopes, "p,g,c");
+
+        if (string.IsNullOrWhiteSpace(scopes))
+        {
+            return;
+        }
+
+        var hoursAnswer = PromptWindow.Ask(this, Strings.Prompt_MuteHours, "8");
+
+        if (!int.TryParse(hoursAnswer, NumberStyles.Integer, CultureInfo.InvariantCulture, out var hours))
+        {
+            Announce(Strings.Error_BadNumber);
+            return;
+        }
+
+        if (!MuteFor.TryBuild(hours, out _))
+        {
+            Announce(Strings.Error_BadNumber);
+            return;
+        }
+
+        var letters = scopes.Trim().ToUpperInvariant();
+
+        try
+        {
+            await _telegram.SetScopeMutedAsync(
+                letters.Contains('P', StringComparison.Ordinal),
+                letters.Contains('G', StringComparison.Ordinal),
+                letters.Contains('C', StringComparison.Ordinal),
+                hours);
+
+            Announce(hours == 0 ? Strings.Status_Unmuted : Strings.Status_Muted);
+        }
+        catch (Exception exception)
+        {
+            Announce(Errors.Describe(exception));
+        }
+    }
+
+    private void OnStories() => _ = ShowStoriesAsync();
+
+    private async Task ShowStoriesAsync()
+    {
+        if (_currentChat is null)
+        {
+            Announce(Strings.Status_NoChat);
+            return;
+        }
+
+        try
+        {
+            var stories = await _telegram.GetActiveStoriesAsync(_currentChat.Id);
+
+            if (stories.Count == 0)
+            {
+                Announce(Strings.Status_NoStories);
+                return;
+            }
+
+            Composer.Text = string.Join(Environment.NewLine, stories);
+            Announce(string.Join(". ", stories));
         }
         catch (Exception exception)
         {

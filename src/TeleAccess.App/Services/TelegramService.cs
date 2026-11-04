@@ -5,6 +5,7 @@ using TdLib;
 using TdLib.Bindings;
 using TeleAccess.Core.ChatLists;
 using TeleAccess.Core.Invites;
+using TeleAccess.Core.Notifications;
 
 namespace TeleAccess.App.Services;
 
@@ -956,6 +957,61 @@ public sealed class TelegramService : IDisposable
         });
 
         return links.InviteLinks.Select(link => link.InviteLink).ToArray();
+    }
+
+    public async Task SetScopeMutedAsync(bool privateChats, bool groups, bool channels, int muteHours)
+    {
+        RequireClient();
+
+        _ = MuteFor.TryBuild(muteHours, out var seconds);
+
+        if (privateChats)
+        {
+            await ApplyScopeAsync(new TdApi.NotificationSettingsScope.NotificationSettingsScopePrivateChats(), seconds);
+        }
+
+        if (groups)
+        {
+            await ApplyScopeAsync(new TdApi.NotificationSettingsScope.NotificationSettingsScopeGroupChats(), seconds);
+        }
+
+        if (channels)
+        {
+            await ApplyScopeAsync(new TdApi.NotificationSettingsScope.NotificationSettingsScopeChannelChats(), seconds);
+        }
+    }
+
+    public async Task<IReadOnlyList<string>> GetActiveStoriesAsync(long chatId)
+    {
+        RequireClient();
+
+        var stories = await _client!.ExecuteAsync(new TdApi.GetChatActiveStories { ChatId = chatId });
+
+        return stories.Stories
+            .Select(story => DateTimeOffset.FromUnixTimeSeconds(story.Date).ToLocalTime().ToString("g", CultureInfo.CurrentCulture))
+            .ToArray();
+    }
+
+    private async Task ApplyScopeAsync(TdApi.NotificationSettingsScope scope, int seconds)
+    {
+        var current = await _client!.ExecuteAsync(new TdApi.GetScopeNotificationSettings { Scope = scope });
+
+        await _client.ExecuteAsync(new TdApi.SetScopeNotificationSettings
+        {
+            Scope = scope,
+            NotificationSettings = new TdApi.ScopeNotificationSettings
+            {
+                MuteFor = seconds,
+                SoundId = current.SoundId,
+                ShowPreview = current.ShowPreview,
+                UseDefaultMuteStories = current.UseDefaultMuteStories,
+                MuteStories = current.MuteStories,
+                StorySoundId = current.StorySoundId,
+                ShowStoryPoster = current.ShowStoryPoster,
+                DisablePinnedMessageNotifications = current.DisablePinnedMessageNotifications,
+                DisableMentionNotifications = current.DisableMentionNotifications
+            }
+        });
     }
 
     public async Task<IReadOnlyList<MessageRow>> LoadScheduledAsync(long chatId)

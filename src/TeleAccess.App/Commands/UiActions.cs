@@ -23,6 +23,8 @@ public sealed record UiActions(
     Action SetName,
     Action SetBio,
     Action Proxy,
+    Action MuteScopes,
+    Action Stories,
     ChatActions Chat,
     MessageActions Message,
     ComposerActions Composer);

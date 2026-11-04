@@ -705,4 +705,19 @@
   <data name="Error_BadNumber" xml:space="preserve">
     <value>Не удалось прочитать число</value>
   </data>
+  <data name="Cmd_MuteScopes" xml:space="preserve">
+    <value>Заглушить уведомления по областям</value>
+  </data>
+  <data name="Cmd_Stories" xml:space="preserve">
+    <value>Активные истории чата</value>
+  </data>
+  <data name="Prompt_MuteScopes" xml:space="preserve">
+    <value>Что заглушить: p личные, g группы, c каналы</value>
+  </data>
+  <data name="Prompt_MuteHours" xml:space="preserve">
+    <value>На сколько часов, 0 — включить обратно</value>
+  </data>
+  <data name="Status_NoStories" xml:space="preserve">
+    <value>Активных историй нет</value>
+  </data>
 </root>

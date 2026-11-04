@@ -32,6 +32,8 @@ public class CommandCatalogTests
             SetName: noop,
             SetBio: noop,
             Proxy: noop,
+            MuteScopes: noop,
+            Stories: noop,
             Chat: new ChatActions(noop, noop, noop, noop, noop, noop, noop, noop, noop, noop),
             Message: new MessageActions(noop, noop, noop, noop, noop, noop, noop, noop, noop, noop, noop, noop, noop, noop, noop, noop, noop, noop),
             Composer: new ComposerActions(noop, noop, noop, noop, noop, noop, noop, noop, noop));
