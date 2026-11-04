@@ -596,4 +596,6 @@ public static class Strings
 
     public static string Error_BadBirthdate => Get(nameof(Error_BadBirthdate));
 
+    public static string Status_AlbumSent => Get(nameof(Status_AlbumSent));
+
 }

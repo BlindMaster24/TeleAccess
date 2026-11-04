@@ -132,7 +132,7 @@ menu of the focused area.
 | `Ctrl+Shift+Space` | start / stop voice recording |
 | `Escape` | cancel recording, clear reply |
 | `Ctrl+Up` | edit the last own message |
-| `Ctrl+O` | attach a file: images become photos, GIFs animations, video files videos, webp/tgs stickers, audio formats audio messages, everything else a document |
+| `Ctrl+O` | attach files: images become photos, GIFs animations, video files videos, webp/tgs stickers, audio formats audio messages, everything else a document; several files go as one album |
 | `Ctrl+Alt+C` | send a contact |
 | `Ctrl+Alt+L` | send a location as `latitude, longitude` |
 | `Ctrl+Alt+P` | create a poll (options separated by semicolons) |

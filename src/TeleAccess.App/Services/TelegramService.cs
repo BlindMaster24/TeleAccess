@@ -323,6 +323,74 @@ public sealed class TelegramService : IDisposable
         return string.IsNullOrEmpty(name) ? me.Usernames?.ActiveUsernames.FirstOrDefault() ?? string.Empty : name;
     }
 
+    public async Task SendAlbumAsync(
+        long chatId,
+        IReadOnlyList<AlbumItem> items,
+        string caption,
+        long replyToMessageId = 0,
+        int topicId = 0)
+    {
+        RequireClient();
+        ArgumentNullException.ThrowIfNull(items);
+
+        if (items.Count == 0)
+        {
+            return;
+        }
+
+        var contents = items
+            .Select((item, index) => ToAlbumContent(item, index == 0 ? caption : string.Empty))
+            .ToArray();
+
+        await _client!.ExecuteAsync(new TdApi.SendMessageAlbum
+        {
+            ChatId = chatId,
+            TopicId = topicId == 0
+                ? null
+                : new TdApi.MessageTopic.MessageTopicForum { ForumTopicId = topicId },
+            ReplyTo = replyToMessageId == 0
+                ? null
+                : new TdApi.InputMessageReplyTo.InputMessageReplyToMessage
+                {
+                    MessageId = replyToMessageId,
+                    Quote = null,
+                    ChecklistTaskId = 0,
+                    PollOptionId = string.Empty
+                },
+            Options = null,
+            InputMessageContents = contents
+        });
+    }
+
+    private static TdApi.InputMessageContent ToAlbumContent(AlbumItem item, string caption) =>
+        item.IsPhoto
+                ? new TdApi.InputMessageContent.InputMessagePhoto
+                {
+                    Photo = new TdApi.InputPhoto
+                    {
+                        Photo = new TdApi.InputFile.InputFileLocal { Path = item.Path },
+                        Thumbnail = null,
+                        Video = null,
+                        AddedStickerFileIds = [],
+                        Width = item.Width,
+                        Height = item.Height
+                    },
+                    Caption = new TdApi.FormattedText { Text = caption, Entities = [] },
+                    ShowCaptionAboveMedia = false,
+                    SelfDestructType = null,
+                    HasSpoiler = false
+                }
+                : new TdApi.InputMessageContent.InputMessageDocument
+                {
+                    Document = new TdApi.InputDocument
+                    {
+                        Document = new TdApi.InputFile.InputFileLocal { Path = item.Path },
+                        Thumbnail = null,
+                        DisableContentTypeDetection = false
+                    },
+                    Caption = new TdApi.FormattedText { Text = caption, Entities = [] }
+                };
+
     public async Task SendDocumentAsync(
         long chatId,
         string path,

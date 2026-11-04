@@ -894,4 +894,7 @@
   <data name="Error_BadBirthdate" xml:space="preserve">
     <value>Не удалось прочитать дату рождения</value>
   </data>
+  <data name="Status_AlbumSent" xml:space="preserve">
+    <value>Альбом из {0} вложений отправлен</value>
+  </data>
 </root>

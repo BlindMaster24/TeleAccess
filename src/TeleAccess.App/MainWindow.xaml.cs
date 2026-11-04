@@ -2345,7 +2345,7 @@ public partial class MainWindow : Window
         {
             Title = Strings.Cmd_Attach,
             CheckFileExists = true,
-            Multiselect = false
+            Multiselect = true
         };
 
         if (dialog.ShowDialog(this) != true || !System.IO.File.Exists(dialog.FileName))
@@ -2355,7 +2355,15 @@ public partial class MainWindow : Window
 
         try
         {
-            await SendAttachmentAsync(dialog.FileName);
+            if (dialog.FileNames.Length > 1)
+            {
+                await SendAttachmentsAsync(dialog.FileNames);
+            }
+            else
+            {
+                await SendAttachmentAsync(dialog.FileName);
+            }
+
             Composer.Clear();
             await RefreshMessagesAsync(_currentChat);
         }
@@ -2380,6 +2388,38 @@ public partial class MainWindow : Window
 
         player.Close();
         return size;
+    }
+
+    private async Task SendAttachmentsAsync(string[] paths)
+    {
+        var chatId = _currentChat!.Id;
+        var caption = Composer.Text.Trim();
+        var replyTo = _replyToMessageId;
+        var items = new List<AlbumItem>(paths.Length);
+
+        foreach (var path in paths)
+        {
+            var isPhoto = AttachmentClassifier.Classify(path) == AttachmentKind.Photo;
+            var width = 0;
+            var height = 0;
+
+            if (isPhoto)
+            {
+                var frame = System.Windows.Media.Imaging.BitmapDecoder.Create(
+                    new Uri(path),
+                    System.Windows.Media.Imaging.BitmapCreateOptions.DelayCreation,
+                    System.Windows.Media.Imaging.BitmapCacheOption.None).Frames[0];
+
+                width = frame.PixelWidth;
+                height = frame.PixelHeight;
+            }
+
+            items.Add(new AlbumItem(path, isPhoto, width, height));
+        }
+
+        _replyToMessageId = 0;
+        await _telegram.SendAlbumAsync(chatId, items, caption, replyTo, _currentTopic?.Id ?? 0);
+        Announce(string.Format(Strings.Culture, Strings.Status_AlbumSent, items.Count));
     }
 
     private async Task SendAttachmentAsync(string path)

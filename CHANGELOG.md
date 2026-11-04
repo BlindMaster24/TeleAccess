@@ -30,6 +30,7 @@ All notable changes are recorded here. Format follows
 - Incoming voice notes and audio play through NAudio (`MediaFoundationReader`), `Enter` plays, `Escape` stops.
 - Attachments download with `Ctrl+S`, history pages back with `Ctrl+Up`, new messages elsewhere announce with an earcon, and `Ctrl+F1` turns on training mode.
 - Global search filters: `type:` and `date:` tokens become a TDLib filter and a date range; the token parser is pure and covered by thirteen tests.
+- Albums: picking several files at once sends them as one `sendMessageAlbum`, photos with real dimensions and the composer text as the caption of the first item.
 - Profile fields: username (`setUsername`) and birthdate (`setBirthdate`) validated by pure helpers with twenty-three tests.
 - Proxy manager: list configured proxies, enable or remove one by number (`getProxies`, `enableProxy`, `removeProxy`); all unassigned by default.
 - Topic history now goes through `getForumTopicHistory`; topics can be renamed (`editForumTopic`) and their mention/reaction badges cleared; polls accept a vote through `setPollAnswer`.

@@ -894,4 +894,7 @@
   <data name="Error_BadBirthdate" xml:space="preserve">
     <value>Cannot read the birthdate</value>
   </data>
+  <data name="Status_AlbumSent" xml:space="preserve">
+    <value>Album of {0} items sent</value>
+  </data>
 </root>
