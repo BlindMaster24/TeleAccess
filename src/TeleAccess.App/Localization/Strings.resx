@@ -672,4 +672,16 @@
   <data name="Error_BadProxy" xml:space="preserve">
     <value>Cannot read the proxy address</value>
   </data>
+  <data name="Cmd_Buttons" xml:space="preserve">
+    <value>Bot buttons</value>
+  </data>
+  <data name="Status_NoButtons" xml:space="preserve">
+    <value>This message has no buttons</value>
+  </data>
+  <data name="Prompt_ButtonNumber" xml:space="preserve">
+    <value>Button number</value>
+  </data>
+  <data name="Status_ButtonPressed" xml:space="preserve">
+    <value>Button pressed</value>
+  </data>
 </root>

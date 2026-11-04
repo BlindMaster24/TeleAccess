@@ -130,7 +130,8 @@ public partial class MainWindow : Window
             Older: OnOlder,
             Select: OnSelect,
             SelectAll: OnSelectAll,
-            JumpToDate: OnJumpToDate),
+            JumpToDate: OnJumpToDate,
+            Buttons: OnButtons),
         Composer: new ComposerActions(
             Send: OnSend,
             SendSilent: OnSendSilent,
@@ -1185,6 +1186,46 @@ public partial class MainWindow : Window
             }
 
             Announce(string.Format(Strings.Culture, Strings.Status_Saved, path));
+        }
+        catch (Exception exception)
+        {
+            Announce(Errors.Describe(exception));
+        }
+    }
+
+    private void OnButtons() => _ = ShowButtonsAsync();
+
+    private async Task ShowButtonsAsync()
+    {
+        if (_currentChat is null || _currentMessage is null)
+        {
+            Announce(Strings.Status_NoSelection);
+            return;
+        }
+
+        try
+        {
+            var buttons = await _telegram.GetButtonsAsync(_currentChat.Id, _currentMessage.Id);
+
+            if (buttons.Count == 0)
+            {
+                Announce(Strings.Status_NoButtons);
+                return;
+            }
+
+            Composer.Text = string.Join(Environment.NewLine, buttons.Select((text, index) => (index + 1) + ". " + text));
+            Announce(string.Join(". ", buttons));
+
+            var answer = PromptWindow.Ask(this, Strings.Prompt_ButtonNumber);
+
+            if (string.IsNullOrWhiteSpace(answer) || !int.TryParse(answer, NumberStyles.Integer, CultureInfo.InvariantCulture, out var number))
+            {
+                return;
+            }
+
+            await _telegram.PressButtonAsync(_currentChat.Id, _currentMessage.Id, number - 1);
+            Announce(Strings.Status_ButtonPressed);
+            await RefreshMessagesAsync(_currentChat);
         }
         catch (Exception exception)
         {

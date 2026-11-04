@@ -871,6 +871,51 @@ public sealed class TelegramService : IDisposable
         });
     }
 
+    public async Task<IReadOnlyList<string>> GetButtonsAsync(long chatId, long messageId)
+    {
+        RequireClient();
+
+        var message = await _client!.ExecuteAsync(new TdApi.GetMessage { ChatId = chatId, MessageId = messageId });
+
+        if (message.ReplyMarkup is not TdApi.ReplyMarkup.ReplyMarkupInlineKeyboard keyboard)
+        {
+            return [];
+        }
+
+        return keyboard.Rows.SelectMany(row => row)
+            .Select(button => string.IsNullOrEmpty(button.Text) ? button.Type.DataType : button.Text)
+            .ToArray();
+    }
+
+    public async Task PressButtonAsync(long chatId, long messageId, int index)
+    {
+        RequireClient();
+
+        var message = await _client!.ExecuteAsync(new TdApi.GetMessage { ChatId = chatId, MessageId = messageId });
+
+        if (message.ReplyMarkup is not TdApi.ReplyMarkup.ReplyMarkupInlineKeyboard keyboard)
+        {
+            return;
+        }
+
+        var buttons = keyboard.Rows.SelectMany(row => row).ToArray();
+
+        if (index < 0 || index >= buttons.Length)
+        {
+            return;
+        }
+
+        if (buttons[index].Type is TdApi.InlineKeyboardButtonType.InlineKeyboardButtonTypeCallback callback)
+        {
+            await _client.ExecuteAsync(new TdApi.GetCallbackQueryAnswer
+            {
+                ChatId = chatId,
+                MessageId = messageId,
+                Payload = new TdApi.CallbackQueryPayload.CallbackQueryPayloadData { Data = callback.Data }
+            });
+        }
+    }
+
     public async Task<IReadOnlyList<MessageRow>> LoadScheduledAsync(long chatId)
     {
         RequireClient();

@@ -102,6 +102,7 @@ menu of the focused area.
 | `Ctrl+Shift+E` | add reaction |
 | `Ctrl+Shift+T` | translate the message |
 | `Ctrl+F` | search in this chat |
+| `Ctrl+B` | bot buttons: list and press by number |
 | `Ctrl+C` | copy text |
 | `Ctrl+S` | download the attachment and announce the path |
 | `Shift+F10` | message actions menu |

@@ -672,4 +672,16 @@
   <data name="Error_BadProxy" xml:space="preserve">
     <value>Не удалось прочитать адрес прокси</value>
   </data>
+  <data name="Cmd_Buttons" xml:space="preserve">
+    <value>Кнопки бота</value>
+  </data>
+  <data name="Status_NoButtons" xml:space="preserve">
+    <value>У сообщения нет кнопок</value>
+  </data>
+  <data name="Prompt_ButtonNumber" xml:space="preserve">
+    <value>Номер кнопки</value>
+  </data>
+  <data name="Status_ButtonPressed" xml:space="preserve">
+    <value>Кнопка нажата</value>
+  </data>
 </root>

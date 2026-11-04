@@ -17,4 +17,5 @@ public sealed record MessageActions(
     Action Older,
     Action Select,
     Action SelectAll,
-    Action JumpToDate);
+    Action JumpToDate,
+    Action Buttons);

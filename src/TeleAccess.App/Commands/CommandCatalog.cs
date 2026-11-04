@@ -66,6 +66,7 @@ public static class CommandCatalog
         Add(registry, "message.deleteForMe", Strings.Cmd_DeleteForMe, CommandScope.Message, "Ctrl+Shift+D", actions.Message.DeleteForMe, actions.HasMessage);
         Add(registry, "message.forward", Strings.Cmd_Forward, CommandScope.Message, "Ctrl+Shift+F", actions.Message.Forward, actions.HasMessage);
         Add(registry, "message.pin", Strings.Cmd_Pin, CommandScope.Message, "Ctrl+P", actions.Message.Pin, actions.HasMessage);
+        Add(registry, "message.buttons", Strings.Cmd_Buttons, CommandScope.Message, "Ctrl+B", actions.Message.Buttons, actions.HasMessage);
         Add(registry, "message.copy", Strings.Cmd_Copy, CommandScope.Message, "Ctrl+C", actions.Message.Copy, actions.HasMessage);
         Add(registry, "messageList.jumpToDate", Strings.Cmd_JumpToDate, CommandScope.MessageList, "Ctrl+G", actions.Message.JumpToDate, actions.HasChat);
         Add(registry, "message.select", Strings.Cmd_Select, CommandScope.Message, "Space", actions.Message.Select, actions.HasMessage);

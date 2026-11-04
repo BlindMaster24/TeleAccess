@@ -34,6 +34,7 @@ message.delete | Message | Ctrl+D
 message.deleteForMe | Message | Ctrl+Shift+D
 message.forward | Message | Ctrl+Shift+F
 message.pin | Message | Ctrl+P
+message.buttons | Message | Ctrl+B
 message.copy | Message | Ctrl+C
 messageList.jumpToDate | MessageList | Ctrl+G
 message.select | Message | Space

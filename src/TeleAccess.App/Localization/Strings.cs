@@ -448,4 +448,12 @@ public static class Strings
 
     public static string Error_BadProxy => Get(nameof(Error_BadProxy));
 
+    public static string Cmd_Buttons => Get(nameof(Cmd_Buttons));
+
+    public static string Status_NoButtons => Get(nameof(Status_NoButtons));
+
+    public static string Prompt_ButtonNumber => Get(nameof(Prompt_ButtonNumber));
+
+    public static string Status_ButtonPressed => Get(nameof(Status_ButtonPressed));
+
 }
