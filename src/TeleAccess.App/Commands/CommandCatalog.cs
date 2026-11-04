@@ -42,6 +42,7 @@ public static class CommandCatalog
         Add(registry, "composer.send", Strings.Cmd_Send, CommandScope.Composer, "Enter", actions.Composer.Send, actions.HasChat);
         Add(registry, "composer.sendSilent", Strings.Cmd_SendSilent, CommandScope.Composer, "Ctrl+Enter", actions.Composer.SendSilent, actions.HasChat);
         Add(registry, "composer.sendScheduled", Strings.Cmd_SendScheduled, CommandScope.Composer, "Ctrl+Shift+Enter", actions.Composer.SendScheduled, actions.HasChat);
+        Add(registry, "composer.attach", Strings.Cmd_Attach, CommandScope.Composer, "Ctrl+O", actions.Composer.Attach, actions.HasChat);
         Add(registry, "composer.newline", Strings.Cmd_Newline, CommandScope.Composer, "Shift+Enter", actions.Composer.NewLine, actions.HasChat);
         Add(registry, "composer.voice", Strings.Cmd_Voice, CommandScope.Composer, "Ctrl+Shift+V", actions.Composer.Voice, actions.HasChat);
 

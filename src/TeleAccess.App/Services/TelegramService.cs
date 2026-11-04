@@ -139,49 +139,12 @@ public sealed class TelegramService : IDisposable
     {
         RequireClient();
 
-        options ??= SendOptions.Normal;
-
-        TdApi.MessageSchedulingState? scheduling = null;
-
-        if (options.SendAt is { } at)
+        await SendAsync(chatId, new TdApi.InputMessageContent.InputMessageText
         {
-            scheduling = new TdApi.MessageSchedulingState.MessageSchedulingStateSendAtDate
-            {
-                SendDate = (int)at.ToUnixTimeSeconds(),
-                RepeatPeriod = 0
-            };
-        }
-        else if (options.WhenOnline)
-        {
-            scheduling = new TdApi.MessageSchedulingState.MessageSchedulingStateSendWhenOnline();
-        }
-
-        await _client!.ExecuteAsync(new TdApi.SendMessage
-        {
-            ChatId = chatId,
-            TopicId = null,
-            ReplyTo = replyToMessageId == 0
-                ? null
-                : new TdApi.InputMessageReplyTo.InputMessageReplyToMessage
-                {
-                    MessageId = replyToMessageId,
-                    Quote = null,
-                    ChecklistTaskId = 0,
-                    PollOptionId = string.Empty
-                },
-            Options = new TdApi.MessageSendOptions
-            {
-                DisableNotification = options.Silent,
-                SchedulingState = scheduling
-            },
-            ReplyMarkup = null,
-            InputMessageContent = new TdApi.InputMessageContent.InputMessageText
-            {
-                Text = new TdApi.FormattedText { Text = text, Entities = [] },
-                LinkPreviewOptions = null,
-                ClearDraft = true
-            }
-        });
+            Text = new TdApi.FormattedText { Text = text, Entities = [] },
+            LinkPreviewOptions = null,
+            ClearDraft = true
+        }, replyToMessageId, options);
     }
 
     public async Task DeleteMessagesAsync(long chatId, IReadOnlyCollection<long> messageIds, bool revoke)
@@ -297,6 +260,73 @@ public sealed class TelegramService : IDisposable
         var me = await _client!.ExecuteAsync(new TdApi.GetMe());
         var name = $"{me.FirstName} {me.LastName}".Trim();
         return string.IsNullOrEmpty(name) ? me.Usernames?.ActiveUsernames.FirstOrDefault() ?? string.Empty : name;
+    }
+
+    public async Task SendDocumentAsync(
+        long chatId,
+        string path,
+        string caption,
+        long replyToMessageId = 0,
+        SendOptions? options = null)
+    {
+        RequireClient();
+        ArgumentException.ThrowIfNullOrWhiteSpace(path);
+        await SendAsync(chatId, new TdApi.InputMessageContent.InputMessageDocument
+        {
+            Document = new TdApi.InputDocument
+            {
+                Document = new TdApi.InputFile.InputFileLocal { Path = path },
+                Thumbnail = null,
+                DisableContentTypeDetection = false
+            },
+            Caption = new TdApi.FormattedText { Text = caption, Entities = [] }
+        }, replyToMessageId, options);
+    }
+
+    private async Task SendAsync(
+        long chatId,
+        TdApi.InputMessageContent content,
+        long replyToMessageId,
+        SendOptions? options)
+    {
+        options ??= SendOptions.Normal;
+
+        TdApi.MessageSchedulingState? scheduling = null;
+
+        if (options.SendAt is { } at)
+        {
+            scheduling = new TdApi.MessageSchedulingState.MessageSchedulingStateSendAtDate
+            {
+                SendDate = (int)at.ToUnixTimeSeconds(),
+                RepeatPeriod = 0
+            };
+        }
+        else if (options.WhenOnline)
+        {
+            scheduling = new TdApi.MessageSchedulingState.MessageSchedulingStateSendWhenOnline();
+        }
+
+        await _client!.ExecuteAsync(new TdApi.SendMessage
+        {
+            ChatId = chatId,
+            TopicId = null,
+            ReplyTo = replyToMessageId == 0
+                ? null
+                : new TdApi.InputMessageReplyTo.InputMessageReplyToMessage
+                {
+                    MessageId = replyToMessageId,
+                    Quote = null,
+                    ChecklistTaskId = 0,
+                    PollOptionId = string.Empty
+                },
+            Options = new TdApi.MessageSendOptions
+            {
+                DisableNotification = options.Silent,
+                SchedulingState = scheduling
+            },
+            ReplyMarkup = null,
+            InputMessageContent = content
+        });
     }
 
     public async Task<IReadOnlyList<MessageRow>> LoadScheduledAsync(long chatId)

@@ -396,4 +396,13 @@
   <data name="Schedule_Invalid" xml:space="preserve">
     <value>Сначала выберите вариант</value>
   </data>
+  <data name="Cmd_Attach" xml:space="preserve">
+    <value>Прикрепить файл</value>
+  </data>
+  <data name="Status_Attached" xml:space="preserve">
+    <value>Файл отправлен</value>
+  </data>
+  <data name="Error_FileNotFound" xml:space="preserve">
+    <value>Файл не найден</value>
+  </data>
 </root>

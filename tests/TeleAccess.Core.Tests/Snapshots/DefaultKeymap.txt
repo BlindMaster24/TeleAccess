@@ -25,5 +25,6 @@ message.searchInChat | Message | Ctrl+F
 composer.send | Composer | Enter
 composer.sendSilent | Composer | Ctrl+Enter
 composer.sendScheduled | Composer | Ctrl+Shift+Enter
+composer.attach | Composer | Ctrl+O
 composer.newline | Composer | Shift+Enter
 composer.voice | Composer | Ctrl+Shift+V

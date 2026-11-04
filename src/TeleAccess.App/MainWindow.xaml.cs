@@ -96,6 +96,7 @@ public partial class MainWindow : Window
             Send: OnSend,
             SendSilent: OnSendSilent,
             SendScheduled: OnSendScheduled,
+            Attach: OnAttach,
             NewLine: OnNewLine,
             Voice: () => Announce(Strings.Status_NotImplemented)));
 
@@ -594,6 +595,48 @@ public partial class MainWindow : Window
         _showingTransient = true;
         MessageList.ItemsSource = rows;
         MessageList.Focus();
+    }
+
+    private void OnAttach() => _ = AttachAsync();
+
+    private async Task AttachAsync()
+    {
+        if (_currentChat is null)
+        {
+            Announce(Strings.Status_NoChat);
+            return;
+        }
+
+        var dialog = new Microsoft.Win32.OpenFileDialog
+        {
+            Title = Strings.Cmd_Attach,
+            CheckFileExists = true,
+            Multiselect = false
+        };
+
+        if (dialog.ShowDialog(this) != true)
+        {
+            return;
+        }
+
+        if (!System.IO.File.Exists(dialog.FileName))
+        {
+            Announce(Strings.Error_FileNotFound);
+            return;
+        }
+
+        try
+        {
+            await _telegram.SendDocumentAsync(_currentChat.Id, dialog.FileName, Composer.Text.Trim(), _replyToMessageId);
+            _replyToMessageId = 0;
+            Composer.Clear();
+            Announce(Strings.Status_Attached);
+            await RefreshMessagesAsync(_currentChat);
+        }
+        catch (Exception exception)
+        {
+            Announce(Errors.Describe(exception));
+        }
     }
 
     private void OnNewLine()

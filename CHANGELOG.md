@@ -18,6 +18,7 @@ All notable changes are recorded here. Format follows
   (`Ctrl+Shift+Enter`) through a window with quick presets, a calendar picker and a
   manual parser for relative, time-only and absolute input.
 - Scheduled queue, search inside a chat, reactions, chat mute, pin and archive.
+- File attachments: `Ctrl+O` sends any local file as a document, with the composer text as caption.
 - Speech announcements through Prism (`Prismatoid`) behind `ISpeechService`.
 - Localization with English as the neutral resource and Russian as a satellite; error
   messages and plurals are resource-driven.
@@ -27,7 +28,7 @@ All notable changes are recorded here. Format follows
 
 ### Not implemented yet
 
-- Voice messages, file attachments, folders, calls.
+- Voice messages, folders, calls.
 
 ## [0.1.0] - 2026-11-04
 

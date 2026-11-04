@@ -264,4 +264,10 @@ public static class Strings
 
     public static string Schedule_Invalid => Get(nameof(Schedule_Invalid));
 
+    public static string Cmd_Attach => Get(nameof(Cmd_Attach));
+
+    public static string Status_Attached => Get(nameof(Status_Attached));
+
+    public static string Error_FileNotFound => Get(nameof(Error_FileNotFound));
+
 }
