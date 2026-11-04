@@ -1,6 +1,8 @@
 # Commands and keyboard shortcuts
 
-Every action is reachable three ways: a menu item, a context menu item, and a shortcut.
+TeleAccess is a Telegram client for blind users, so this file is the product, not a
+reference appendix. Every action is reachable three ways: a menu item, a context menu
+item, and a shortcut.
 All three are generated from one command registry, so a button without a shortcut (or a
 shortcut without a menu item) cannot exist.
 

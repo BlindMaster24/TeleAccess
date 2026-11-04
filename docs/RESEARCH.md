@@ -1,5 +1,8 @@
 # Research: why this stack
 
+TeleAccess is a Telegram client for blind users on Windows. Every decision below is
+judged by one question: does it make the client work better with a screen reader?
+
 Written before the first line of code, based on the TDLib schema, the Microsoft
 documentation and the existing clients, not on memory.
 

@@ -1,9 +1,10 @@
 # AGENTS.md
 
-TeleAccess is a keyboard-first Telegram client for blind and low-vision users on
-Windows. Accessibility is the product, not a feature: every action must be reachable
-without a mouse, announced by a screen reader, and identical in the menu, the context
-menu and the keyboard shortcut.
+TeleAccess is a **Telegram client for blind users** on Windows. This is not a general
+messenger with an accessibility option: the interface is designed for people who work
+with a screen reader. Every action must be reachable without a mouse, announced aloud,
+and identical in the menu, the context menu and the keyboard shortcut. Low-vision users
+benefit, sighted users are not the audience.
 
 ## Stack
 
@@ -77,6 +78,18 @@ tests/TeleAccess.Core.Tests/
 - One line, at most 80 characters. If it needs more, rename or split the code instead.
 - Public types and members get a one-sentence XML `<summary>`; add `<remarks>` only
   when behavior is genuinely surprising.
+
+### Documentation upkeep
+
+- Documentation is part of the change, not a follow-up. Any change to behavior,
+  dependencies, commands, packaging or conventions updates the affected document in the
+  same pull request.
+- This file (AGENTS.md) is kept current: new rules, new commands, new directories and
+  new dependencies are recorded here as they appear.
+- New knowledge worth keeping (a TDLib quirk, a Windows bug, a decision with a reason)
+  goes into a document under `docs/` and is linked from the table at the bottom.
+- Documents are written in English only.
+- A stale document is a bug: if it contradicts the code, fix it or delete it.
 
 ### Code style
 

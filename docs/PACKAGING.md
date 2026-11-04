@@ -1,5 +1,8 @@
 # Packaging: portable build and installer
 
+TeleAccess ships to blind users. Packaging is judged by the same rule as the UI: nothing
+the user has to install, read on screen, or click through with a mouse.
+
 Two artifacts ship from one codebase. The portable one comes first because it is the
 smallest promise we can keep: a single file that runs on a clean Windows 10 machine
 without installing anything.

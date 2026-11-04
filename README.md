@@ -1,11 +1,21 @@
 # TeleAccess
 
-A Telegram client for Windows built for blind and low-vision users. Every action is
-reachable from the keyboard, spoken through the screen reader, and identical in the
-menu, the context menu and the assigned shortcut.
+**TeleAccess is a Telegram client for blind users.**
 
-Status: early development. Sign-in, chat list, message list and the command system are
-implemented; voice messages, files and calls are not.
+Not a general-purpose messenger with an accessibility checkbox: the whole interface is
+designed for people who work with a screen reader, from the first keystroke. Every
+action is reachable without a mouse, spoken out loud, and identical in the menu, the
+context menu and the keyboard shortcut. Nothing is hidden behind a hover, a drag, or an
+icon that has no name.
+
+## Who this is for
+
+- Blind users who drive Windows with NVDA, JAWS or Narrator.
+- Low-vision users who prefer keyboard and speech over pixel hunting.
+- Anyone who wants every Telegram action to have a name and a shortcut.
+
+If you see well and want a regular Telegram client, this is not the best choice for you.
+Telegram Desktop or Unigram will serve you better.
 
 ## What makes it different
 
@@ -17,6 +27,12 @@ implemented; voice messages, files and calls are not.
   (`Prismatoid`), which reaches NVDA, SAPI, Speech Dispatcher and others.
 - **Portable.** One self-contained executable, no installer, no MSIX, no runtime
   prerequisites.
+
+## Status
+
+Early development. Implemented: sign-in with api_id/api_hash, chat list, message list,
+sending, reply, edit, delete, forward, pin, copy, chat deletion, and the full command and
+shortcut system. Not implemented yet: voice messages, files, calls, folders.
 
 ## Build
 
