@@ -32,7 +32,7 @@ public static class VirtualKeys
 
     public const ushort Down = 0x28;
 
-    private static readonly Dictionary<string, ushort> Named = new(StringComparer.OrdinalIgnoreCase)
+    private static readonly Dictionary<string, ushort> _named = new(StringComparer.OrdinalIgnoreCase)
     {
         ["Enter"] = Enter,
         ["Return"] = Enter,
@@ -96,6 +96,6 @@ public static class VirtualKeys
             return true;
         }
 
-        return Named.TryGetValue(value, out virtualKey);
+        return _named.TryGetValue(value, out virtualKey);
     }
 }
