@@ -16,6 +16,10 @@ dotnet publish src/TeleAccess.App -c Release -r win-x64 --self-contained true -p
 Result: `TeleAccess.App.exe`, about 78 MB, self-contained. Verified on this machine:
 the publish directory contains the executable and PDB files only.
 
+Publishing adds `Microsoft.NET.ILLink.Tasks` to the graph, so it restores outside locked
+mode and rewrites `packages.lock.json`. Run `git checkout -- ':(glob)**/packages.lock.json'`
+afterwards, or the next locked build will reject the extra reference.
+
 What the build does for us:
 
 | Concern | How it is handled |
