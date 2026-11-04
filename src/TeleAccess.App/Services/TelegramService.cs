@@ -8,6 +8,7 @@ using TeleAccess.Core.Drafts;
 using TeleAccess.Core.Formatting;
 using TeleAccess.Core.Invites;
 using TeleAccess.Core.Notifications;
+using TeleAccess.Core.Search;
 
 namespace TeleAccess.App.Services;
 
@@ -532,32 +533,6 @@ public sealed class TelegramService : IDisposable
         });
 
         return translated.Text;
-    }
-
-    public async Task<IReadOnlyList<MessageRow>> SearchGlobalAsync(string query, int limit = 40)
-    {
-        RequireClient();
-
-        var found = await _client!.ExecuteAsync(new TdApi.SearchMessages
-        {
-            ChatList = null,
-            Query = query,
-            Offset = string.Empty,
-            Limit = limit,
-            Filter = null,
-            ChatTypeFilter = null,
-            MinDate = 0,
-            MaxDate = 0
-        });
-
-        var rows = new List<MessageRow>(found.Messages.Length);
-
-        foreach (var message in found.Messages)
-        {
-            rows.Add(await ToRowAsync(message));
-        }
-
-        return rows;
     }
 
     public async Task SendVideoAsync(
@@ -1271,6 +1246,44 @@ public sealed class TelegramService : IDisposable
 
         return rows;
     }
+
+    public async Task<IReadOnlyList<MessageRow>> SearchGlobalAsync(SearchQuery query, int limit = 40)
+    {
+        RequireClient();
+        ArgumentNullException.ThrowIfNull(query);
+
+        var found = await _client!.ExecuteAsync(new TdApi.SearchMessages
+        {
+            ChatList = null,
+            Query = query.Text,
+            Offset = string.Empty,
+            Limit = limit,
+            Filter = ToFilter(query.Filter),
+            ChatTypeFilter = null,
+            MinDate = query.MinDate,
+            MaxDate = query.MaxDate
+        });
+
+        var rows = new List<MessageRow>(found.Messages.Length);
+
+        foreach (var message in found.Messages)
+        {
+            rows.Add(await ToRowAsync(message));
+        }
+
+        return rows;
+    }
+
+    private static TdApi.SearchMessagesFilter? ToFilter(SearchFilterKind filter) => filter switch
+    {
+        SearchFilterKind.Photo => new TdApi.SearchMessagesFilter.SearchMessagesFilterPhoto(),
+        SearchFilterKind.Video => new TdApi.SearchMessagesFilter.SearchMessagesFilterVideo(),
+        SearchFilterKind.Document => new TdApi.SearchMessagesFilter.SearchMessagesFilterDocument(),
+        SearchFilterKind.Audio => new TdApi.SearchMessagesFilter.SearchMessagesFilterAudio(),
+        SearchFilterKind.Voice => new TdApi.SearchMessagesFilter.SearchMessagesFilterVoiceNote(),
+        SearchFilterKind.Link => new TdApi.SearchMessagesFilter.SearchMessagesFilterUrl(),
+        _ => null
+    };
 
     public async Task CreateForumTopicAsync(long chatId, string name)
     {

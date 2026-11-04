@@ -37,7 +37,7 @@ menu of the focused area.
 | `Alt+3` | focus composer |
 | `Alt+4` | focus search |
 | `Ctrl+K` | search chats |
-| `Ctrl+Shift+F` | search across all chats |
+| `Ctrl+Shift+F` | search across all chats; supports `type:photo\|video\|doc\|music\|voice\|link` and `date:2026-11-04` |
 | `Ctrl+I` | chat information: type, members, description |
 | `Ctrl+Shift+I` | list chat members into the composer |
 | — | list forum topics |

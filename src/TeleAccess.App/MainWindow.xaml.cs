@@ -20,6 +20,7 @@ using TeleAccess.Core.Drafts;
 using TeleAccess.Core.Network;
 using TeleAccess.Core.Notifications;
 using TeleAccess.Core.Profiles;
+using TeleAccess.Core.Search;
 using TeleAccess.Core.Selection;
 using TeleAccess.Core.Topics;
 
@@ -940,7 +941,8 @@ public partial class MainWindow : Window
 
         try
         {
-            var rows = await _telegram.SearchGlobalAsync(query);
+            var parsed = SearchQueryParser.Parse(query);
+            var rows = await _telegram.SearchGlobalAsync(parsed);
 
             if (rows.Count == 0)
             {
