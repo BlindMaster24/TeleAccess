@@ -1,0 +1,252 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="AppTitle" xml:space="preserve">
+    <value>ТелеАксес</value>
+  </data>
+  <data name="Login_Title" xml:space="preserve">
+    <value>Вход в Telegram</value>
+  </data>
+  <data name="Login_ApiId" xml:space="preserve">
+    <value>api_id</value>
+  </data>
+  <data name="Login_ApiHash" xml:space="preserve">
+    <value>api_hash</value>
+  </data>
+  <data name="Login_Phone" xml:space="preserve">
+    <value>Номер телефона</value>
+  </data>
+  <data name="Login_Code" xml:space="preserve">
+    <value>Код подтверждения</value>
+  </data>
+  <data name="Login_Password" xml:space="preserve">
+    <value>Облачный пароль</value>
+  </data>
+  <data name="Login_Continue" xml:space="preserve">
+    <value>Продолжить</value>
+  </data>
+  <data name="Login_HintNeedParameters" xml:space="preserve">
+    <value>Введите api_id и api_hash с my.telegram.org</value>
+  </data>
+  <data name="Login_HintNeedPhone" xml:space="preserve">
+    <value>Введите номер телефона в международном формате, например +79991234567</value>
+  </data>
+  <data name="Login_HintNeedCode" xml:space="preserve">
+    <value>Введите код из Telegram или из SMS</value>
+  </data>
+  <data name="Login_HintNeedPassword" xml:space="preserve">
+    <value>Введите облачный пароль</value>
+  </data>
+  <data name="Login_HintReady" xml:space="preserve">
+    <value>Вход выполнен</value>
+  </data>
+  <data name="Login_Starting" xml:space="preserve">
+    <value>Запуск</value>
+  </data>
+  <data name="Login_Closed" xml:space="preserve">
+    <value>TDLib закрыт</value>
+  </data>
+  <data name="Login_Failed" xml:space="preserve">
+    <value>Не удалось войти: {0}</value>
+  </data>
+  <data name="Main_Search" xml:space="preserve">
+    <value>Поиск по чатам</value>
+  </data>
+  <data name="Main_Chats" xml:space="preserve">
+    <value>Список чатов</value>
+  </data>
+  <data name="Main_Messages" xml:space="preserve">
+    <value>Сообщения</value>
+  </data>
+  <data name="Main_Composer" xml:space="preserve">
+    <value>Текст сообщения</value>
+  </data>
+  <data name="Main_Unread" xml:space="preserve">
+    <value>непрочитано</value>
+  </data>
+  <data name="Main_NoChats" xml:space="preserve">
+    <value>Чатов пока нет</value>
+  </data>
+  <data name="Main_NoMessages" xml:space="preserve">
+    <value>Сообщений нет</value>
+  </data>
+  <data name="Main_Status" xml:space="preserve">
+    <value>Состояние</value>
+  </data>
+  <data name="Cmd_Search" xml:space="preserve">
+    <value>Поиск по чатам</value>
+  </data>
+  <data name="Cmd_FocusChats" xml:space="preserve">
+    <value>Перейти к списку чатов</value>
+  </data>
+  <data name="Cmd_FocusMessages" xml:space="preserve">
+    <value>Перейти к сообщениям</value>
+  </data>
+  <data name="Cmd_FocusComposer" xml:space="preserve">
+    <value>Перейти к полю ввода</value>
+  </data>
+  <data name="Cmd_Send" xml:space="preserve">
+    <value>Отправить</value>
+  </data>
+  <data name="Cmd_Reply" xml:space="preserve">
+    <value>Ответить</value>
+  </data>
+  <data name="Cmd_Delete" xml:space="preserve">
+    <value>Удалить сообщение</value>
+  </data>
+  <data name="Cmd_Edit" xml:space="preserve">
+    <value>Изменить сообщение</value>
+  </data>
+  <data name="Cmd_Forward" xml:space="preserve">
+    <value>Переслать сообщение</value>
+  </data>
+  <data name="Cmd_Pin" xml:space="preserve">
+    <value>Закрепить сообщение</value>
+  </data>
+  <data name="Cmd_Unpin" xml:space="preserve">
+    <value>Открепить сообщение</value>
+  </data>
+  <data name="Cmd_Copy" xml:space="preserve">
+    <value>Копировать текст</value>
+  </data>
+  <data name="Cmd_Voice" xml:space="preserve">
+    <value>Записать голосовое</value>
+  </data>
+  <data name="Cmd_Listen" xml:space="preserve">
+    <value>Прочитать сообщение вслух</value>
+  </data>
+  <data name="Cmd_Menu" xml:space="preserve">
+    <value>Действия с сообщением</value>
+  </data>
+  <data name="Cmd_Hotkeys" xml:space="preserve">
+    <value>Горячие клавиши</value>
+  </data>
+  <data name="Cmd_Refresh" xml:space="preserve">
+    <value>Обновить</value>
+  </data>
+  <data name="Cmd_Quit" xml:space="preserve">
+    <value>Выход</value>
+  </data>
+  <data name="Status_Sent" xml:space="preserve">
+    <value>Отправлено</value>
+  </data>
+  <data name="Status_DeletedForAll" xml:space="preserve">
+    <value>Удалено у всех</value>
+  </data>
+  <data name="Status_DeletedLocal" xml:space="preserve">
+    <value>Удалено у вас</value>
+  </data>
+  <data name="Status_Copied" xml:space="preserve">
+    <value>Скопировано</value>
+  </data>
+  <data name="Status_Forwarded" xml:space="preserve">
+    <value>Переслано</value>
+  </data>
+  <data name="Status_Pinned" xml:space="preserve">
+    <value>Закреплено</value>
+  </data>
+  <data name="Status_Unpinned" xml:space="preserve">
+    <value>Откреплено</value>
+  </data>
+  <data name="Status_NoSelection" xml:space="preserve">
+    <value>Ничего не выбрано</value>
+  </data>
+  <data name="Status_NoChat" xml:space="preserve">
+    <value>Чат не открыт</value>
+  </data>
+  <data name="Status_NotImplemented" xml:space="preserve">
+    <value>Пока не реализовано</value>
+  </data>
+  <data name="Status_Unavailable" xml:space="preserve">
+    <value>Недоступно: {0}</value>
+  </data>
+  <data name="Status_Edited" xml:space="preserve">
+    <value>Изменено</value>
+  </data>
+  <data name="Status_SearchEmpty" xml:space="preserve">
+    <value>Совпадений нет</value>
+  </data>
+  <data name="Hotkeys_Title" xml:space="preserve">
+    <value>Горячие клавиши</value>
+  </data>
+  <data name="Hotkeys_Hint" xml:space="preserve">
+    <value>Enter назначает сочетание, Delete сбрасывает, Escape отменяет</value>
+  </data>
+  <data name="Hotkeys_PressKey" xml:space="preserve">
+    <value>Нажмите сочетание клавиш</value>
+  </data>
+  <data name="Hotkeys_Cancelled" xml:space="preserve">
+    <value>Отменено</value>
+  </data>
+  <data name="Hotkeys_Conflict" xml:space="preserve">
+    <value>Уже занято командой: {0}</value>
+  </data>
+  <data name="Hotkeys_Saved" xml:space="preserve">
+    <value>Сочетание сохранено</value>
+  </data>
+  <data name="Hotkeys_Invalid" xml:space="preserve">
+    <value>Это сочетание нельзя использовать</value>
+  </data>
+  <data name="Hotkeys_Command" xml:space="preserve">
+    <value>Команда</value>
+  </data>
+  <data name="Hotkeys_Shortcut" xml:space="preserve">
+    <value>Сочетание</value>
+  </data>
+  <data name="Prompt_Ok" xml:space="preserve">
+    <value>Готово</value>
+  </data>
+  <data name="Prompt_Cancel" xml:space="preserve">
+    <value>Отмена</value>
+  </data>
+  <data name="Prompt_ForwardTo" xml:space="preserve">
+    <value>Кому переслать</value>
+  </data>
+  <data name="Prompt_EditText" xml:space="preserve">
+    <value>Новый текст сообщения</value>
+  </data>
+  <data name="Common_Loading" xml:space="preserve">
+    <value>Загрузка</value>
+  </data>
+  <data name="Error_Generic" xml:space="preserve">
+    <value>Что-то пошло не так: {0}</value>
+  </data>
+  <data name="Error_Network" xml:space="preserve">
+    <value>Нет соединения с Telegram</value>
+  </data>
+  <data name="Error_FloodWait" xml:space="preserve">
+    <value>Слишком много попыток. Повторите через {0} секунд</value>
+  </data>
+  <data name="Error_NotFound" xml:space="preserve">
+    <value>Не найдено</value>
+  </data>
+  <data name="Error_Permission" xml:space="preserve">
+    <value>Недостаточно прав</value>
+  </data>
+  <data name="Error_Auth" xml:space="preserve">
+    <value>Нужно войти заново</value>
+  </data>
+  <data name="Error_File" xml:space="preserve">
+    <value>Не удалось выполнить операцию с файлом</value>
+  </data>
+  <data name="Plural_UnreadMessages" xml:space="preserve">
+    <value>{0:plural:{} непрочитанное сообщение|{} непрочитанных сообщения|{} непрочитанных сообщений}</value>
+  </data>
+  <data name="Plural_SelectedMessages" xml:space="preserve">
+    <value>{0:plural:{} сообщение выбрано|{} сообщения выбрано|{} сообщений выбрано}</value>
+  </data>
+  <data name="Error_TdlibMissing" xml:space="preserve">
+    <value>Нет движка Telegram: нативная библиотека TDLib не найдена для этой платформы</value>
+  </data>
+</root>
