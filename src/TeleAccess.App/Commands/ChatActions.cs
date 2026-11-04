@@ -8,4 +8,5 @@ public sealed record ChatActions(
     Action Pin,
     Action Archive,
     Action ShowScheduled,
-    Action SwitchList);
+    Action SwitchList,
+    Action Rename);

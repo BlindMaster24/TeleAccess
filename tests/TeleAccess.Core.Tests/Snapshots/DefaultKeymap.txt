@@ -24,6 +24,7 @@ chatList.markUnread | ChatList | Ctrl+Shift+U
 chatList.mute | ChatList | Ctrl+Shift+M
 chatList.pin | ChatList | Ctrl+Shift+P
 chatList.archive | ChatList | Ctrl+Shift+A
+chatList.rename | ChatList | F2
 chatList.scheduled | ChatList | Ctrl+Shift+S
 chatList.switchList | ChatList | Ctrl+Shift+L
 messageList.pinned | MessageList | Ctrl+Shift+P

@@ -456,4 +456,12 @@ public static class Strings
 
     public static string Status_ButtonPressed => Get(nameof(Status_ButtonPressed));
 
+    public static string Cmd_Rename => Get(nameof(Cmd_Rename));
+
+    public static string Prompt_ChatTitle => Get(nameof(Prompt_ChatTitle));
+
+    public static string Status_TitleSaved => Get(nameof(Status_TitleSaved));
+
+    public static string Error_BadTitle => Get(nameof(Error_BadTitle));
+
 }

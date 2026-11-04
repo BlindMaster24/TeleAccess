@@ -68,6 +68,7 @@ menu of the focused area.
 | `Ctrl+Shift+A` | archive / unarchive |
 | `Ctrl+Shift+U` | mark as read / unread |
 | `Ctrl+Shift+S` | show scheduled messages |
+| `F2` | rename chat |
 | `Ctrl+Shift+L` | cycle chat lists: main, each Telegram folder, archive |
 | `Ctrl+Shift+L` | leave group or channel |
 | `Ctrl+Shift+F` | switch folder |

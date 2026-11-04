@@ -916,6 +916,12 @@ public sealed class TelegramService : IDisposable
         }
     }
 
+    public async Task SetChatTitleAsync(long chatId, string title)
+    {
+        RequireClient();
+        await _client!.ExecuteAsync(new TdApi.SetChatTitle { ChatId = chatId, Title = title });
+    }
+
     public async Task<IReadOnlyList<MessageRow>> LoadScheduledAsync(long chatId)
     {
         RequireClient();

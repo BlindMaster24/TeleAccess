@@ -684,4 +684,16 @@
   <data name="Status_ButtonPressed" xml:space="preserve">
     <value>Button pressed</value>
   </data>
+  <data name="Cmd_Rename" xml:space="preserve">
+    <value>Rename chat</value>
+  </data>
+  <data name="Prompt_ChatTitle" xml:space="preserve">
+    <value>New chat title</value>
+  </data>
+  <data name="Status_TitleSaved" xml:space="preserve">
+    <value>Chat renamed</value>
+  </data>
+  <data name="Error_BadTitle" xml:space="preserve">
+    <value>Cannot use this title</value>
+  </data>
 </root>

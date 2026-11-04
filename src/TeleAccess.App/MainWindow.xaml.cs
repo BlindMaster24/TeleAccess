@@ -12,6 +12,7 @@ using TeleAccess.App.Windows;
 using TeleAccess.Core;
 using TeleAccess.Core.Attachments;
 using TeleAccess.Core.ChatLists;
+using TeleAccess.Core.Chats;
 using TeleAccess.Core.Data;
 using TeleAccess.Core.Dates;
 using TeleAccess.Core.Network;
@@ -104,44 +105,51 @@ public partial class MainWindow : Window
         SetBio: OnSetBio,
         Proxy: OnProxy,
         Quit: Close,
-        Chat: new ChatActions(
-            Open: OnOpenChat,
-            Delete: OnDeleteChat,
-            MarkUnread: OnMarkUnread,
-            Mute: OnMute,
-            Pin: OnPinChat,
-            Archive: OnArchive,
-            ShowScheduled: OnScheduled,
-            SwitchList: OnSwitchList),
-        Message: new MessageActions(
-            ReadAloud: OnReadAloud,
-            Reply: OnReply,
-            Edit: OnEdit,
-            Delete: OnDeleteMessage,
-            Forward: OnForward,
-            Pin: OnPin,
-            Copy: OnCopy,
-            React: OnReact,
-            SearchInChat: OnSearchInChat,
-            DeleteForMe: OnDeleteForMe,
-            JumpToPinned: OnJumpToPinned,
-            Translate: OnTranslate,
-            Save: OnSaveFile,
-            Older: OnOlder,
-            Select: OnSelect,
-            SelectAll: OnSelectAll,
-            JumpToDate: OnJumpToDate,
-            Buttons: OnButtons),
-        Composer: new ComposerActions(
-            Send: OnSend,
-            SendSilent: OnSendSilent,
-            SendScheduled: OnSendScheduled,
-            Attach: OnAttach,
-            NewLine: OnNewLine,
-            Voice: OnVoiceToggle,
-            SendContact: OnSendContact,
-            SendLocation: OnSendLocation,
-            SendPoll: OnSendPoll));
+        Chat: CreateChatActions(),
+        Message: CreateMessageActions(),
+        Composer: CreateComposerActions());
+
+    private ChatActions CreateChatActions() => new(
+        Open: OnOpenChat,
+        Delete: OnDeleteChat,
+        MarkUnread: OnMarkUnread,
+        Mute: OnMute,
+        Pin: OnPinChat,
+        Archive: OnArchive,
+        ShowScheduled: OnScheduled,
+        SwitchList: OnSwitchList,
+        Rename: OnRename);
+
+    private MessageActions CreateMessageActions() => new(
+        ReadAloud: OnReadAloud,
+        Reply: OnReply,
+        Edit: OnEdit,
+        Delete: OnDeleteMessage,
+        DeleteForMe: OnDeleteForMe,
+        Forward: OnForward,
+        Pin: OnPin,
+        Copy: OnCopy,
+        React: OnReact,
+        SearchInChat: OnSearchInChat,
+        JumpToPinned: OnJumpToPinned,
+        Translate: OnTranslate,
+        Save: OnSaveFile,
+        Older: OnOlder,
+        Select: OnSelect,
+        SelectAll: OnSelectAll,
+        JumpToDate: OnJumpToDate,
+        Buttons: OnButtons);
+
+    private ComposerActions CreateComposerActions() => new(
+        Send: OnSend,
+        SendSilent: OnSendSilent,
+        SendScheduled: OnSendScheduled,
+        Attach: OnAttach,
+        NewLine: OnNewLine,
+        Voice: OnVoiceToggle,
+        SendContact: OnSendContact,
+        SendLocation: OnSendLocation,
+        SendPoll: OnSendPoll);
 
     private CommandScope CurrentScope()
     {
@@ -1365,6 +1373,36 @@ public partial class MainWindow : Window
         }
 
         Announce(PluralFormatter.Format(Strings.Plural_SelectedMessages, _selected.Count, Strings.Culture));
+    }
+
+    private void OnRename() => _ = RenameChatAsync();
+
+    private async Task RenameChatAsync()
+    {
+        if (_currentChat is null)
+        {
+            Announce(Strings.Status_NoChat);
+            return;
+        }
+
+        var answer = PromptWindow.Ask(this, Strings.Prompt_ChatTitle, _currentChat.Title);
+
+        if (!ChatTitle.TryNormalize(answer, out var title))
+        {
+            Announce(Strings.Error_BadTitle);
+            return;
+        }
+
+        try
+        {
+            await _telegram.SetChatTitleAsync(_currentChat.Id, title);
+            Announce(Strings.Status_TitleSaved);
+            await RefreshChatsAsync(SearchBox.Text);
+        }
+        catch (Exception exception)
+        {
+            Announce(Errors.Describe(exception));
+        }
     }
 
     private void OnDeleteForMe() => _ = DeleteForMeAsync();
