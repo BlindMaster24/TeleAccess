@@ -15,8 +15,8 @@ All notable changes are recorded here. Format follows
 - TDLib integration: sign-in with api_id/api_hash, chat list, message history, sending,
   reply, edit, delete, forward, pin, chat deletion.
 - Message send options: silent delivery (`Ctrl+Enter`) and scheduled delivery
-  (`Ctrl+Shift+Enter`) through a window with quick presets, a calendar picker and a
-  manual parser for relative, time-only and absolute input.
+  (`Ctrl+Shift+Enter`) through a window with explicit year, month, day, hour and minute
+  pickers plus a manual parser for relative, time-only and absolute input.
 - Scheduled queue, search inside a chat, reactions, chat mute, pin and archive.
 - File attachments: `Ctrl+O` sends any local file as a document, with the composer text as caption.
 - Voice messages: WASAPI capture, Opus encoding through Concentus, OGG muxing, sent as `inputMessageVoiceNote`; `Ctrl+Shift+V` starts and stops recording.
@@ -30,6 +30,7 @@ All notable changes are recorded here. Format follows
 - Incoming voice notes and audio play through NAudio (`MediaFoundationReader`), `Enter` plays, `Escape` stops.
 - Attachments download with `Ctrl+S`, history pages back with `Ctrl+Up`, new messages elsewhere announce with an earcon, and `Ctrl+F1` turns on training mode.
 - Global search filters: `type:` and `date:` tokens become a TDLib filter and a date range; the token parser is pure and covered by thirteen tests.
+- Profile fields: username (`setUsername`) and birthdate (`setBirthdate`) validated by pure helpers with twenty-three tests.
 - Proxy manager: list configured proxies, enable or remove one by number (`getProxies`, `enableProxy`, `removeProxy`); all unassigned by default.
 - Topic history now goes through `getForumTopicHistory`; topics can be renamed (`editForumTopic`) and their mention/reaction badges cleared; polls accept a vote through `setPollAnswer`.
 - Topic lifecycle: close/reopen, delete and pin/unpin, all unassigned by default.

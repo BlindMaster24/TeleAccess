@@ -45,6 +45,8 @@ public static class CommandCatalog
         Add(registry, "global.removeProxy", Strings.Cmd_RemoveProxy, CommandScope.Global, null, actions.RemoveProxy);
         Add(registry, "global.disableProxy", Strings.Cmd_DisableProxy, CommandScope.Global, null, actions.DisableProxy);
         Add(registry, "global.proxy", Strings.Cmd_Proxy, CommandScope.Global, null, actions.Proxy);
+        Add(registry, "global.setUsername", Strings.Cmd_SetUsername, CommandScope.Global, null, actions.SetUsername);
+        Add(registry, "global.setBirthdate", Strings.Cmd_SetBirthdate, CommandScope.Global, null, actions.SetBirthdate);
         Add(registry, "global.training", Strings.Cmd_Training, CommandScope.Global, "Ctrl+F1", actions.Training);
         Add(registry, "global.settings", Strings.Cmd_Settings, CommandScope.Global, "Ctrl+Comma", actions.Settings);
         Add(registry, "global.refresh", Strings.Cmd_Refresh, CommandScope.Global, "F5", actions.Refresh);

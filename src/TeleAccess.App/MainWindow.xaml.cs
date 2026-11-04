@@ -256,6 +256,8 @@ public partial class MainWindow : Window
         Training: OnTraining,
         SetName: OnSetName,
         SetBio: OnSetBio,
+        SetUsername: OnSetUsername,
+        SetBirthdate: OnSetBirthdate,
         Proxy: OnProxy,
         MuteScopes: OnMuteScopes,
         Stories: OnStories,
@@ -1384,6 +1386,52 @@ public partial class MainWindow : Window
         {
             await _telegram.SetProxyAsync(proxy.Host, proxy.Port, proxy.Username, proxy.Password);
             Announce(string.Format(Strings.Culture, Strings.Status_ProxySet, proxy.Host, proxy.Port));
+        }
+        catch (Exception exception)
+        {
+            Announce(Errors.Describe(exception));
+        }
+    }
+
+    private void OnSetUsername() => _ = SetUsernameAsync();
+
+    private async Task SetUsernameAsync()
+    {
+        var answer = PromptWindow.Ask(this, Strings.Prompt_UsernameChange);
+
+        if (!Username.TryNormalize(answer, out var username))
+        {
+            Announce(Strings.Error_BadUsername);
+            return;
+        }
+
+        try
+        {
+            await _telegram.SetUsernameAsync(username);
+            Announce(string.Format(Strings.Culture, Strings.Status_UsernameSaved, username));
+        }
+        catch (Exception exception)
+        {
+            Announce(Errors.Describe(exception));
+        }
+    }
+
+    private void OnSetBirthdate() => _ = SetBirthdateAsync();
+
+    private async Task SetBirthdateAsync()
+    {
+        var answer = PromptWindow.Ask(this, Strings.Prompt_Birthdate);
+
+        if (!Birthdate.TryParse(answer, DateTimeOffset.Now, out var birthdate))
+        {
+            Announce(Strings.Error_BadBirthdate);
+            return;
+        }
+
+        try
+        {
+            await _telegram.SetBirthdateAsync(birthdate.Day, birthdate.Month, birthdate.Year);
+            Announce(Strings.Status_BirthdateSaved);
         }
         catch (Exception exception)
         {

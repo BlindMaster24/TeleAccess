@@ -870,4 +870,28 @@
   <data name="Status_NoProxies" xml:space="preserve">
     <value>Прокси не настроены</value>
   </data>
+  <data name="Cmd_SetUsername" xml:space="preserve">
+    <value>Изменить юзернейм</value>
+  </data>
+  <data name="Cmd_SetBirthdate" xml:space="preserve">
+    <value>Изменить дату рождения</value>
+  </data>
+  <data name="Prompt_UsernameChange" xml:space="preserve">
+    <value>Юзернейм: 5–32 буквы, цифры или подчёркивания</value>
+  </data>
+  <data name="Prompt_Birthdate" xml:space="preserve">
+    <value>Дата рождения: 1990-05-17 или 17.05.1990</value>
+  </data>
+  <data name="Status_UsernameSaved" xml:space="preserve">
+    <value>Юзернейм сохранён: {0}</value>
+  </data>
+  <data name="Status_BirthdateSaved" xml:space="preserve">
+    <value>Дата рождения сохранена</value>
+  </data>
+  <data name="Error_BadUsername" xml:space="preserve">
+    <value>Этот юзернейм использовать нельзя</value>
+  </data>
+  <data name="Error_BadBirthdate" xml:space="preserve">
+    <value>Не удалось прочитать дату рождения</value>
+  </data>
 </root>

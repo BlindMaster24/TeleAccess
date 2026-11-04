@@ -21,6 +21,8 @@ global.enableProxy | Global | none
 global.removeProxy | Global | none
 global.disableProxy | Global | none
 global.proxy | Global | none
+global.setUsername | Global | none
+global.setBirthdate | Global | none
 global.training | Global | Ctrl+F1
 global.settings | Global | Ctrl+Comma
 global.refresh | Global | F5

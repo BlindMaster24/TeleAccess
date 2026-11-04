@@ -870,4 +870,28 @@
   <data name="Status_NoProxies" xml:space="preserve">
     <value>No proxies configured</value>
   </data>
+  <data name="Cmd_SetUsername" xml:space="preserve">
+    <value>Change my username</value>
+  </data>
+  <data name="Cmd_SetBirthdate" xml:space="preserve">
+    <value>Change my birthdate</value>
+  </data>
+  <data name="Prompt_UsernameChange" xml:space="preserve">
+    <value>Username, 5 to 32 letters, digits or underscores</value>
+  </data>
+  <data name="Prompt_Birthdate" xml:space="preserve">
+    <value>Birthdate: 1990-05-17 or 17.05.1990</value>
+  </data>
+  <data name="Status_UsernameSaved" xml:space="preserve">
+    <value>Username saved: {0}</value>
+  </data>
+  <data name="Status_BirthdateSaved" xml:space="preserve">
+    <value>Birthdate saved</value>
+  </data>
+  <data name="Error_BadUsername" xml:space="preserve">
+    <value>Cannot use this username</value>
+  </data>
+  <data name="Error_BadBirthdate" xml:space="preserve">
+    <value>Cannot read the birthdate</value>
+  </data>
 </root>

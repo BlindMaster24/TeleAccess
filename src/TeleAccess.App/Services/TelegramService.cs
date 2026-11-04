@@ -873,6 +873,22 @@ public sealed class TelegramService : IDisposable
         await _client!.ExecuteAsync(new TdApi.SetName { FirstName = firstName, LastName = lastName });
     }
 
+    public async Task SetUsernameAsync(string username)
+    {
+        RequireClient();
+        await _client!.ExecuteAsync(new TdApi.SetUsername { Username = username });
+    }
+
+    public async Task SetBirthdateAsync(int day, int month, int year)
+    {
+        RequireClient();
+
+        await _client!.ExecuteAsync(new TdApi.SetBirthdate
+        {
+            Birthdate = new TdApi.Birthdate { Day = day, Month = month, Year = year }
+        });
+    }
+
     public async Task SetBioAsync(string bio)
     {
         RequireClient();

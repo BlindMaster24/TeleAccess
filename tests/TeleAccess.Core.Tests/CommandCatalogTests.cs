@@ -31,6 +31,8 @@ public class CommandCatalogTests
             Training: noop,
             SetName: noop,
             SetBio: noop,
+            SetUsername: noop,
+            SetBirthdate: noop,
             Proxy: noop,
             MuteScopes: noop,
             Stories: noop,

@@ -47,7 +47,7 @@ menu of the focused area.
 | — | add, switch or remove a Telegram account |
 | `Ctrl+Comma` | settings: language, api_id, api_hash, phone, sign out |
 | `Ctrl+Shift+N` | change my name |
-| — | change my bio |
+| — | change my bio, username or birthdate |
 | — | set, enable, remove or disable a proxy |
 | — | mute notification scopes (p private, g groups, c channels) for N hours |
 | — | list the active stories of the chat |
@@ -149,12 +149,10 @@ menu of the focused area.
 
 ## Scheduling
 
-`Ctrl+Shift+Enter` opens the schedule window. It offers three ways to pick a moment, and
-all of them are keyboard-reachable:
+`Ctrl+Shift+Enter` opens the schedule window with two ways to pick a moment:
 
 | Way | How |
 | --- | --- |
-| Quick choices | a list of five presets: in 10 minutes, in an hour, in three hours, tomorrow at 9:00, Monday at 9:00. `Up`/`Down` to choose, `Enter` to schedule |
 | Year, month, day, hour, minute | five explicit lists — every value is announced, so a year is chosen directly instead of paging a calendar popup |
 | Typed value | type into the manual box; it wins over the lists when filled |
 

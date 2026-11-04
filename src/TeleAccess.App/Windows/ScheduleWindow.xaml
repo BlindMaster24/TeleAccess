@@ -3,24 +3,17 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:loc="clr-namespace:TeleAccess.App.Localization"
         Title="{x:Static loc:Strings.Schedule_Title}"
-        Width="620" Height="640"
+        Width="620" Height="480"
         WindowStartupLocation="CenterOwner">
     <Grid Margin="16">
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
-        <TextBlock Grid.Row="0" Text="{x:Static loc:Strings.Schedule_Presets}" Margin="0,0,0,6" />
-        <ListBox Grid.Row="1" x:Name="PresetList" Height="120"
-                 AutomationProperties.Name="{x:Static loc:Strings.Schedule_Presets}"
-                 KeyDown="OnPresetKeyDown" />
-
-        <GroupBox Grid.Row="2" Header="{x:Static loc:Strings.Schedule_PickDate}" Margin="0,12,0,0">
+        <GroupBox Grid.Row="0" Header="{x:Static loc:Strings.Schedule_PickDate}">
             <Grid Margin="8">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*" />
@@ -59,16 +52,16 @@
             </Grid>
         </GroupBox>
 
-        <StackPanel Grid.Row="3" Margin="0,12,0,0">
+        <StackPanel Grid.Row="1" Margin="0,12,0,0">
             <TextBlock Text="{x:Static loc:Strings.Schedule_ManualHint}" TextWrapping="Wrap" Margin="0,0,0,6" />
             <TextBox x:Name="ManualBox" AutomationProperties.Name="{x:Static loc:Strings.Schedule_Manual}" />
         </StackPanel>
 
-        <TextBlock Grid.Row="4" x:Name="StatusText" Margin="0,12,0,0" TextWrapping="Wrap"
+        <TextBlock Grid.Row="2" x:Name="StatusText" Margin="0,12,0,0" TextWrapping="Wrap"
                    AutomationProperties.Name="{x:Static loc:Strings.Main_Status}"
                    AutomationProperties.LiveSetting="Assertive" />
 
-        <StackPanel Grid.Row="5" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,12,0,0">
+        <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,12,0,0">
             <Button Content="{x:Static loc:Strings.Schedule_Send}" IsDefault="True" MinWidth="120" Margin="0,0,8,0" Click="OnSendClick" />
             <Button Content="{x:Static loc:Strings.Prompt_Cancel}" IsCancel="True" MinWidth="120" />
         </StackPanel>

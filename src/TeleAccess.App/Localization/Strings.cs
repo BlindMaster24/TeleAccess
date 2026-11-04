@@ -580,4 +580,20 @@ public static class Strings
 
     public static string Status_NoProxies => Get(nameof(Status_NoProxies));
 
+    public static string Cmd_SetUsername => Get(nameof(Cmd_SetUsername));
+
+    public static string Cmd_SetBirthdate => Get(nameof(Cmd_SetBirthdate));
+
+    public static string Prompt_UsernameChange => Get(nameof(Prompt_UsernameChange));
+
+    public static string Prompt_Birthdate => Get(nameof(Prompt_Birthdate));
+
+    public static string Status_UsernameSaved => Get(nameof(Status_UsernameSaved));
+
+    public static string Status_BirthdateSaved => Get(nameof(Status_BirthdateSaved));
+
+    public static string Error_BadUsername => Get(nameof(Error_BadUsername));
+
+    public static string Error_BadBirthdate => Get(nameof(Error_BadBirthdate));
+
 }

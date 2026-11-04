@@ -22,6 +22,8 @@ public sealed record UiActions(
     Action Training,
     Action SetName,
     Action SetBio,
+    Action SetUsername,
+    Action SetBirthdate,
     Action Proxy,
     Action MuteScopes,
     Action Stories,
