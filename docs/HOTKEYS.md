@@ -56,6 +56,7 @@ menu of the focused area.
 | `Ctrl+Shift+A` | archive / unarchive |
 | `Ctrl+Shift+U` | mark as read / unread |
 | `Ctrl+Shift+S` | show scheduled messages |
+| `Ctrl+Shift+L` | switch between main and archived chats |
 | `Ctrl+Shift+L` | leave group or channel |
 | `Ctrl+Shift+F` | switch folder |
 | `Ctrl+Shift+N` | create folder from selection |
@@ -103,7 +104,7 @@ menu of the focused area.
 | `Ctrl+Shift+Space` | start / stop voice recording |
 | `Escape` | cancel recording, clear reply |
 | `Ctrl+Up` | edit the last own message |
-| `Ctrl+O` | attach file |
+| `Ctrl+O` | attach a file; audio formats become audio messages |
 
 ### Voice playback
 
@@ -141,7 +142,7 @@ message and the value stays where it was.
 | Command | Shortcut | Behavior |
 | --- | --- | --- |
 | `voice.record` | `Ctrl+Shift+V` | push to talk: release sends |
-| `voice.recordToggle` | `Ctrl+Shift+Space` | press to start, press again to send |
+| `voice.recordToggle` | `Ctrl+Shift+V` | press to start, press again to send and upload |
 | `voice.cancel` | `Escape` | discard the draft, nothing is sent |
 | `voice.listen` | `Enter` on a voice message | play |
 | `voice.listenStop` | `Space` | stop |

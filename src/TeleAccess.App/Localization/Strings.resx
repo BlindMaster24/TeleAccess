@@ -423,4 +423,31 @@
   <data name="Schedule_Minute" xml:space="preserve">
     <value>Minute</value>
   </data>
+  <data name="Cmd_SwitchList" xml:space="preserve">
+    <value>Main or archived chats</value>
+  </data>
+  <data name="Status_VoiceRecording" xml:space="preserve">
+    <value>Recording, press again to send</value>
+  </data>
+  <data name="Status_VoiceSent" xml:space="preserve">
+    <value>Voice message sent</value>
+  </data>
+  <data name="Status_VoiceCancelled" xml:space="preserve">
+    <value>Recording cancelled</value>
+  </data>
+  <data name="Error_NoMicrophone" xml:space="preserve">
+    <value>No microphone available</value>
+  </data>
+  <data name="Status_AudioSent" xml:space="preserve">
+    <value>Audio sent</value>
+  </data>
+  <data name="Status_ListMain" xml:space="preserve">
+    <value>Main chats</value>
+  </data>
+  <data name="Status_ListArchive" xml:space="preserve">
+    <value>Archived chats</value>
+  </data>
+  <data name="Error_UnsupportedAudio" xml:space="preserve">
+    <value>Unsupported audio format</value>
+  </data>
 </root>

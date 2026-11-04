@@ -423,4 +423,31 @@
   <data name="Schedule_Minute" xml:space="preserve">
     <value>Минуты</value>
   </data>
+  <data name="Cmd_SwitchList" xml:space="preserve">
+    <value>Основные или архивные чаты</value>
+  </data>
+  <data name="Status_VoiceRecording" xml:space="preserve">
+    <value>Идёт запись, нажмите ещё раз для отправки</value>
+  </data>
+  <data name="Status_VoiceSent" xml:space="preserve">
+    <value>Голосовое отправлено</value>
+  </data>
+  <data name="Status_VoiceCancelled" xml:space="preserve">
+    <value>Запись отменена</value>
+  </data>
+  <data name="Error_NoMicrophone" xml:space="preserve">
+    <value>Микрофон недоступен</value>
+  </data>
+  <data name="Status_AudioSent" xml:space="preserve">
+    <value>Аудио отправлено</value>
+  </data>
+  <data name="Status_ListMain" xml:space="preserve">
+    <value>Основные чаты</value>
+  </data>
+  <data name="Status_ListArchive" xml:space="preserve">
+    <value>Архивные чаты</value>
+  </data>
+  <data name="Error_UnsupportedAudio" xml:space="preserve">
+    <value>Неподдерживаемый аудиоформат</value>
+  </data>
 </root>

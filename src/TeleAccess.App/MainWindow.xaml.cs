@@ -1,4 +1,5 @@
 using System.Globalization;
+using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -19,6 +20,7 @@ public partial class MainWindow : Window
     private readonly SettingsRepository _settingsRepository;
     private readonly KeymapRepository _keymapRepository;
     private readonly PrismSpeechService _speech = new();
+    private readonly VoiceRecorder _recorder = new();
     private readonly TelegramService _telegram = new();
     private readonly CommandRegistry _registry;
     private readonly HotkeyService _hotkeys;
@@ -28,6 +30,7 @@ public partial class MainWindow : Window
     private MessageRow? _currentMessage;
     private long _replyToMessageId;
     private bool _showingTransient;
+    private bool _archiveList;
 
     public MainWindow()
     {
@@ -60,6 +63,7 @@ public partial class MainWindow : Window
     {
         _speech.Dispose();
         _telegram.Dispose();
+        _recorder.Dispose();
         base.OnClosed(e);
     }
 
@@ -81,7 +85,8 @@ public partial class MainWindow : Window
             Mute: OnMute,
             Pin: OnPinChat,
             Archive: OnArchive,
-            ShowScheduled: OnScheduled),
+            ShowScheduled: OnScheduled,
+            SwitchList: OnSwitchList),
         Message: new MessageActions(
             ReadAloud: OnReadAloud,
             Reply: OnReply,
@@ -98,7 +103,7 @@ public partial class MainWindow : Window
             SendScheduled: OnSendScheduled,
             Attach: OnAttach,
             NewLine: OnNewLine,
-            Voice: () => Announce(Strings.Status_NotImplemented)));
+            Voice: OnVoiceToggle));
 
     private CommandScope CurrentScope()
     {
@@ -256,7 +261,9 @@ public partial class MainWindow : Window
 
         try
         {
-            var chats = await _telegram.LoadChatsAsync(query: string.IsNullOrWhiteSpace(query) ? null : query);
+            var chats = await _telegram.LoadChatsAsync(
+                query: string.IsNullOrWhiteSpace(query) ? null : query,
+                archive: _archiveList);
             var selected = (ChatList.SelectedItem as ChatRow)?.Id;
             ChatList.ItemsSource = chats;
 
@@ -597,6 +604,65 @@ public partial class MainWindow : Window
         MessageList.Focus();
     }
 
+    private void OnSwitchList()
+    {
+        _archiveList = !_archiveList;
+        Announce(_archiveList ? Strings.Status_ListArchive : Strings.Status_ListMain);
+        _ = RefreshChatsAsync(SearchBox.Text);
+    }
+
+    private void OnVoiceToggle() => _ = ToggleVoiceAsync();
+
+    private async Task ToggleVoiceAsync()
+    {
+        if (_currentChat is null)
+        {
+            Announce(Strings.Status_NoChat);
+            return;
+        }
+
+        if (!_recorder.IsRecording)
+        {
+            try
+            {
+                _recorder.Start();
+                Announce(Strings.Status_VoiceRecording);
+            }
+            catch (Exception exception)
+            {
+                System.Diagnostics.Debug.WriteLine(exception);
+                Announce(Strings.Error_NoMicrophone);
+            }
+
+            return;
+        }
+
+        var duration = (int)Math.Round(_recorder.Duration.TotalSeconds);
+        var path = _recorder.StopAndEncode();
+
+        if (path is null)
+        {
+            Announce(Strings.Hotkeys_Cancelled);
+            return;
+        }
+
+        try
+        {
+            await _telegram.SendVoiceAsync(_currentChat.Id, path, Math.Max(duration, 1), _replyToMessageId);
+            _replyToMessageId = 0;
+            Announce(Strings.Status_VoiceSent);
+            await RefreshMessagesAsync(_currentChat);
+        }
+        catch (Exception exception)
+        {
+            Announce(Errors.Describe(exception));
+        }
+        finally
+        {
+            File.Delete(path);
+        }
+    }
+
     private void OnAttach() => _ = AttachAsync();
 
     private async Task AttachAsync()
@@ -627,10 +693,22 @@ public partial class MainWindow : Window
 
         try
         {
-            await _telegram.SendDocumentAsync(_currentChat.Id, dialog.FileName, Composer.Text.Trim(), _replyToMessageId);
+            var extension = System.IO.Path.GetExtension(dialog.FileName).ToUpperInvariant();
+
+            if (extension is ".MP3" or ".M4A" or ".FLAC" or ".AAC" or ".WAV" or ".OGG" or ".OPUS")
+            {
+                var title = System.IO.Path.GetFileNameWithoutExtension(dialog.FileName);
+                await _telegram.SendAudioAsync(_currentChat.Id, dialog.FileName, 0, title, string.Empty, _replyToMessageId);
+                Announce(Strings.Status_AudioSent);
+            }
+            else
+            {
+                await _telegram.SendDocumentAsync(_currentChat.Id, dialog.FileName, Composer.Text.Trim(), _replyToMessageId);
+                Announce(Strings.Status_Attached);
+            }
+
             _replyToMessageId = 0;
             Composer.Clear();
-            Announce(Strings.Status_Attached);
             await RefreshMessagesAsync(_currentChat);
         }
         catch (Exception exception)

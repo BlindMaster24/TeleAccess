@@ -282,4 +282,22 @@ public static class Strings
 
     public static string Schedule_Minute => Get(nameof(Schedule_Minute));
 
+    public static string Cmd_SwitchList => Get(nameof(Cmd_SwitchList));
+
+    public static string Status_VoiceRecording => Get(nameof(Status_VoiceRecording));
+
+    public static string Status_VoiceSent => Get(nameof(Status_VoiceSent));
+
+    public static string Status_VoiceCancelled => Get(nameof(Status_VoiceCancelled));
+
+    public static string Error_NoMicrophone => Get(nameof(Error_NoMicrophone));
+
+    public static string Status_AudioSent => Get(nameof(Status_AudioSent));
+
+    public static string Status_ListMain => Get(nameof(Status_ListMain));
+
+    public static string Status_ListArchive => Get(nameof(Status_ListArchive));
+
+    public static string Error_UnsupportedAudio => Get(nameof(Error_UnsupportedAudio));
+
 }

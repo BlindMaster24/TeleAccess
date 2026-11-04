@@ -29,6 +29,8 @@ public static class CommandCatalog
         Add(registry, "chatList.archive", Strings.Cmd_ArchiveChat, CommandScope.ChatList, "Ctrl+Shift+A", actions.Chat.Archive, actions.HasChat);
         Add(registry, "chatList.scheduled", Strings.Cmd_Scheduled, CommandScope.ChatList, "Ctrl+Shift+S", actions.Chat.ShowScheduled, actions.HasChat);
 
+        Add(registry, "chatList.switchList", Strings.Cmd_SwitchList, CommandScope.ChatList, "Ctrl+Shift+L", actions.Chat.SwitchList);
+
         Add(registry, "message.read", Strings.Cmd_Listen, CommandScope.Message, "Enter", actions.Message.ReadAloud, actions.HasMessage);
         Add(registry, "message.reply", Strings.Cmd_Reply, CommandScope.Message, "Ctrl+R", actions.Message.Reply, actions.HasMessage);
         Add(registry, "message.edit", Strings.Cmd_Edit, CommandScope.Message, "Ctrl+E", actions.Message.Edit, actions.HasMessage);

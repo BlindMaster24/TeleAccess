@@ -7,4 +7,5 @@ public sealed record ChatActions(
     Action Mute,
     Action Pin,
     Action Archive,
-    Action ShowScheduled);
+    Action ShowScheduled,
+    Action SwitchList);

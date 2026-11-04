@@ -58,9 +58,13 @@ public sealed class TelegramService : IDisposable
         await _client!.ExecuteAsync(new TdApi.CheckAuthenticationPassword { Password = password });
     }
 
-    public async Task<IReadOnlyList<ChatRow>> LoadChatsAsync(int limit = 60, string? query = null)
+    public async Task<IReadOnlyList<ChatRow>> LoadChatsAsync(int limit = 60, string? query = null, bool archive = false)
     {
         RequireClient();
+
+        TdApi.ChatList chatList = archive
+            ? new TdApi.ChatList.ChatListArchive()
+            : new TdApi.ChatList.ChatListMain();
 
         var ids = new List<long>();
 
@@ -79,13 +83,13 @@ public sealed class TelegramService : IDisposable
         {
             await _client!.ExecuteAsync(new TdApi.LoadChats
             {
-                ChatList = new TdApi.ChatList.ChatListMain(),
+                ChatList = chatList,
                 Limit = limit
             });
 
             var chats = await _client.ExecuteAsync(new TdApi.GetChats
             {
-                ChatList = new TdApi.ChatList.ChatListMain(),
+                ChatList = chatList,
                 Limit = limit
             });
 
@@ -327,6 +331,55 @@ public sealed class TelegramService : IDisposable
             ReplyMarkup = null,
             InputMessageContent = content
         });
+    }
+
+    public async Task SendVoiceAsync(
+        long chatId,
+        string path,
+        int durationSeconds,
+        long replyToMessageId = 0,
+        SendOptions? options = null)
+    {
+        RequireClient();
+        ArgumentException.ThrowIfNullOrWhiteSpace(path);
+
+        await SendAsync(chatId, new TdApi.InputMessageContent.InputMessageVoiceNote
+        {
+            VoiceNote = new TdApi.InputVoiceNote
+            {
+                VoiceNote = new TdApi.InputFile.InputFileLocal { Path = path },
+                Duration = durationSeconds,
+                Waveform = []
+            },
+            Caption = new TdApi.FormattedText { Text = string.Empty, Entities = [] },
+            SelfDestructType = null
+        }, replyToMessageId, options);
+    }
+
+    public async Task SendAudioAsync(
+        long chatId,
+        string path,
+        int durationSeconds,
+        string title,
+        string performer,
+        long replyToMessageId = 0,
+        SendOptions? options = null)
+    {
+        RequireClient();
+        ArgumentException.ThrowIfNullOrWhiteSpace(path);
+
+        await SendAsync(chatId, new TdApi.InputMessageContent.InputMessageAudio
+        {
+            Audio = new TdApi.InputAudio
+            {
+                Audio = new TdApi.InputFile.InputFileLocal { Path = path },
+                AlbumCoverThumbnail = null,
+                Duration = durationSeconds,
+                Title = title,
+                Performer = performer
+            },
+            Caption = new TdApi.FormattedText { Text = string.Empty, Entities = [] }
+        }, replyToMessageId, options);
     }
 
     public async Task<IReadOnlyList<MessageRow>> LoadScheduledAsync(long chatId)

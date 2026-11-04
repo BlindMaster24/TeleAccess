@@ -13,6 +13,7 @@ chatList.mute | ChatList | Ctrl+Shift+M
 chatList.pin | ChatList | Ctrl+Shift+P
 chatList.archive | ChatList | Ctrl+Shift+A
 chatList.scheduled | ChatList | Ctrl+Shift+S
+chatList.switchList | ChatList | Ctrl+Shift+L
 message.read | Message | Enter
 message.reply | Message | Ctrl+R
 message.edit | Message | Ctrl+E
