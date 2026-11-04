@@ -332,4 +332,20 @@ public static class Strings
 
     public static string Error_BadLocation => Get(nameof(Error_BadLocation));
 
+    public static string Cmd_SendPoll => Get(nameof(Cmd_SendPoll));
+
+    public static string Prompt_PollQuestion => Get(nameof(Prompt_PollQuestion));
+
+    public static string Prompt_PollOptions => Get(nameof(Prompt_PollOptions));
+
+    public static string Status_PollSent => Get(nameof(Status_PollSent));
+
+    public static string Status_VideoSent => Get(nameof(Status_VideoSent));
+
+    public static string Status_AnimationSent => Get(nameof(Status_AnimationSent));
+
+    public static string Status_StickerSent => Get(nameof(Status_StickerSent));
+
+    public static string Error_VideoUnreadable => Get(nameof(Error_VideoUnreadable));
+
 }

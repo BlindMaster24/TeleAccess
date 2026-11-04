@@ -10,6 +10,7 @@ using TeleAccess.App.Localization;
 using TeleAccess.App.Services;
 using TeleAccess.App.Windows;
 using TeleAccess.Core;
+using TeleAccess.Core.Attachments;
 using TeleAccess.Core.ChatLists;
 using TeleAccess.Core.Data;
 
@@ -113,7 +114,8 @@ public partial class MainWindow : Window
             NewLine: OnNewLine,
             Voice: OnVoiceToggle,
             SendContact: OnSendContact,
-            SendLocation: OnSendLocation));
+            SendLocation: OnSendLocation,
+            SendPoll: OnSendPoll));
 
     private CommandScope CurrentScope()
     {
@@ -778,6 +780,46 @@ public partial class MainWindow : Window
         }
     }
 
+    private void OnSendPoll() => _ = SendPollAsync();
+
+    private async Task SendPollAsync()
+    {
+        if (_currentChat is null)
+        {
+            Announce(Strings.Status_NoChat);
+            return;
+        }
+
+        var question = PromptWindow.Ask(this, Strings.Prompt_PollQuestion);
+        if (string.IsNullOrWhiteSpace(question))
+        {
+            return;
+        }
+
+        var options = PromptWindow.Ask(this, Strings.Prompt_PollOptions);
+        if (string.IsNullOrWhiteSpace(options))
+        {
+            return;
+        }
+
+        try
+        {
+            await _telegram.SendPollAsync(
+                _currentChat.Id,
+                question.Trim(),
+                options.Split(';', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries),
+                _replyToMessageId);
+
+            _replyToMessageId = 0;
+            Announce(Strings.Status_PollSent);
+            await RefreshMessagesAsync(_currentChat);
+        }
+        catch (Exception exception)
+        {
+            Announce(Errors.Describe(exception));
+        }
+    }
+
     private void OnDeleteForMe() => _ = DeleteForMeAsync();
 
     private async Task DeleteForMeAsync()
@@ -922,39 +964,107 @@ public partial class MainWindow : Window
         }
     }
 
+    private static async Task<(int Width, int Height)> ProbeVideoAsync(string path)
+    {
+        var player = new System.Windows.Media.MediaPlayer();
+        var opened = new TaskCompletionSource<bool>();
+
+        player.MediaOpened += (_, _) => opened.TrySetResult(true);
+        player.MediaFailed += (_, _) => opened.TrySetResult(false);
+        player.Open(new Uri(path));
+
+        var finished = await Task.WhenAny(opened.Task, Task.Delay(TimeSpan.FromSeconds(3)));
+        var success = finished == opened.Task && await opened.Task;
+        var size = success ? (player.NaturalVideoWidth, player.NaturalVideoHeight) : (0, 0);
+
+        player.Close();
+        return size;
+    }
+
     private async Task SendAttachmentAsync(string path)
     {
         var chatId = _currentChat!.Id;
         var caption = Composer.Text.Trim();
         var replyTo = _replyToMessageId;
-        var extension = System.IO.Path.GetExtension(path).ToUpperInvariant();
 
         _replyToMessageId = 0;
 
-        if (extension is ".JPG" or ".JPEG" or ".PNG" or ".BMP" or ".TIF" or ".TIFF")
+        await SendByExtensionAsync(chatId, path, caption, replyTo);
+    }
+
+    private async Task SendByExtensionAsync(long chatId, string path, string caption, long replyTo)
+    {
+        switch (AttachmentClassifier.Classify(path))
+        {
+            case AttachmentKind.Photo:
+                await SendImageAsync(chatId, path, caption, replyTo);
+                return;
+
+            case AttachmentKind.Animation:
+            case AttachmentKind.Video:
+                await SendMovingImageAsync(chatId, path, caption, replyTo, AttachmentClassifier.Classify(path));
+                return;
+
+            case AttachmentKind.Sticker:
+                await _telegram.SendStickerAsync(chatId, path, string.Empty, replyTo);
+                Announce(Strings.Status_StickerSent);
+                return;
+
+            case AttachmentKind.Audio:
+                var title = System.IO.Path.GetFileNameWithoutExtension(path);
+                await _telegram.SendAudioAsync(chatId, path, 0, title, string.Empty, replyTo);
+                Announce(Strings.Status_AudioSent);
+                return;
+
+            default:
+                await _telegram.SendDocumentAsync(chatId, path, caption, replyTo);
+                Announce(Strings.Status_Attached);
+                return;
+        }
+    }
+
+    private async Task SendImageAsync(long chatId, string path, string caption, long replyTo)
+    {
+        var frame = System.Windows.Media.Imaging.BitmapDecoder.Create(
+            new Uri(path),
+            System.Windows.Media.Imaging.BitmapCreateOptions.DelayCreation,
+            System.Windows.Media.Imaging.BitmapCacheOption.None).Frames[0];
+
+        await _telegram.SendPhotoAsync(chatId, path, caption, frame.PixelWidth, frame.PixelHeight, replyTo);
+        Announce(Strings.Status_Attached);
+    }
+
+    private async Task SendMovingImageAsync(
+        long chatId,
+        string path,
+        string caption,
+        long replyTo,
+        AttachmentKind kind)
+    {
+        if (kind == AttachmentKind.Animation)
         {
             var frame = System.Windows.Media.Imaging.BitmapDecoder.Create(
                 new Uri(path),
                 System.Windows.Media.Imaging.BitmapCreateOptions.DelayCreation,
                 System.Windows.Media.Imaging.BitmapCacheOption.None).Frames[0];
 
-            await _telegram.SendPhotoAsync(chatId, path, caption, frame.PixelWidth, frame.PixelHeight, replyTo);
+            await _telegram.SendAnimationAsync(chatId, path, caption, frame.PixelWidth, frame.PixelHeight, 0, replyTo);
+            Announce(Strings.Status_AnimationSent);
+            return;
+        }
+
+        var (width, height) = await ProbeVideoAsync(path);
+
+        if (width <= 0 || height <= 0)
+        {
+            await _telegram.SendDocumentAsync(chatId, path, caption, replyTo);
             Announce(Strings.Status_Attached);
             return;
         }
 
-        if (extension is ".MP3" or ".M4A" or ".FLAC" or ".AAC" or ".WAV" or ".OGG" or ".OPUS")
-        {
-            var title = System.IO.Path.GetFileNameWithoutExtension(path);
-            await _telegram.SendAudioAsync(chatId, path, 0, title, string.Empty, replyTo);
-            Announce(Strings.Status_AudioSent);
-            return;
-        }
-
-        await _telegram.SendDocumentAsync(chatId, path, caption, replyTo);
-        Announce(Strings.Status_Attached);
+        await _telegram.SendVideoAsync(chatId, path, caption, width, height, 0, replyTo);
+        Announce(Strings.Status_VideoSent);
     }
-
     private void OnNewLine()
     {
         var caret = Composer.CaretIndex;

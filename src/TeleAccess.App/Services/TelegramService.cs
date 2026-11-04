@@ -504,6 +504,143 @@ public sealed class TelegramService : IDisposable
         return rows;
     }
 
+    public async Task SendVideoAsync(
+        long chatId,
+        string path,
+        string caption,
+        int width,
+        int height,
+        int duration,
+        long replyToMessageId = 0)
+    {
+        RequireClient();
+
+        await SendAsync(chatId, new TdApi.InputMessageContent.InputMessageVideo
+        {
+            Video = new TdApi.InputVideo
+            {
+                Video = new TdApi.InputFile.InputFileLocal { Path = path },
+                Thumbnail = null,
+                Cover = null,
+                StartTimestamp = 0,
+                AddedStickerFileIds = [],
+                Duration = duration,
+                Width = width,
+                Height = height,
+                SupportsStreaming = true
+            },
+            Caption = new TdApi.FormattedText { Text = caption, Entities = [] },
+            ShowCaptionAboveMedia = false,
+            SelfDestructType = null,
+            HasSpoiler = false
+        }, replyToMessageId, null);
+    }
+
+    public async Task SendAnimationAsync(
+        long chatId,
+        string path,
+        string caption,
+        int width,
+        int height,
+        int duration,
+        long replyToMessageId = 0)
+    {
+        RequireClient();
+
+        await SendAsync(chatId, new TdApi.InputMessageContent.InputMessageAnimation
+        {
+            Animation = new TdApi.InputAnimation
+            {
+                Animation = new TdApi.InputFile.InputFileLocal { Path = path },
+                Thumbnail = null,
+                AddedStickerFileIds = [],
+                Duration = duration,
+                Width = width,
+                Height = height
+            },
+            Caption = new TdApi.FormattedText { Text = caption, Entities = [] },
+            ShowCaptionAboveMedia = false,
+            HasSpoiler = false
+        }, replyToMessageId, null);
+    }
+
+    public async Task SendStickerAsync(long chatId, string path, string emoji, long replyToMessageId = 0)
+    {
+        RequireClient();
+
+        await SendAsync(chatId, new TdApi.InputMessageContent.InputMessageSticker
+        {
+            Sticker = new TdApi.InputSticker
+            {
+                Sticker = new TdApi.InputFile.InputFileLocal { Path = path },
+                Thumbnail = null,
+                Width = 512,
+                Height = 512
+            },
+            Emoji = emoji
+        }, replyToMessageId, null);
+    }
+
+    public async Task SendPollAsync(long chatId, string question, IReadOnlyList<string> options, long replyToMessageId = 0)
+    {
+        RequireClient();
+        ArgumentNullException.ThrowIfNull(options);
+
+        var pollOptions = options
+            .Where(option => !string.IsNullOrWhiteSpace(option))
+            .Select(option => new TdApi.InputPollOption
+            {
+                Text = new TdApi.FormattedText { Text = option.Trim(), Entities = [] },
+                Media = null
+            })
+            .ToArray();
+
+        await SendAsync(chatId, new TdApi.InputMessageContent.InputMessagePoll
+        {
+            Question = new TdApi.FormattedText { Text = question, Entities = [] },
+            Options = pollOptions,
+            Description = new TdApi.FormattedText { Text = string.Empty, Entities = [] },
+            Media = null,
+            IsAnonymous = true,
+            AllowsMultipleAnswers = false,
+            AllowsRevoting = true,
+            MembersOnly = false,
+            CountryCodes = [],
+            ShuffleOptions = false,
+            HideResultsUntilCloses = false,
+            Type = new TdApi.InputPollType.InputPollTypeRegular { AllowAddingOptions = false }
+        }, replyToMessageId, null);
+    }
+
+    public async Task SendVenueAsync(
+        long chatId,
+        string title,
+        string address,
+        double latitude,
+        double longitude,
+        long replyToMessageId = 0)
+    {
+        RequireClient();
+
+        await SendAsync(chatId, new TdApi.InputMessageContent.InputMessageVenue
+        {
+            Venue = new TdApi.Venue
+            {
+                Location = new TdApi.Location
+                {
+                    Latitude = latitude,
+                    Longitude = longitude,
+                    HorizontalAccuracy = 0
+                },
+                Title = title,
+                Address = address,
+                Provider = string.Empty,
+                Id = string.Empty,
+                Type = string.Empty
+            }
+        }, replyToMessageId, null);
+    }
+
     public async Task<IReadOnlyList<MessageRow>> LoadScheduledAsync(long chatId)
     {
         RequireClient();

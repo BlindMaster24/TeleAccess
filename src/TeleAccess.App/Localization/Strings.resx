@@ -498,4 +498,28 @@
   <data name="Error_BadLocation" xml:space="preserve">
     <value>Cannot read the coordinates</value>
   </data>
+  <data name="Cmd_SendPoll" xml:space="preserve">
+    <value>Create a poll</value>
+  </data>
+  <data name="Prompt_PollQuestion" xml:space="preserve">
+    <value>Poll question</value>
+  </data>
+  <data name="Prompt_PollOptions" xml:space="preserve">
+    <value>Options separated by semicolons</value>
+  </data>
+  <data name="Status_PollSent" xml:space="preserve">
+    <value>Poll sent</value>
+  </data>
+  <data name="Status_VideoSent" xml:space="preserve">
+    <value>Video sent</value>
+  </data>
+  <data name="Status_AnimationSent" xml:space="preserve">
+    <value>Animation sent</value>
+  </data>
+  <data name="Status_StickerSent" xml:space="preserve">
+    <value>Sticker sent</value>
+  </data>
+  <data name="Error_VideoUnreadable" xml:space="preserve">
+    <value>Cannot read the video dimensions</value>
+  </data>
 </root>

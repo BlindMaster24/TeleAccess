@@ -8,4 +8,5 @@ public sealed record ComposerActions(
     Action NewLine,
     Action Voice,
     Action SendContact,
-    Action SendLocation);
+    Action SendLocation,
+    Action SendPoll);

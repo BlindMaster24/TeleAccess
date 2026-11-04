@@ -12,6 +12,16 @@ public static class CommandCatalog
 
         var registry = new CommandRegistry();
 
+        AddGlobal(registry, actions);
+        AddChatList(registry, actions);
+        AddMessage(registry, actions);
+        AddComposer(registry, actions);
+
+        return registry;
+    }
+
+    private static void AddGlobal(CommandRegistry registry, UiActions actions)
+    {
         Add(registry, "global.focusChats", Strings.Cmd_FocusChats, CommandScope.Global, "Alt+1", actions.FocusChats);
         Add(registry, "global.focusMessages", Strings.Cmd_FocusMessages, CommandScope.Global, "Alt+2", actions.FocusMessages);
         Add(registry, "global.focusComposer", Strings.Cmd_FocusComposer, CommandScope.Global, "Alt+3", actions.FocusComposer);
@@ -21,7 +31,10 @@ public static class CommandCatalog
         Add(registry, "global.refresh", Strings.Cmd_Refresh, CommandScope.Global, "F5", actions.Refresh);
         Add(registry, "global.hotkeys", Strings.Cmd_Hotkeys, CommandScope.Global, "Ctrl+Shift+K", actions.Hotkeys);
         Add(registry, "global.quit", Strings.Cmd_Quit, CommandScope.Global, null, actions.Quit);
+    }
 
+    private static void AddChatList(CommandRegistry registry, UiActions actions)
+    {
         Add(registry, "chatList.open", Strings.Cmd_OpenChat, CommandScope.ChatList, "Enter", actions.Chat.Open, actions.HasChat);
         Add(registry, "chatList.delete", Strings.Cmd_DeleteChat, CommandScope.ChatList, "Ctrl+D", actions.Chat.Delete, actions.HasChat);
         Add(registry, "chatList.markUnread", Strings.Cmd_MarkUnread, CommandScope.ChatList, "Ctrl+Shift+U", actions.Chat.MarkUnread, actions.HasChat);
@@ -29,9 +42,11 @@ public static class CommandCatalog
         Add(registry, "chatList.pin", Strings.Cmd_PinChat, CommandScope.ChatList, "Ctrl+Shift+P", actions.Chat.Pin, actions.HasChat);
         Add(registry, "chatList.archive", Strings.Cmd_ArchiveChat, CommandScope.ChatList, "Ctrl+Shift+A", actions.Chat.Archive, actions.HasChat);
         Add(registry, "chatList.scheduled", Strings.Cmd_Scheduled, CommandScope.ChatList, "Ctrl+Shift+S", actions.Chat.ShowScheduled, actions.HasChat);
-
         Add(registry, "chatList.switchList", Strings.Cmd_SwitchList, CommandScope.ChatList, "Ctrl+Shift+L", actions.Chat.SwitchList);
+    }
 
+    private static void AddMessage(CommandRegistry registry, UiActions actions)
+    {
         Add(registry, "messageList.pinned", Strings.Cmd_JumpPinned, CommandScope.MessageList, "Ctrl+Shift+P", actions.Message.JumpToPinned, actions.HasChat);
         Add(registry, "message.read", Strings.Cmd_Listen, CommandScope.Message, "Enter", actions.Message.ReadAloud, actions.HasMessage);
         Add(registry, "message.reply", Strings.Cmd_Reply, CommandScope.Message, "Ctrl+R", actions.Message.Reply, actions.HasMessage);
@@ -44,17 +59,19 @@ public static class CommandCatalog
         Add(registry, "message.translate", Strings.Cmd_Translate, CommandScope.Message, "Ctrl+Shift+T", actions.Message.Translate, actions.HasMessage);
         Add(registry, "message.react", Strings.Cmd_React, CommandScope.Message, "Ctrl+Shift+E", actions.Message.React, actions.HasMessage);
         Add(registry, "message.searchInChat", Strings.Cmd_SearchInChat, CommandScope.Message, "Ctrl+F", actions.Message.SearchInChat, actions.HasChat);
+    }
 
+    private static void AddComposer(CommandRegistry registry, UiActions actions)
+    {
         Add(registry, "composer.send", Strings.Cmd_Send, CommandScope.Composer, "Enter", actions.Composer.Send, actions.HasChat);
         Add(registry, "composer.sendSilent", Strings.Cmd_SendSilent, CommandScope.Composer, "Ctrl+Enter", actions.Composer.SendSilent, actions.HasChat);
         Add(registry, "composer.sendScheduled", Strings.Cmd_SendScheduled, CommandScope.Composer, "Ctrl+Shift+Enter", actions.Composer.SendScheduled, actions.HasChat);
         Add(registry, "composer.attach", Strings.Cmd_Attach, CommandScope.Composer, "Ctrl+O", actions.Composer.Attach, actions.HasChat);
         Add(registry, "composer.contact", Strings.Cmd_SendContact, CommandScope.Composer, "Ctrl+Alt+C", actions.Composer.SendContact, actions.HasChat);
         Add(registry, "composer.location", Strings.Cmd_SendLocation, CommandScope.Composer, "Ctrl+Alt+L", actions.Composer.SendLocation, actions.HasChat);
+        Add(registry, "composer.poll", Strings.Cmd_SendPoll, CommandScope.Composer, "Ctrl+Alt+P", actions.Composer.SendPoll, actions.HasChat);
         Add(registry, "composer.newline", Strings.Cmd_Newline, CommandScope.Composer, "Shift+Enter", actions.Composer.NewLine, actions.HasChat);
         Add(registry, "composer.voice", Strings.Cmd_Voice, CommandScope.Composer, "Ctrl+Shift+V", actions.Composer.Voice, actions.HasChat);
-
-        return registry;
     }
 
     public static ContextMenu BuildContextMenu(CommandRegistry registry, CommandScope scope)

@@ -33,5 +33,6 @@ composer.sendScheduled | Composer | Ctrl+Shift+Enter
 composer.attach | Composer | Ctrl+O
 composer.contact | Composer | Ctrl+Alt+C
 composer.location | Composer | Ctrl+Alt+L
+composer.poll | Composer | Ctrl+Alt+P
 composer.newline | Composer | Shift+Enter
 composer.voice | Composer | Ctrl+Shift+V
