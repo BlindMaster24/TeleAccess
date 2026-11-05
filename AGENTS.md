@@ -59,6 +59,10 @@ tests/TeleAccess.Core.Tests/
 - A shortcut conflict is only a conflict inside the same `CommandScope`. Assigning a
   taken combination is refused and spoken, never silently overwritten.
 - `Escape` is reserved for cancel. `Shift+F10` opens the context menu.
+- A toggling command is labelled with the change it will perform (`Unpin chat`),
+  never with both outcomes (`Pin or unpin`). The state lives in `DisplayTitle`, the
+  id stays stable, and the state itself is exposed through toggle state, not the name.
+
 
 ### Localization
 

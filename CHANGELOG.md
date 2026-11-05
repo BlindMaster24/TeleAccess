@@ -38,6 +38,7 @@ All notable changes are recorded here. Format follows
 - Member search by name (`searchChatMembers`) and the replied-message jump (`getRepliedMessage`) are available as commands.
 - Message permissions come from `getMessageProperties`, so edit is refused when Telegram says no and delete uses `can_be_deleted_for_all_users` instead of guessing from the sender.
 - Folders can be renamed through `getChatFolder` plus `editChatFolder`.
+- Toggling commands are labelled by the change they make (`Unpin chat`, `Unmute chat`, `Unarchive chat`, `Unpin message`, `Unpin topic`, `Reopen topic`) through `TeleCommand.DisplayTitle`, covered by three tests and documented in the style rules.
 - Albums: picking several files at once sends them as one `sendMessageAlbum`, photos with real dimensions and the composer text as the caption of the first item.
 - Profile fields: username (`setUsername`) and birthdate (`setBirthdate`) validated by pure helpers with twenty-three tests.
 - Proxy manager: list configured proxies, enable or remove one by number (`getProxies`, `enableProxy`, `removeProxy`); all unassigned by default.

@@ -12,6 +12,12 @@ public class CommandCatalogTests
         var actions = new UiActions(
             HasChat: () => true,
             HasMessage: () => true,
+            IsChatPinned: () => false,
+            IsChatMuted: () => false,
+            IsChatArchived: () => false,
+            IsMessagePinned: () => false,
+            IsTopicPinned: () => false,
+            IsTopicClosed: () => false,
             FocusChats: noop,
             FocusMessages: noop,
             FocusComposer: noop,

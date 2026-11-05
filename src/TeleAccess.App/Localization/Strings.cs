@@ -654,4 +654,18 @@ public static class Strings
 
     public static string Status_NoStoryPosting => Get(nameof(Status_NoStoryPosting));
 
+    public static string Cmd_Unmute => Get(nameof(Cmd_Unmute));
+
+    public static string Cmd_UnpinChat => Get(nameof(Cmd_UnpinChat));
+
+    public static string Cmd_UnarchiveChat => Get(nameof(Cmd_UnarchiveChat));
+
+    public static string Cmd_PinMessage => Get(nameof(Cmd_PinMessage));
+
+    public static string Cmd_UnpinMessage => Get(nameof(Cmd_UnpinMessage));
+
+    public static string Cmd_TopicUnpin => Get(nameof(Cmd_TopicUnpin));
+
+    public static string Cmd_TopicReopen => Get(nameof(Cmd_TopicReopen));
+
 }

@@ -181,6 +181,30 @@ Pipeline: WASAPI capture, Opus encode, `preliminaryUploadFile` + `readFilePart`,
 then `sendMessage` with `inputMessageVoiceNote`. Sending happens only after the
 recording stops; cancelling at any step sends nothing.
 
+
+## State-dependent labels
+
+A toggling action is labelled with the change it will make, never with "Pin or
+unpin". The label is computed from the current state at the moment it is shown:
+
+| State | Label |
+| --- | --- |
+| chat pinned | `Unpin chat` |
+| chat muted | `Unmute chat` |
+| chat archived | `Unarchive chat` |
+| message pinned | `Unpin message` |
+| topic pinned | `Unpin topic` |
+| topic closed | `Reopen topic` |
+
+The same rule applies to the context menu, the shortcut editor and every spoken
+announcement, because all three read `TeleCommand.DisplayTitle`.
+
+Two things stay stable on purpose: the command `Id` (so the keymap keeps working)
+and the UIA name of the menu item is the action, while the state itself belongs in
+the element's toggle state, not in its name — this is the same split the platform
+uses: `IToggleProvider`/`ToggleState` in UI Automation and "toggled menu items" in
+the Apple HIG.
+
 ## Rebinding without a mouse
 
 The shortcut editor is a plain list. `Up`/`Down` choose a command, `Enter` starts

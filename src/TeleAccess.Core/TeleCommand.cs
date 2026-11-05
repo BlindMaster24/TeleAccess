@@ -12,11 +12,16 @@ public sealed class TeleCommand
 
     public string? Hotkey { get; internal set; }
 
+    /// <summary>Builds a label from the current state, for toggling commands.</summary>
+    public Func<string>? TitleProvider { get; init; }
+
     public Func<bool>? CanExecute { get; init; }
 
     public Action? Execute { get; init; }
 
     public bool IsAvailable => CanExecute?.Invoke() ?? true;
+
+    public string DisplayTitle => TitleProvider?.Invoke() ?? Title;
 
     internal void ResetToDefault() => Hotkey = HotkeyCombination.Normalize(DefaultHotkey);
 }

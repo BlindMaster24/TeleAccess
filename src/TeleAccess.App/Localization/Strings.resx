@@ -981,4 +981,25 @@
   <data name="Status_NoStoryPosting" xml:space="preserve">
     <value>You cannot post stories here</value>
   </data>
+  <data name="Cmd_Unmute" xml:space="preserve">
+    <value>Unmute chat</value>
+  </data>
+  <data name="Cmd_UnpinChat" xml:space="preserve">
+    <value>Unpin chat</value>
+  </data>
+  <data name="Cmd_UnarchiveChat" xml:space="preserve">
+    <value>Unarchive chat</value>
+  </data>
+  <data name="Cmd_PinMessage" xml:space="preserve">
+    <value>Pin message</value>
+  </data>
+  <data name="Cmd_UnpinMessage" xml:space="preserve">
+    <value>Unpin message</value>
+  </data>
+  <data name="Cmd_TopicUnpin" xml:space="preserve">
+    <value>Unpin topic</value>
+  </data>
+  <data name="Cmd_TopicReopen" xml:space="preserve">
+    <value>Reopen topic</value>
+  </data>
 </root>

@@ -35,6 +35,12 @@ public sealed record UiActions(
     Action EnableProxy,
     Action RemoveProxy,
     Action PingProxy,
+    Func<bool> IsChatPinned,
+    Func<bool> IsChatMuted,
+    Func<bool> IsChatArchived,
+    Func<bool> IsMessagePinned,
+    Func<bool> IsTopicPinned,
+    Func<bool> IsTopicClosed,
     ChatActions Chat,
     MessageActions Message,
     ComposerActions Composer);

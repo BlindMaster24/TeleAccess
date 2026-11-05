@@ -981,4 +981,25 @@
   <data name="Status_NoStoryPosting" xml:space="preserve">
     <value>Здесь нельзя публиковать истории</value>
   </data>
+  <data name="Cmd_Unmute" xml:space="preserve">
+    <value>Включить звук чата</value>
+  </data>
+  <data name="Cmd_UnpinChat" xml:space="preserve">
+    <value>Открепить чат</value>
+  </data>
+  <data name="Cmd_UnarchiveChat" xml:space="preserve">
+    <value>Вернуть из архива</value>
+  </data>
+  <data name="Cmd_PinMessage" xml:space="preserve">
+    <value>Закрепить сообщение</value>
+  </data>
+  <data name="Cmd_UnpinMessage" xml:space="preserve">
+    <value>Открепить сообщение</value>
+  </data>
+  <data name="Cmd_TopicUnpin" xml:space="preserve">
+    <value>Открепить тему</value>
+  </data>
+  <data name="Cmd_TopicReopen" xml:space="preserve">
+    <value>Открыть тему</value>
+  </data>
 </root>

@@ -238,6 +238,12 @@ public partial class MainWindow : Window
     private UiActions CreateActions() => new(
         HasChat: () => _currentChat is not null,
         HasMessage: () => _currentMessage is not null,
+        IsChatPinned: () => _currentChat?.IsPinned ?? false,
+        IsChatMuted: () => _currentChat?.IsMuted ?? false,
+        IsChatArchived: () => _currentChat?.IsArchived ?? false,
+        IsMessagePinned: () => _currentMessage?.IsPinned ?? false,
+        IsTopicPinned: () => SelectedTopic()?.IsPinned ?? false,
+        IsTopicClosed: () => SelectedTopic()?.IsClosed ?? false,
         FocusChats: () => ChatList.Focus(),
         FocusMessages: () => MessageList.Focus(),
         FocusComposer: () => Composer.Focus(),
@@ -360,13 +366,13 @@ public partial class MainWindow : Window
     {
         if (!e.Command.IsAvailable)
         {
-            Announce(string.Format(Strings.Culture, Strings.Status_Unavailable, e.Command.Title));
+            Announce(string.Format(Strings.Culture, Strings.Status_Unavailable, e.Command.DisplayTitle));
             return;
         }
 
         if (_training)
         {
-            _speech.Speak(e.Command.Title);
+            _speech.Speak(e.Command.DisplayTitle);
         }
     }
 

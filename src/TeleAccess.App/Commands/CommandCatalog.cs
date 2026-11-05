@@ -60,9 +60,9 @@ public static class CommandCatalog
         Add(registry, "chatList.open", Strings.Cmd_OpenChat, CommandScope.ChatList, "Enter", actions.Chat.Open, actions.HasChat);
         Add(registry, "chatList.delete", Strings.Cmd_DeleteChat, CommandScope.ChatList, "Ctrl+D", actions.Chat.Delete, actions.HasChat);
         Add(registry, "chatList.markUnread", Strings.Cmd_MarkUnread, CommandScope.ChatList, "Ctrl+Shift+U", actions.Chat.MarkUnread, actions.HasChat);
-        Add(registry, "chatList.mute", Strings.Cmd_Mute, CommandScope.ChatList, "Ctrl+Shift+M", actions.Chat.Mute, actions.HasChat);
-        Add(registry, "chatList.pin", Strings.Cmd_PinChat, CommandScope.ChatList, "Ctrl+Shift+P", actions.Chat.Pin, actions.HasChat);
-        Add(registry, "chatList.archive", Strings.Cmd_ArchiveChat, CommandScope.ChatList, "Ctrl+Shift+A", actions.Chat.Archive, actions.HasChat);
+        Add(registry, "chatList.mute", Strings.Cmd_Mute, CommandScope.ChatList, "Ctrl+Shift+M", actions.Chat.Mute, actions.HasChat, () => actions.IsChatMuted() ? Strings.Cmd_Unmute : Strings.Cmd_Mute);
+        Add(registry, "chatList.pin", Strings.Cmd_PinChat, CommandScope.ChatList, "Ctrl+Shift+P", actions.Chat.Pin, actions.HasChat, () => actions.IsChatPinned() ? Strings.Cmd_UnpinChat : Strings.Cmd_PinChat);
+        Add(registry, "chatList.archive", Strings.Cmd_ArchiveChat, CommandScope.ChatList, "Ctrl+Shift+A", actions.Chat.Archive, actions.HasChat, () => actions.IsChatArchived() ? Strings.Cmd_UnarchiveChat : Strings.Cmd_ArchiveChat);
         Add(registry, "chatList.createFolder", Strings.Cmd_CreateFolder, CommandScope.ChatList, "Ctrl+Alt+F", actions.Chat.CreateFolder);
         Add(registry, "chatList.renameFolder", Strings.Cmd_RenameFolder, CommandScope.ChatList, null, actions.Chat.RenameFolder, actions.HasChat);
         Add(registry, "chatList.deleteFolder", Strings.Cmd_DeleteFolder, CommandScope.ChatList, "Ctrl+Alt+D", actions.Chat.DeleteFolder, actions.HasChat);
@@ -88,7 +88,7 @@ public static class CommandCatalog
         Add(registry, "message.delete", Strings.Cmd_Delete, CommandScope.Message, "Ctrl+D", actions.Message.Delete, actions.HasMessage);
         Add(registry, "message.deleteForMe", Strings.Cmd_DeleteForMe, CommandScope.Message, "Ctrl+Shift+D", actions.Message.DeleteForMe, actions.HasMessage);
         Add(registry, "message.forward", Strings.Cmd_Forward, CommandScope.Message, "Ctrl+Shift+F", actions.Message.Forward, actions.HasMessage);
-        Add(registry, "message.pin", Strings.Cmd_Pin, CommandScope.Message, "Ctrl+P", actions.Message.Pin, actions.HasMessage);
+        Add(registry, "message.pin", Strings.Cmd_Pin, CommandScope.Message, "Ctrl+P", actions.Message.Pin, actions.HasMessage, () => actions.IsMessagePinned() ? Strings.Cmd_UnpinMessage : Strings.Cmd_PinMessage);
         Add(registry, "message.buttons", Strings.Cmd_Buttons, CommandScope.Message, "Ctrl+B", actions.Message.Buttons, actions.HasMessage);
         Add(registry, "message.copy", Strings.Cmd_Copy, CommandScope.Message, "Ctrl+C", actions.Message.Copy, actions.HasMessage);
         Add(registry, "messageList.jumpToDate", Strings.Cmd_JumpToDate, CommandScope.MessageList, "Ctrl+G", actions.Message.JumpToDate, actions.HasChat);
@@ -114,9 +114,9 @@ public static class CommandCatalog
         Add(registry, "messageList.topicRename", Strings.Cmd_TopicRename, CommandScope.MessageList, null, actions.Message.RenameTopic, actions.HasChat);
         Add(registry, "messageList.topicRead", Strings.Cmd_TopicRead, CommandScope.MessageList, null, actions.Message.ReadTopic, actions.HasChat);
         Add(registry, "messageList.topicLink", Strings.Cmd_TopicLink, CommandScope.MessageList, null, actions.Message.TopicLink, actions.HasChat);
-        Add(registry, "messageList.topicClose", Strings.Cmd_TopicClose, CommandScope.MessageList, null, actions.Message.CloseTopic, actions.HasChat);
+        Add(registry, "messageList.topicClose", Strings.Cmd_TopicClose, CommandScope.MessageList, null, actions.Message.CloseTopic, actions.HasChat, () => actions.IsTopicClosed() ? Strings.Cmd_TopicReopen : Strings.Cmd_TopicClose);
         Add(registry, "messageList.topicDelete", Strings.Cmd_TopicDelete, CommandScope.MessageList, null, actions.Message.DeleteTopic, actions.HasChat);
-        Add(registry, "messageList.topicPin", Strings.Cmd_TopicPin, CommandScope.MessageList, null, actions.Message.PinTopic, actions.HasChat);
+        Add(registry, "messageList.topicPin", Strings.Cmd_TopicPin, CommandScope.MessageList, null, actions.Message.PinTopic, actions.HasChat, () => actions.IsTopicPinned() ? Strings.Cmd_TopicUnpin : Strings.Cmd_TopicPin);
         Add(registry, "messageList.older", Strings.Cmd_Older, CommandScope.MessageList, "Ctrl+Up", actions.Message.Older, actions.HasChat);
         Add(registry, "composer.send", Strings.Cmd_Send, CommandScope.Composer, "Enter", actions.Composer.Send, actions.HasChat);
         Add(registry, "composer.sendSilent", Strings.Cmd_SendSilent, CommandScope.Composer, "Ctrl+Enter", actions.Composer.SendSilent, actions.HasChat);
@@ -145,7 +145,7 @@ public static class CommandCatalog
 
             var item = new MenuItem
             {
-                Header = command.Title,
+                Header = command.DisplayTitle,
                 InputGestureText = command.Hotkey ?? string.Empty,
                 IsEnabled = command.IsAvailable,
                 Command = new RelayCommand(execute)
@@ -164,7 +164,8 @@ public static class CommandCatalog
         CommandScope scope,
         string? hotkey,
         Action execute,
-        Func<bool>? canExecute = null)
+        Func<bool>? canExecute = null,
+        Func<string>? titleProvider = null)
     {
         registry.Add(new TeleCommand
         {
@@ -172,6 +173,7 @@ public static class CommandCatalog
             Title = title,
             Scope = scope,
             DefaultHotkey = hotkey,
+            TitleProvider = titleProvider,
             Execute = execute,
             CanExecute = canExecute
         });

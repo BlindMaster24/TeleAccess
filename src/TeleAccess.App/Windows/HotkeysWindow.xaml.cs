@@ -43,7 +43,7 @@ public partial class HotkeysWindow : Window
 
         foreach (var command in _registry.Commands)
         {
-            _rows.Add(new HotkeyRow(command.Id, command.Title, command.Hotkey ?? string.Empty));
+            _rows.Add(new HotkeyRow(command.Id, command.DisplayTitle, command.Hotkey ?? string.Empty));
         }
 
         if (selected >= 0 && selected < _rows.Count)
