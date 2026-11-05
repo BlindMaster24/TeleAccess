@@ -18,6 +18,8 @@ public sealed class TelegramService : IDisposable
     private readonly Dictionary<long, string> _userNames = [];
     private const int MessageTextLimit = 4096;
 
+    private TdApi.Proxy? _lastProxy;
+
     private readonly string _dataDirectory;
     private AppSettings _settings = new();
     private TdClient? _client;
@@ -983,6 +985,13 @@ public sealed class TelegramService : IDisposable
             Enable = true,
             Comment = "TeleAccess"
         });
+
+        _lastProxy = new TdApi.Proxy
+        {
+            Server = host,
+            Port = port,
+            Type = new TdApi.ProxyType.ProxyTypeSocks5 { Username = username, Password = password }
+        };
     }
 
     public async Task<IReadOnlyList<string>> GetButtonsAsync(long chatId, long messageId)
@@ -1622,6 +1631,75 @@ public sealed class TelegramService : IDisposable
         }
 
         return rows;
+    }
+
+    public async Task<IReadOnlyList<string>> GetPollVotersAsync(long chatId, long messageId, int optionIndex, int limit = 20)
+    {
+        RequireClient();
+
+        var message = await _client!.ExecuteAsync(new TdApi.GetMessage { ChatId = chatId, MessageId = messageId });
+
+        if (message.Content is not TdApi.MessageContent.MessagePoll messagePoll)
+        {
+            return [];
+        }
+
+        var options = messagePoll.Poll.Options;
+
+        if (optionIndex < 0 || optionIndex >= options.Length)
+        {
+            return [];
+        }
+
+        var voters = await _client.ExecuteAsync(new TdApi.GetPollVoters
+        {
+            ChatId = chatId,
+            MessageId = messageId,
+            OptionId = int.Parse(options[optionIndex].Id, CultureInfo.InvariantCulture),
+            Offset = 0,
+            Limit = limit
+        });
+
+        var names = new List<string>(voters.Voters.Length);
+
+        foreach (var voter in voters.Voters)
+        {
+            names.Add(await ResolveSenderAsync(voter.VoterId));
+        }
+
+        return names;
+    }
+
+    public async Task<int> PingProxyAsync()
+    {
+        RequireClient();
+
+        if (_lastProxy is null)
+        {
+            return -1;
+        }
+
+        var ping = await _client!.ExecuteAsync(new TdApi.PingProxy { Proxy = _lastProxy });
+        return (int)(ping.Seconds_ ?? 0);
+    }
+
+    public async Task SetPinnedTopicsAsync(long chatId, IReadOnlyList<int> topicIds)
+    {
+        RequireClient();
+
+        await _client!.ExecuteAsync(new TdApi.SetPinnedForumTopics
+        {
+            ChatId = chatId,
+            ForumTopicIds = [.. topicIds]
+        });
+    }
+
+    public async Task<int> CanPostStoryAsync(long chatId)
+    {
+        RequireClient();
+
+        var result = await _client!.ExecuteAsync(new TdApi.CanPostStory { ChatId = chatId });
+        return result is TdApi.CanPostStoryResult.CanPostStoryResultOk ok ? ok.StoryCount : 0;
     }
 
     public async Task RenameTopicAsync(long chatId, int topicId, string name)

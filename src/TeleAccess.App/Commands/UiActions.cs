@@ -34,6 +34,7 @@ public sealed record UiActions(
     Action DisableProxy,
     Action EnableProxy,
     Action RemoveProxy,
+    Action PingProxy,
     ChatActions Chat,
     MessageActions Message,
     ComposerActions Composer);

@@ -30,6 +30,7 @@ All notable changes are recorded here. Format follows
 - Incoming voice notes and audio play through NAudio (`MediaFoundationReader`), `Enter` plays, `Escape` stops.
 - Attachments download with `Ctrl+S`, history pages back with `Ctrl+Up`, new messages elsewhere announce with an earcon, and `Ctrl+F1` turns on training mode.
 - Global search filters: `type:` and `date:` tokens become a TDLib filter and a date range; the token parser is pure and covered by thirteen tests.
+- Poll voters via `getPollVoters`, proxy latency via `pingProxy`, pinned-topic order via `setPinnedForumTopics`, and story eligibility via `canPostStory`.
 - Secret chats: the chat pane reports the state from `getSecretChat` and searches inside it with `searchSecretMessages`.
 - Reply threads: `getMessageThread` shows the whole branch of a message as a list.
 - Links: `getForumTopicLink` and `getMessageLink` put a shareable link into the composer; `stopPoll` closes a running poll.

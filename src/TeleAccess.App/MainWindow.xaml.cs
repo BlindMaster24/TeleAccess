@@ -268,6 +268,7 @@ public partial class MainWindow : Window
         DisableProxy: OnDisableProxy,
         EnableProxy: OnEnableProxy,
         RemoveProxy: OnRemoveProxy,
+        PingProxy: OnPingProxy,
         Quit: Close,
         Chat: CreateChatActions(),
         Message: CreateMessageActions(),
@@ -290,7 +291,9 @@ public partial class MainWindow : Window
         RenameFolder: OnRenameFolder,
         FindMember: OnFindMember,
         SecretState: OnSecretState,
-        SearchSecret: OnSearchSecret);
+        SearchSecret: OnSearchSecret,
+        PinTopics: OnPinTopics,
+        CanPostStory: OnCanPostStory);
 
     private MessageActions CreateMessageActions() => new(
         ReadAloud: OnReadAloud,
@@ -324,7 +327,8 @@ public partial class MainWindow : Window
         TopicLink: OnTopicLink,
         MessageLink: OnMessageLink,
         StopPoll: OnStopPoll,
-        Thread: OnThread);
+        Thread: OnThread,
+        PollVoters: OnPollVoters);
 
     private ComposerActions CreateComposerActions() => new(
         Send: OnSend,
@@ -2231,6 +2235,114 @@ public partial class MainWindow : Window
 
             ShowTransient(rows);
             Announce(PluralFormatter.Format(Strings.Status_FoundMessages, rows.Count, Strings.Culture));
+        }
+        catch (Exception exception)
+        {
+            Announce(Errors.Describe(exception));
+        }
+    }
+
+    private void OnPollVoters() => _ = ShowPollVotersAsync();
+
+    private async Task ShowPollVotersAsync()
+    {
+        if (_currentChat is null || _currentMessage is null)
+        {
+            Announce(Strings.Status_NoSelection);
+            return;
+        }
+
+        var answer = PromptWindow.Ask(this, Strings.Prompt_PollOption);
+
+        if (!int.TryParse(answer, NumberStyles.Integer, CultureInfo.InvariantCulture, out var option) || option < 1)
+        {
+            Announce(Strings.Error_BadNumber);
+            return;
+        }
+
+        try
+        {
+            var voters = await _telegram.GetPollVotersAsync(_currentChat.Id, _currentMessage.Id, option - 1);
+
+            if (voters.Count == 0)
+            {
+                Announce(Strings.Status_NoVoters);
+                return;
+            }
+
+            Composer.Text = string.Join(Environment.NewLine, voters);
+            Announce(string.Join(". ", voters));
+        }
+        catch (Exception exception)
+        {
+            Announce(Errors.Describe(exception));
+        }
+    }
+
+    private void OnPingProxy() => _ = PingProxyAsync();
+
+    private async Task PingProxyAsync()
+    {
+        try
+        {
+            var seconds = await _telegram.PingProxyAsync();
+            Announce(seconds < 0
+                ? Strings.Status_NoProxies
+                : string.Format(Strings.Culture, Strings.Status_ProxyPing, seconds));
+        }
+        catch (Exception exception)
+        {
+            Announce(Errors.Describe(exception));
+        }
+    }
+
+    private void OnPinTopics() => _ = PinTopicsAsync();
+
+    private async Task PinTopicsAsync()
+    {
+        if (_currentChat is null)
+        {
+            Announce(Strings.Status_NoChat);
+            return;
+        }
+
+        try
+        {
+            var topics = await _telegram.LoadTopicsAsync(_currentChat.Id);
+            var pinned = topics.Where(topic => topic.IsPinned).Select(topic => topic.Id).ToList();
+            var current = SelectedTopic();
+
+            if (current is not null && !pinned.Remove(current.Id))
+            {
+                pinned.Add(current.Id);
+            }
+
+            await _telegram.SetPinnedTopicsAsync(_currentChat.Id, pinned);
+            Announce(Strings.Status_TopicsPinned);
+            await ShowTopicListAsync(_currentChat);
+        }
+        catch (Exception exception)
+        {
+            Announce(Errors.Describe(exception));
+        }
+    }
+
+    private void OnCanPostStory() => _ = CanPostStoryAsync();
+
+    private async Task CanPostStoryAsync()
+    {
+        if (_currentChat is null)
+        {
+            Announce(Strings.Status_NoChat);
+            return;
+        }
+
+        try
+        {
+            var count = await _telegram.CanPostStoryAsync(_currentChat.Id);
+            Announce(count == 0
+                ? Strings.Status_NoStoryPosting
+                : string.Format(Strings.Culture, Strings.Status_StoryPosting, count));
         }
         catch (Exception exception)
         {

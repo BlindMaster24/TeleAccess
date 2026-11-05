@@ -18,6 +18,7 @@ global.addAccount | Global | none
 global.switchAccount | Global | none
 global.removeAccount | Global | none
 global.enableProxy | Global | none
+global.pingProxy | Global | none
 global.removeProxy | Global | none
 global.disableProxy | Global | none
 global.proxy | Global | none
@@ -38,6 +39,8 @@ chatList.createFolder | ChatList | Ctrl+Alt+F
 chatList.renameFolder | ChatList | none
 chatList.deleteFolder | ChatList | Ctrl+Alt+D
 chatList.secretState | ChatList | none
+chatList.pinTopics | ChatList | none
+chatList.canPostStory | ChatList | none
 chatList.searchSecret | ChatList | none
 chatList.findMember | ChatList | none
 chatList.unbanMember | ChatList | none
@@ -63,6 +66,7 @@ message.save | Message | Ctrl+S
 message.vote | Message | none
 message.link | Message | none
 message.stopPoll | Message | none
+message.pollVoters | Message | none
 message.thread | Message | none
 message.replied | Message | none
 message.translate | Message | Ctrl+Shift+T

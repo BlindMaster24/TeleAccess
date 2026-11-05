@@ -17,4 +17,6 @@ public sealed record ChatActions(
     Action RenameFolder,
     Action FindMember,
     Action SecretState,
-    Action SearchSecret);
+    Action SearchSecret,
+    Action PinTopics,
+    Action CanPostStory);

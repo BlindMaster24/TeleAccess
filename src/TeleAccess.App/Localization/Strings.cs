@@ -636,4 +636,22 @@ public static class Strings
 
     public static string Status_NotSecret => Get(nameof(Status_NotSecret));
 
+    public static string Cmd_PinTopics => Get(nameof(Cmd_PinTopics));
+
+    public static string Cmd_CanPostStory => Get(nameof(Cmd_CanPostStory));
+
+    public static string Cmd_PollVoters => Get(nameof(Cmd_PollVoters));
+
+    public static string Cmd_PingProxy => Get(nameof(Cmd_PingProxy));
+
+    public static string Status_NoVoters => Get(nameof(Status_NoVoters));
+
+    public static string Status_ProxyPing => Get(nameof(Status_ProxyPing));
+
+    public static string Status_TopicsPinned => Get(nameof(Status_TopicsPinned));
+
+    public static string Status_StoryPosting => Get(nameof(Status_StoryPosting));
+
+    public static string Status_NoStoryPosting => Get(nameof(Status_NoStoryPosting));
+
 }

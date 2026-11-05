@@ -954,4 +954,31 @@
   <data name="Status_NotSecret" xml:space="preserve">
     <value>Этот чат не секретный</value>
   </data>
+  <data name="Cmd_PinTopics" xml:space="preserve">
+    <value>Закрепить или открепить выбранную тему</value>
+  </data>
+  <data name="Cmd_CanPostStory" xml:space="preserve">
+    <value>Можно ли здесь публиковать истории</value>
+  </data>
+  <data name="Cmd_PollVoters" xml:space="preserve">
+    <value>Показать проголосовавших</value>
+  </data>
+  <data name="Cmd_PingProxy" xml:space="preserve">
+    <value>Проверить настроенный прокси</value>
+  </data>
+  <data name="Status_NoVoters" xml:space="preserve">
+    <value>Проголосовавших нет</value>
+  </data>
+  <data name="Status_ProxyPing" xml:space="preserve">
+    <value>Прокси ответил за {0} секунд</value>
+  </data>
+  <data name="Status_TopicsPinned" xml:space="preserve">
+    <value>Закреплённые темы обновлены</value>
+  </data>
+  <data name="Status_StoryPosting" xml:space="preserve">
+    <value>Здесь можно опубликовать историй: {0}</value>
+  </data>
+  <data name="Status_NoStoryPosting" xml:space="preserve">
+    <value>Здесь нельзя публиковать истории</value>
+  </data>
 </root>

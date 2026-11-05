@@ -42,6 +42,7 @@ public static class CommandCatalog
         Add(registry, "global.switchAccount", Strings.Cmd_SwitchAccount, CommandScope.Global, null, actions.SwitchAccount);
         Add(registry, "global.removeAccount", Strings.Cmd_RemoveAccount, CommandScope.Global, null, actions.RemoveAccount);
         Add(registry, "global.enableProxy", Strings.Cmd_EnableProxy, CommandScope.Global, null, actions.EnableProxy);
+        Add(registry, "global.pingProxy", Strings.Cmd_PingProxy, CommandScope.Global, null, actions.PingProxy);
         Add(registry, "global.removeProxy", Strings.Cmd_RemoveProxy, CommandScope.Global, null, actions.RemoveProxy);
         Add(registry, "global.disableProxy", Strings.Cmd_DisableProxy, CommandScope.Global, null, actions.DisableProxy);
         Add(registry, "global.proxy", Strings.Cmd_Proxy, CommandScope.Global, null, actions.Proxy);
@@ -66,6 +67,8 @@ public static class CommandCatalog
         Add(registry, "chatList.renameFolder", Strings.Cmd_RenameFolder, CommandScope.ChatList, null, actions.Chat.RenameFolder, actions.HasChat);
         Add(registry, "chatList.deleteFolder", Strings.Cmd_DeleteFolder, CommandScope.ChatList, "Ctrl+Alt+D", actions.Chat.DeleteFolder, actions.HasChat);
         Add(registry, "chatList.secretState", Strings.Cmd_SecretState, CommandScope.ChatList, null, actions.Chat.SecretState, actions.HasChat);
+        Add(registry, "chatList.pinTopics", Strings.Cmd_PinTopics, CommandScope.ChatList, null, actions.Chat.PinTopics, actions.HasChat);
+        Add(registry, "chatList.canPostStory", Strings.Cmd_CanPostStory, CommandScope.ChatList, null, actions.Chat.CanPostStory, actions.HasChat);
         Add(registry, "chatList.searchSecret", Strings.Cmd_SearchSecret, CommandScope.ChatList, null, actions.Chat.SearchSecret, actions.HasChat);
         Add(registry, "chatList.findMember", Strings.Cmd_FindMember, CommandScope.ChatList, null, actions.Chat.FindMember, actions.HasChat);
         Add(registry, "chatList.unbanMember", Strings.Cmd_UnbanMember, CommandScope.ChatList, null, actions.UnbanMember, actions.HasChat);
@@ -95,6 +98,7 @@ public static class CommandCatalog
         Add(registry, "message.vote", Strings.Cmd_Vote, CommandScope.Message, null, actions.Message.Vote, actions.HasMessage);
         Add(registry, "message.link", Strings.Cmd_MessageLink, CommandScope.Message, null, actions.Message.MessageLink, actions.HasMessage);
         Add(registry, "message.stopPoll", Strings.Cmd_StopPoll, CommandScope.Message, null, actions.Message.StopPoll, actions.HasMessage);
+        Add(registry, "message.pollVoters", Strings.Cmd_PollVoters, CommandScope.Message, null, actions.Message.PollVoters, actions.HasMessage);
         Add(registry, "message.thread", Strings.Cmd_Thread, CommandScope.Message, null, actions.Message.Thread, actions.HasMessage);
         Add(registry, "message.replied", Strings.Cmd_ShowReplied, CommandScope.Message, null, actions.Message.ShowReplied, actions.HasMessage);
         Add(registry, "message.translate", Strings.Cmd_Translate, CommandScope.Message, "Ctrl+Shift+T", actions.Message.Translate, actions.HasMessage);

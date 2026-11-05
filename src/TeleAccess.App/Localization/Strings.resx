@@ -954,4 +954,31 @@
   <data name="Status_NotSecret" xml:space="preserve">
     <value>This chat is not secret</value>
   </data>
+  <data name="Cmd_PinTopics" xml:space="preserve">
+    <value>Pin or unpin the selected topic</value>
+  </data>
+  <data name="Cmd_CanPostStory" xml:space="preserve">
+    <value>Can I post a story here</value>
+  </data>
+  <data name="Cmd_PollVoters" xml:space="preserve">
+    <value>Show poll voters</value>
+  </data>
+  <data name="Cmd_PingProxy" xml:space="preserve">
+    <value>Ping the configured proxy</value>
+  </data>
+  <data name="Status_NoVoters" xml:space="preserve">
+    <value>No voters to show</value>
+  </data>
+  <data name="Status_ProxyPing" xml:space="preserve">
+    <value>Proxy answered in {0} seconds</value>
+  </data>
+  <data name="Status_TopicsPinned" xml:space="preserve">
+    <value>Pinned topics updated</value>
+  </data>
+  <data name="Status_StoryPosting" xml:space="preserve">
+    <value>You can post {0} stories here</value>
+  </data>
+  <data name="Status_NoStoryPosting" xml:space="preserve">
+    <value>You cannot post stories here</value>
+  </data>
 </root>
