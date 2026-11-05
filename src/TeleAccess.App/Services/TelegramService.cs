@@ -1702,6 +1702,17 @@ public sealed class TelegramService : IDisposable
         return result is TdApi.CanPostStoryResult.CanPostStoryResultOk ok ? ok.StoryCount : 0;
     }
 
+    public async Task SetLanguagePackAsync(string languageCode)
+    {
+        RequireClient();
+
+        await _client!.ExecuteAsync(new TdApi.SetOption
+        {
+            Name = "language_pack_id",
+            Value = new TdApi.OptionValue.OptionValueString { Value = languageCode }
+        });
+    }
+
     public async Task RenameTopicAsync(long chatId, int topicId, string name)
     {
         RequireClient();
@@ -1960,6 +1971,7 @@ public sealed class TelegramService : IDisposable
             case TdApi.AuthorizationState.AuthorizationStateReady:
                 SetStage(AuthStage.Ready);
                 _ = WarmUpAsync();
+                _ = ApplyLanguageAsync();
                 break;
 
             case TdApi.AuthorizationState.AuthorizationStateClosed:
@@ -2008,6 +2020,18 @@ public sealed class TelegramService : IDisposable
             SystemVersion = Environment.OSVersion.VersionString,
             ApplicationVersion = "0.1"
         });
+    }
+
+    private async Task ApplyLanguageAsync()
+    {
+        try
+        {
+            await SetLanguagePackAsync(_settings.Language);
+        }
+        catch (Exception exception)
+        {
+            Debug.WriteLine(exception);
+        }
     }
 
     private async Task WarmUpAsync()

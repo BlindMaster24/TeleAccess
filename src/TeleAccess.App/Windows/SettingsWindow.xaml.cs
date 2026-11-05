@@ -21,9 +21,10 @@ public partial class SettingsWindow : Window
         _settings = settings;
         _repository = repository;
 
-        LanguageBox.ItemsSource = LocalizationManager.SortedByEnglishName();
-        LanguageBox.SelectedItem = LocalizationManager.SortedByEnglishName()
-            .FirstOrDefault(language => string.Equals(language.Culture, _settings.Language, StringComparison.Ordinal));
+        var languages = LocalizationManager.SortedByEnglishName();
+        LanguageBox.ItemsSource = languages;
+        LanguageBox.SelectedItem = languages.FirstOrDefault(language =>
+            string.Equals(language.Culture, _settings.Language, StringComparison.Ordinal)) ?? languages[0];
 
         ApiIdBox.Text = _settings.ApiId > 0 ? _settings.ApiId.ToString(CultureInfo.InvariantCulture) : string.Empty;
         ApiHashBox.Text = _settings.ApiHash;
